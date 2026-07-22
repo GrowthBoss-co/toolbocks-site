@@ -350,6 +350,34 @@ html.no-fx .cursor-glow { display: none; }
 .hs-opt:hover { background: rgba(255, 255, 255, 0.06); color: var(--off); }
 :root[data-hero="v1"] .hs-opt[data-hero-set="v1"], :root[data-hero="v2"] .hs-opt[data-hero-set="v2"] { color: var(--off); background: rgba(92, 90, 255, 0.22); }
 
+/* ===== V2 (Crypton) header — recolored to match the purple hero =====
+   Scoped entirely under [data-hero="v2"] so the V1 header is untouched. */
+:root[data-hero="v2"] header.site {
+  background: rgba(10, 10, 14, 0.72);
+  border-bottom-color: rgba(139, 92, 246, 0.16);
+}
+:root[data-hero="v2"] header.site.scrolled {
+  background: rgba(8, 8, 11, 0.95);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+}
+:root[data-hero="v2"] .brand .bock {
+  background: linear-gradient(150deg, #A78BFA, #8B5CF6 45%, #6D4AE6);
+  color: #fff;
+  box-shadow: 0 0 18px rgba(139, 92, 246, 0.5);
+}
+:root[data-hero="v2"] .brand em { color: #A78BFA; }
+:root[data-hero="v2"] header.site .btn.sm {
+  background: #8B5CF6;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 6px 22px -6px rgba(139, 92, 246, 0.55);
+}
+:root[data-hero="v2"] header.site .btn.sm:hover {
+  background: #9A70FF;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 10px 30px -6px rgba(139, 92, 246, 0.7);
+}
+:root[data-hero="v2"] a:focus-visible,
+:root[data-hero="v2"] button:focus-visible,
+:root[data-hero="v2"] summary:focus-visible { outline-color: #B9A0FF; }
+
 /* ===== V2 (Crypton) hero ===== */
 .hero-v2 { position: relative; overflow: hidden; padding: 0; isolation: isolate; }
 .hero-v2 .v2-topglow { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(900px 480px at 50% -10%, rgba(139, 92, 246, 0.13), transparent 65%); }
