@@ -90,6 +90,7 @@
 </script>
 </head>
 <body>
+<script>/* Apply saved hero version before paint (avoids flash). */(function(){var m="v1";try{if(localStorage.getItem("tb_hero")==="v2")m="v2";}catch(e){}document.documentElement.setAttribute("data-hero",m);})();</script>
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="site">
@@ -102,6 +103,17 @@
       <a href="/ai-sales-audit-generator">AI Audits</a>
       <a href="/lead-generation">Lead Gen</a>
       <a href="/sales-reporting">Reporting</a>
+      <details class="hero-switch">
+        <summary>
+          <span class="hs-dot" aria-hidden="true"></span>
+          <span class="hs-label">Hero: V1</span>
+          <svg class="hs-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="hs-menu" role="menu">
+          <button type="button" class="hs-opt" data-hero-set="v1" role="menuitem">Current (V1)</button>
+          <button type="button" class="hs-opt" data-hero-set="v2" role="menuitem">V2 &middot; Crypton</button>
+        </div>
+      </details>
       <a class="btn sm" href="https://api.leadconnectorhq.com/widget/bookings/gabriel-narsaik">Book a demo</a>
     </nav>
   </div>
@@ -145,6 +157,40 @@
         </div>
       </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero-v2" aria-label="ToolBocks platform hero">
+  <div class="v2-topglow" aria-hidden="true"></div>
+  <div class="v2-intro">
+    <h1 class="v2-h1">Outbound sales, run from one login</h1>
+    <p class="v2-sub">Your outbound, unified. ToolBocks delivers instant dialing, live cadences, and agency-grade AI proposals.</p>
+    <div class="v2-cta">
+      <a class="v2-btn" href="https://api.leadconnectorhq.com/widget/bookings/gabriel-narsaik">Book a live demo</a>
+    </div>
+    <div class="v2-integrations">
+      <p class="v2-intlabel">Runs on 9 native integrations</p>
+      <div class="v2-logos">
+        <span>GoHighLevel</span><span>twilio</span><span>OpenAI</span><span>Anthropic</span><span>ElevenLabs</span><span>Google Places</span>
+      </div>
+    </div>
+  </div>
+  <div class="v2-stage">
+    <div class="v2-stageglow" aria-hidden="true"></div>
+    <div class="v2-window" data-dash-tilt>
+      <div class="v2-chrome">
+        <span class="v2-dot r"></span><span class="v2-dot y"></span><span class="v2-dot g"></span>
+        <span class="v2-nav" aria-hidden="true">&lsaquo; &rsaquo;</span>
+        <span class="v2-urlwrap">
+          <span class="v2-url">
+            <svg class="v2-lock" width="10" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="2.5" fill="currentColor"></rect><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="currentColor" stroke-width="2" fill="none"></path></svg>
+            toolbocks.com
+          </span>
+        </span>
+        <span class="v2-winbtns" aria-hidden="true">&oplus; &#8681;</span>
+      </div>
+      <video class="v2-video" src="/assets/dialer-hero.mp4" poster="/assets/dialer-hero-poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
     </div>
   </div>
 </section>
@@ -294,9 +340,37 @@
   </div>
 </footer>
 
+<script>
+/* Hero version switch (V1 current / V2 Crypton). Independent of the animation
+   layer so it works regardless of motion preferences. */
+(function () {
+  var root = document.documentElement;
+  var sw = document.querySelector(".hero-switch");
+  var label = sw && sw.querySelector(".hs-label");
+  function setLabel() { if (label) label.textContent = "Hero: " + (root.getAttribute("data-hero") || "v1").toUpperCase(); }
+  function apply(m) {
+    m = (m === "v2") ? "v2" : "v1";
+    root.setAttribute("data-hero", m);
+    try { localStorage.setItem("tb_hero", m); } catch (e) {}
+    setLabel();
+  }
+  setLabel();
+  document.querySelectorAll("[data-hero-set]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      apply(b.getAttribute("data-hero-set"));
+      if (sw) sw.removeAttribute("open");
+      window.scrollTo({ top: 0, behavior: "auto" });
+    });
+  });
+  /* Close the dropdown on outside click */
+  document.addEventListener("click", function (e) {
+    if (sw && sw.hasAttribute("open") && !sw.contains(e.target)) sw.removeAttribute("open");
+  });
+})();
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" defer></script>
 <script src="/experience.js" defer></script>
 </body>
 </html>

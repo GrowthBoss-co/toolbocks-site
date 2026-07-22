@@ -1,4 +1,4 @@
-/* ToolBocks experience layer — GSAP ScrollTrigger + Lenis.
+/* ToolBocks experience layer — GSAP ScrollTrigger over native scroll.
    Progressive enhancement only: without JS the site renders fully (SEO-safe).
    Honors prefers-reduced-motion. */
 (function () {
@@ -24,13 +24,9 @@
 
   gsap.registerPlugin(ScrollTrigger);
 
-  /* Smooth scroll */
-  if (window.Lenis) {
-    var lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
-    lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
-    gsap.ticker.lagSmoothing(0);
-  }
+  /* Scrolling is native (browser-driven) — no smooth-scroll hijack.
+     A JS scroll library was previously intercepting the wheel and made
+     scrolling feel laggy/delayed; ScrollTrigger listens to native scroll. */
 
   /* Cursor glow */
   var glow = document.createElement("div");
@@ -79,6 +75,26 @@
       opacity: 0.25, scale: 1.12, ease: "none",
       scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
     });
+  }
+
+  /* V2 (Crypton) dashboard: scroll-tilt reveal — lays back, then rises flat
+     as it enters the viewport. Runs only while the V2 hero is visible. */
+  var dash = document.querySelector("[data-dash-tilt]");
+  if (dash) {
+    var dp = 0, dfirst = true;
+    var dtick = function () {
+      if (dash.offsetParent !== null) {
+        var r = dash.getBoundingClientRect();
+        var vh = window.innerHeight || 900;
+        var target = Math.min(1, Math.max(0, (vh * 0.95 - r.top) / (vh * 0.6)));
+        if (dfirst) { dp = target; dfirst = false; }
+        else { dp += (target - dp) * 0.085; }
+        dash.style.transform = "rotateX(" + ((1 - dp) * 26).toFixed(3) + "deg) scale(" + (0.93 + dp * 0.07).toFixed(4) + ") translateY(" + ((1 - dp) * 34).toFixed(2) + "px)";
+        dash.style.opacity = (0.5 + dp * 0.5).toFixed(3);
+      }
+      requestAnimationFrame(dtick);
+    };
+    requestAnimationFrame(dtick);
   }
 
   /* Section reveals */
