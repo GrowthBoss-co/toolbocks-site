@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Button } from "@/components/ui-kit";
 import { DEMO_URL, hero } from "@/lib/content";
 
@@ -61,18 +62,16 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Product video, ringed and faded into the page like Orizon's screenshot */}
+          {/* Product screenshot, ringed and faded into the page like Orizon's */}
           <div className="relative rounded-t-[1.5rem] shadow-[0_0_0_10px_rgb(255_255_255/0.08)]">
-            <video
-              className="block w-full rounded-t-[1.5rem]"
-              src="/assets/dialer-hero.mp4"
-              poster="/assets/dialer-hero-poster.jpg"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              aria-label="The ToolBocks dialer running a live campaign"
+            <Image
+              className="block h-auto w-full rounded-t-[1.5rem]"
+              src="/assets/hero-team-dashboard.png"
+              alt="The ToolBocks team dashboard: calls, connect rate, answer rate and AI cost across the team, with per-rep connect distribution, disposition mix and a best-time-to-call heatmap."
+              width={1915}
+              height={911}
+              sizes="(min-width: 1264px) 1200px, 100vw"
+              priority
             />
             <div
               aria-hidden="true"
