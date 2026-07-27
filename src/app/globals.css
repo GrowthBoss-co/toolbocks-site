@@ -1,0 +1,582 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* ============================================================================
+   ToolBocks design system.
+
+   Structure, scale and spacing are ported from the Orizon Webflow template
+   (extracted from its compiled stylesheet, not eyeballed). The colour ramp is
+   ToolBocks': Orizon's blue primary slot is filled with our indigo #5C5AFF and
+   lime #DAFF00 is kept as the secondary accent.
+   ========================================================================= */
+
+:root {
+  /* -- neutral ramp (from Orizon) ------------------------------------------ */
+  --n-0: #ffffff;
+  --n-50: #f5f7fa;
+  --n-100: #f2f5f8;
+  --n-200: #e1e4ea;
+  --n-300: #cacfd8;
+  --n-400: #99a0ae;
+  --n-500: #717784;
+  --n-600: #525866;
+  --n-700: #2b303b;
+  --n-800: #222530;
+  --n-900: #181b25;
+  --n-950: #0e121b;
+
+  /* -- primary ramp (ToolBocks indigo, replaces Orizon's blue) ------------- */
+  --p-50: #f0f0ff;
+  --p-100: #e4e3ff;
+  --p-200: #cbcaff;
+  --p-300: #aba9ff;
+  --p-400: #8482ff;
+  --p-500: #5c5aff;
+  --p-600: #4e46e5;
+  --p-700: #3f37c4;
+  --p-800: #332ca0;
+  --p-900: #2a2580;
+  --p-950: #1a1650;
+
+  /* -- accents ------------------------------------------------------------- */
+  --lime: #daff00;
+  --cyan: #7fe7ff;
+  --violet: #9d7cff;
+
+  /* -- flat / translucent -------------------------------------------------- */
+  --flat-primary-10: rgb(92 90 255 / 0.1);
+  --flat-neutral-10: rgb(153 160 174 / 0.1);
+  --flat-green-10: rgb(39 192 110 / 0.1);
+  --flat-warning-10: rgb(230 168 25 / 0.1);
+  --flat-red-10: rgb(233 53 68 / 0.1);
+  --green: #27c06e;
+  --warning: #e6a819;
+  --red: #e93544;
+
+  /* -- type ---------------------------------------------------------------- */
+  --font-heading-family: var(--font-dm-sans), Inter, system-ui, sans-serif;
+  --font-body-family: var(--font-dm-sans), Inter, system-ui, sans-serif;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --lh-1: 1;
+  --lh-1-2: 1.2;
+  --lh-1-3: 1.3;
+  --lh-1-4: 1.4;
+  --lh-1-5: 1.5;
+  --lh-1-6: 1.6;
+
+  --h1-size: 4rem;
+  --h2-size: 3rem;
+  --h3-size: 2.5rem;
+  --h4-size: 2rem;
+  --h5-size: 1.5rem;
+  --h6-size: 1.25rem;
+
+  /* -- spacing scale ------------------------------------------------------- */
+  --space-none: 0rem;
+  --space-2xs: 0.125rem;
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 0.75rem;
+  --space-lg: 1rem;
+  --space-xl: 1.5rem;
+  --space-2xl: 2rem;
+  --space-3xl: 2.5rem;
+  --space-4xl: 3rem;
+  --space-5xl: 3.5rem;
+  --space-6xl: 4rem;
+  --space-7xl: 5rem;
+  --space-8xl: 7.5rem;
+  --space-9xl: 8.75rem;
+
+  /* -- radii (prefixed --r-* so @theme can map them without self-reference) - */
+  --r-small: 0.5rem;
+  --r-medium: 0.75rem;
+  --r-large: 1rem;
+  --r-xlarge: 1.25rem;
+  --r-round: 100vw;
+  --border-width-main: 1px;
+
+  /* -- responsive layout --------------------------------------------------- */
+  --site-width-main: 79rem;
+  --site-width-large: 90rem;
+  --site-width-small: 64rem;
+  --site-margin: var(--space-2xl);
+  --site-gutter: var(--space-xl);
+
+  --section-none: var(--space-none);
+  --section-tiny: var(--space-4xl);
+  --section-small: var(--space-7xl);
+  --section-main: var(--space-8xl);
+  --section-large: var(--space-9xl);
+  --section-hero: 11.875rem;
+}
+
+/* Orizon steps the scale down at 991px and again at 767px. */
+@media screen and (max-width: 991px) {
+  :root {
+    --h3-size: 2rem;
+    --section-tiny: var(--space-3xl);
+    --section-small: var(--space-6xl);
+    --section-main: var(--space-7xl);
+    --section-large: var(--space-8xl);
+    --section-hero: 10rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  :root {
+    --h1-size: 3rem;
+    --h2-size: 2rem;
+    --h3-size: 1.5rem;
+    --h4-size: 1.5rem;
+    --site-margin: var(--space-lg);
+    --site-gutter: var(--space-lg);
+    --section-small: var(--space-5xl);
+    --section-main: var(--space-6xl);
+    --section-large: var(--space-7xl);
+    --section-hero: 9rem;
+  }
+}
+
+/* shadcn/ui compatibility layer. The landing page uses the ToolBocks tokens
+   above; these keep the scaffolded shadcn primitives (src/components/ui)
+   functional if they get used. Mapped onto our dark surfaces. */
+:root {
+  --background: var(--n-950);
+  --foreground: var(--n-0);
+  --card: var(--n-900);
+  --card-foreground: var(--n-0);
+  --popover: var(--n-900);
+  --popover-foreground: var(--n-0);
+  --primary: var(--p-500);
+  --primary-foreground: #ffffff;
+  --secondary: var(--n-800);
+  --secondary-foreground: var(--n-0);
+  --muted: var(--n-800);
+  --muted-foreground: var(--n-400);
+  --accent: var(--n-800);
+  --accent-foreground: var(--n-0);
+  --destructive: var(--red);
+  --border: var(--n-700);
+  --input: var(--n-700);
+  --ring: var(--p-400);
+  --radius: 0.625rem;
+}
+
+@theme inline {
+  --font-sans: var(--font-body-family);
+  --font-heading: var(--font-heading-family);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+
+  /* semantic colours, mirroring Orizon's background/text/border layers */
+  --color-strong: var(--n-950);
+  --color-surface: var(--n-900);
+  --color-surface-800: var(--n-800);
+  --color-surface-700: var(--n-700);
+
+  --color-ink: var(--n-0);
+  --color-soft: var(--n-300);
+  --color-soft-400: var(--n-400);
+  --color-sub: var(--n-500);
+
+  --color-line: var(--n-700);
+  --color-line-900: var(--n-900);
+
+  --color-primary-50: var(--p-50);
+  --color-primary-100: var(--p-100);
+  --color-primary-200: var(--p-200);
+  --color-primary-300: var(--p-300);
+  --color-primary-400: var(--p-400);
+  --color-primary-500: var(--p-500);
+  --color-primary-600: var(--p-600);
+  --color-primary-700: var(--p-700);
+  --color-primary-800: var(--p-800);
+  --color-primary-900: var(--p-900);
+  --color-primary-950: var(--p-950);
+
+  --color-lime: var(--lime);
+  --color-cyan-accent: var(--cyan);
+  --color-green: var(--green);
+  --color-warning: var(--warning);
+  --color-danger: var(--red);
+
+  --color-flat-neutral: var(--flat-neutral-10);
+  --color-flat-primary: var(--flat-primary-10);
+
+  --radius-small: var(--r-small);
+  --radius-medium: var(--r-medium);
+  --radius-large: var(--r-large);
+  --radius-xlarge: var(--r-xlarge);
+  --radius-round: var(--r-round);
+
+  --spacing-2xs: var(--space-2xs);
+  --spacing-xs: var(--space-xs);
+  --spacing-sm: var(--space-sm);
+  --spacing-md: var(--space-md);
+  --spacing-lg: var(--space-lg);
+  --spacing-xl: var(--space-xl);
+  --spacing-2xl: var(--space-2xl);
+  --spacing-3xl: var(--space-3xl);
+  --spacing-4xl: var(--space-4xl);
+  --spacing-5xl: var(--space-5xl);
+  --spacing-6xl: var(--space-6xl);
+  --spacing-7xl: var(--space-7xl);
+  --spacing-8xl: var(--space-8xl);
+  --spacing-9xl: var(--space-9xl);
+}
+
+@layer base {
+  body {
+    background-color: var(--n-950);
+    color: var(--n-300);
+    font-family: var(--font-body-family);
+    font-size: 1rem;
+    line-height: var(--lh-1-6);
+    font-weight: var(--fw-regular);
+  }
+
+  /* Orizon styles the heading tags directly off the token scale, so a bare
+     <h3> is 2.5rem. Mirrored here so markup can stay clean. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading-family);
+    color: var(--n-0);
+    font-weight: var(--fw-semibold);
+    margin: 0;
+  }
+  h1 {
+    font-size: var(--h1-size);
+    line-height: var(--lh-1-2);
+    letter-spacing: -0.04em;
+  }
+  h2 {
+    font-size: var(--h2-size);
+    line-height: var(--lh-1-2);
+    letter-spacing: -0.03em;
+  }
+  h3 {
+    font-size: var(--h3-size);
+    line-height: var(--lh-1-2);
+    letter-spacing: -0.025em;
+  }
+  h4 {
+    font-size: var(--h4-size);
+    line-height: var(--lh-1-3);
+    letter-spacing: -0.02em;
+  }
+  h5 {
+    font-size: var(--h5-size);
+    line-height: var(--lh-1-4);
+    letter-spacing: -0.015em;
+  }
+  h6 {
+    font-size: var(--h6-size);
+    line-height: var(--lh-1-4);
+    letter-spacing: -0.0125em;
+  }
+
+  p {
+    text-wrap: pretty;
+    margin: 0;
+  }
+
+  ::selection {
+    background-color: var(--p-500);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--p-400);
+    outline-offset: 3px;
+  }
+}
+
+/* ============================================================================
+   Typography primitives (Orizon's .heading-style-* / .text-style-* system)
+   ========================================================================= */
+@layer components {
+  .heading-h1,
+  .heading-h2,
+  .heading-h3,
+  .heading-h4,
+  .heading-h5,
+  .heading-h6 {
+    font-family: var(--font-heading-family);
+    color: var(--n-0);
+    font-weight: var(--fw-semibold);
+    margin: 0;
+  }
+
+  .heading-h1 {
+    font-size: var(--h1-size);
+    line-height: var(--lh-1-2);
+    letter-spacing: -0.04em;
+  }
+  .heading-h2 {
+    font-size: var(--h2-size);
+    line-height: var(--lh-1-2);
+    letter-spacing: -0.03em;
+  }
+  .heading-h3 {
+    font-size: var(--h3-size);
+    line-height: var(--lh-1-2);
+    letter-spacing: -0.025em;
+  }
+  .heading-h4 {
+    font-size: var(--h4-size);
+    line-height: var(--lh-1-3);
+    letter-spacing: -0.02em;
+  }
+  .heading-h5 {
+    font-size: var(--h5-size);
+    line-height: var(--lh-1-4);
+    letter-spacing: -0.015em;
+  }
+  .heading-h6 {
+    font-size: var(--h6-size);
+    line-height: var(--lh-1-4);
+    letter-spacing: -0.0125em;
+  }
+
+  .text-large {
+    font-size: 1.125rem;
+    line-height: var(--lh-1-5);
+    letter-spacing: -0.01em;
+  }
+  .text-main {
+    font-size: 1rem;
+    line-height: var(--lh-1-6);
+  }
+  .text-small {
+    font-size: 0.875rem;
+    line-height: var(--lh-1-6);
+  }
+
+  .text-eyebrow {
+    font-family: var(--font-body-family);
+    color: var(--p-400);
+    font-size: 1rem;
+    line-height: var(--lh-1);
+    font-weight: var(--fw-medium);
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+  .text-eyebrow.is-small {
+    font-size: 0.875rem;
+  }
+
+  /* Orizon's signature white -> grey vertical text gradient */
+  .text-gradient {
+    background-image: linear-gradient(180deg, var(--n-0), var(--n-400));
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  /* ==========================================================================
+     Layout primitives
+     ======================================================================= */
+  .container-main,
+  .container-large,
+  .container-small {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: var(--site-margin);
+    position: relative;
+  }
+  .container-main {
+    max-width: var(--site-width-main);
+  }
+  .container-large {
+    max-width: var(--site-width-large);
+  }
+  .container-small {
+    max-width: var(--site-width-small);
+  }
+
+  .pt-section-tiny {
+    padding-top: var(--section-tiny);
+  }
+  .pt-section-small {
+    padding-top: var(--section-small);
+  }
+  .pt-section-main {
+    padding-top: var(--section-main);
+  }
+  .pt-section-large {
+    padding-top: var(--section-large);
+  }
+  .pt-section-hero {
+    padding-top: var(--section-hero);
+  }
+  .pb-section-tiny {
+    padding-bottom: var(--section-tiny);
+  }
+  .pb-section-small {
+    padding-bottom: var(--section-small);
+  }
+  .pb-section-main {
+    padding-bottom: var(--section-main);
+  }
+  .pb-section-large {
+    padding-bottom: var(--section-large);
+  }
+
+  /* vertical rhythm between a section's header and its content */
+  .section-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7xl);
+  }
+  .section-layout.is-integration {
+    gap: var(--space-6xl);
+  }
+  .section-layout.is-split {
+    gap: var(--space-2xl);
+    align-items: center;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--site-gutter);
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--site-gutter);
+  }
+
+  /* Card surface used by feature cards, pricing plans, value cards */
+  .surface-card {
+    border-radius: var(--r-xlarge);
+    background-color: var(--n-900);
+  }
+
+  /* Bottom-fading overlay Orizon lays over every product screenshot */
+  .image-fade {
+    pointer-events: none;
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 40%;
+    background-image: linear-gradient(
+      180deg,
+      rgb(24 27 37 / 0),
+      rgb(24 27 37 / 0.47) 50%,
+      rgb(24 27 37)
+    );
+  }
+}
+
+/* ============================================================================
+   Motion — marquees and the hero reveal
+   ========================================================================= */
+@keyframes tb-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes tb-marquee-reverse {
+  from {
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes tb-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.25rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes tb-pulse-ring {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.85);
+  }
+  70% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+@layer components {
+  .marquee-track {
+    display: flex;
+    flex: none;
+    min-width: 100%;
+    animation: tb-marquee 38s linear infinite;
+  }
+  .marquee-track.is-reverse {
+    animation-name: tb-marquee-reverse;
+  }
+  .marquee-viewport:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  .rise {
+    animation: tb-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .marquee-track.is-reverse {
+    animation: none;
+  }
+  .rise {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
