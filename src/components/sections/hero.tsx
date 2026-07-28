@@ -43,7 +43,7 @@ export function Hero() {
                 <h1 className="heading-h1 text-gradient max-w-[22ch] text-balance">
                   {hero.title}
                 </h1>
-                <p className="text-large max-w-[56ch] text-soft-400">
+                <p className="text-large max-w-[56ch] text-soft-200">
                   {hero.subtitle}
                 </p>
               </div>
@@ -58,7 +58,7 @@ export function Hero() {
                   {hero.secondaryCta}
                 </Button>
               </div>
-              <p className="text-small text-sub">{hero.note}</p>
+              <p className="text-small text-soft">{hero.note}</p>
             </div>
           </div>
 

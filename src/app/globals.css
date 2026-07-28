@@ -203,6 +203,7 @@
   --color-surface-700: var(--n-700);
 
   --color-ink: var(--n-0);
+  --color-soft-200: var(--n-200);
   --color-soft: var(--n-300);
   --color-soft-400: var(--n-400);
   --color-sub: var(--n-500);
