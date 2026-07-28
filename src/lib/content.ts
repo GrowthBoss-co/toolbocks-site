@@ -10,7 +10,13 @@
 export const DEMO_URL =
   "https://api.leadconnectorhq.com/widget/bookings/gabriel-narsaik";
 
-/** The app front door. Becomes app.toolbocks.com once that host is licensed. */
+/**
+ * The app front door. Becomes app.toolbocks.com once that host is licensed.
+ *
+ * Currently referenced by nothing: sign-in was pulled from both the nav and the
+ * footer on purpose, so the marketing site does not surface it yet. Parked here
+ * rather than deleted because it is what sign-in points back at when it returns.
+ */
 export const APP_URL = "https://toolbocks.com";
 
 export const AGENCY_URL = "https://growthboss.co";
@@ -331,7 +337,6 @@ export const footer = {
       links: [
         { label: "Growth Boss", href: AGENCY_URL },
         { label: "Book a demo", href: DEMO_URL },
-        { label: "Sign in", href: APP_URL },
       ],
     },
   ],
