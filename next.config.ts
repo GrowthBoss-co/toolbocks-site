@@ -26,7 +26,12 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // `standalone` exists only for the Dockerfile's self-host path, which copies
+  // `.next/standalone` and runs `node server.js`. Vercel does not need it and
+  // Vercel's own docs say not to set it there, so keep it off during Vercel
+  // builds (VERCEL=1) and leave the Docker build unchanged.
+  output: process.env.VERCEL ? undefined : "standalone",
+
   // A stray lockfile in the home directory otherwise gets inferred as the
   // workspace root, which breaks module resolution in surprising ways.
   turbopack: {
