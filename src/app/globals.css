@@ -255,6 +255,13 @@
 }
 
 @layer base {
+  /* The site header is fixed, so an in-page anchor would otherwise land with
+     the target's heading hidden underneath it. Offset every anchor jump by a
+     little more than the header's height. */
+  html {
+    scroll-padding-top: 6.5rem;
+  }
+
   body {
     background-color: var(--n-950);
     color: var(--n-300);

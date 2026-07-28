@@ -7,8 +7,10 @@ import { Mission } from "@/components/sections/mission";
 import { Pricing } from "@/components/sections/pricing";
 import { SiteFooter } from "@/components/sections/site-footer";
 import { SiteNav } from "@/components/sections/site-nav";
+import { System } from "@/components/sections/system";
 import { Testimonials } from "@/components/sections/testimonials";
 import { Values } from "@/components/sections/values";
+import { Walkthrough } from "@/components/sections/walkthrough";
 
 export default function Home() {
   return (
@@ -24,6 +26,8 @@ export default function Home() {
         <Hero />
         <Mission />
         <Features />
+        <Walkthrough />
+        <System />
         <Benefits />
         <Integrations />
         <Testimonials />

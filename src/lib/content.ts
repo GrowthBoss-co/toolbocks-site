@@ -17,6 +17,7 @@ export const AGENCY_URL = "https://growthboss.co";
 
 export const navLinks = [
   { label: "Platform", href: "#platform" },
+  { label: "How it works", href: "#walkthrough" },
   { label: "Benefits", href: "#benefits" },
   { label: "Integrations", href: "#integrations" },
   { label: "Pricing", href: "#pricing" },
@@ -96,6 +97,102 @@ export const integrations = {
     { name: "Amplemarket", mark: "AM" },
     { name: "MiniMax", mark: "MM" },
     { name: "Vercel", mark: "VC" },
+  ],
+};
+
+/**
+ * The product walkthrough, ported from the internal demo reel
+ * (toolbocks-demo.vercel.app), scenes 4 through 9. Each beat keeps the deck's
+ * headline because those lines are already tight.
+ *
+ * `sample: true` marks a beat whose visual shows representative figures rather
+ * than live data, and prints a note under it. The deck carried the same
+ * disclaimer and it should not get lost in translation.
+ */
+export const walkthrough = {
+  eyebrow: "The platform, step by step",
+  // Deliberately not the deck's "Every call, coached in real time": that line is
+  // step 1's headline just below, and repeating it verbatim reads as a mistake.
+  title: "A rep's whole day, in one system",
+  body: "A rep's day used to be seven tools that do not talk to each other, with copy-paste between all of them. This is the same day inside ToolBocks.",
+  steps: [
+    {
+      kicker: "The live call",
+      title: "Every call, coached in real time",
+      body: "The rep opens a lead that is already researched: the real signal, the pain, and an opener. While they talk, the live coach surfaces objection counters as the objection is being said.",
+      visual: "coachedCall" as const,
+      sample: true,
+    },
+    {
+      kicker: "Power dialer",
+      title: "Parallel dialing, several lines at once",
+      body: "Several lines dial at once and the first human to pick up is bridged to the rep. Answering-machine detection screens out machines, and any number outside its legal calling window is held automatically.",
+      visual: "parallelLines" as const,
+      sample: true,
+    },
+    {
+      kicker: "Fill the pipeline",
+      title: "AI research feeds every touch",
+      body: "Lead research runs a web and ad-library scan, then hands off to a multi-touch cadence that routes by tag. Email and SMS go out personalised and CASL-safe, so the follow-up is never the bottleneck.",
+      visual: "researchFlow" as const,
+      sample: false,
+    },
+    {
+      kicker: "Pipeline",
+      title: "A board that writes itself",
+      body: "Every dial, reply and disposition syncs back to your CRM both ways, so the rep never updates the board by hand. Live on GoHighLevel today, with a Salesforce integration in pilot.",
+      visual: "pipelineBoard" as const,
+      sample: true,
+    },
+    {
+      kicker: "Close faster",
+      title: "Branded audits and proposals, one click",
+      body: "Point it at a website and an Instagram handle and it returns a full on-brand marketing audit, ready to send. From a discovery-call transcript it writes a package-forward proposal with the right tier already recommended.",
+      visual: "auditProposal" as const,
+      sample: false,
+    },
+    {
+      kicker: "Analytics",
+      title: "Every rep, every dollar, measured",
+      body: "Connect rate, best time to call, disposition mix and AI cost, broken out per rep. Each SDR also gets a personal report they can see for themselves, so the numbers are never a surprise in a review.",
+      visual: "analytics" as const,
+      sample: true,
+    },
+  ],
+  sampleNote: "Illustrative interface. Figures shown are a sample view.",
+};
+
+/**
+ * Positioning section, from demo scene 10. The deck's fourth pillar was
+ * "Licensed & locked", written for investors as an anti-cloning moat. Recast
+ * here toward what the same fact means for a customer: the instance is yours
+ * and cannot be copied out of your environment.
+ */
+export const system = {
+  eyebrow: "Why it holds up",
+  title: "Not a dialer. A sales system.",
+  body: "Plenty of tools will dial a list. The difference is what surrounds the call.",
+  pillars: [
+    {
+      icon: "playbook" as const,
+      title: "Encoded playbook",
+      body: "The close methodology that runs the Growth Boss floor is built into every coach prompt and every script, so a new rep inherits it on day one.",
+    },
+    {
+      icon: "scales" as const,
+      title: "Compliance native",
+      body: "CASL and CRTC/TCPA calling windows and opt-out handling are enforced server-side, not left to a rep to remember.",
+    },
+    {
+      icon: "server" as const,
+      title: "Instance per customer",
+      body: "Your deployment is isolated, with its own keys and its own data. Nothing of yours shares a database with another agency.",
+    },
+    {
+      icon: "lock" as const,
+      title: "Licensed to you",
+      body: "Each build is signed and bound to your domain, so an instance cannot be copied out of your environment and run somewhere else.",
+    },
   ],
 };
 
@@ -222,9 +319,9 @@ export const footer = {
     {
       heading: "Platform",
       links: [
-        { label: "Power dialer", href: "#platform" },
-        { label: "Cadences", href: "#platform" },
-        { label: "AI audits", href: "#platform" },
+        { label: "Power dialer", href: "#walkthrough" },
+        { label: "Cadences", href: "#walkthrough" },
+        { label: "AI audits", href: "#walkthrough" },
         { label: "Integrations", href: "#integrations" },
         { label: "Pricing", href: "#pricing" },
       ],
