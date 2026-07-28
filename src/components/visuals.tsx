@@ -7,10 +7,10 @@
  * and the surrounding copy carries the meaning.
  */
 
-const PANEL =
+export const PANEL =
   "rounded-large border border-white/[0.07] bg-surface-800/70 backdrop-blur-[2px]";
 
-function Pill({
+export function Pill({
   children,
   tone = "neutral",
 }: {
