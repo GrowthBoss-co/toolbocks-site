@@ -203,21 +203,59 @@ export const system = {
 };
 
 /**
- * PLACEHOLDER. ToolBocks has no published customer testimonials yet, and
- * inventing them would put fabricated quotes on a real product page. These are
- * layout stand-ins. Replace each `quote`, `name` and `role` with a real,
- * attributable quote before publishing, or delete the section.
+ * Real quotes from reps running ToolBocks, supplied by Bahaa 2026-07-29.
+ *
+ * The card is a fixed 26rem tall and renders the quote at `heading-h5` (1.5rem),
+ * which caps a quote at roughly 180 characters before it overflows. Paulo's and
+ * Simon's are their own words, tightened to fit that; the edits are noted per
+ * entry so the originals are not lost.
+ *
+ * `role` is the one field NOT supplied and is inferred. Confirm each title.
  */
 export const testimonials = {
   eyebrow: "Testimonials",
-  title: "What teams say after a month on ToolBocks",
-  isPlaceholder: true,
+  title: "What the reps running it say",
   items: [
-    { quote: "Add a real client quote here.", name: "Client name", role: "Role, Company" },
-    { quote: "Add a real client quote here.", name: "Client name", role: "Role, Company" },
-    { quote: "Add a real client quote here.", name: "Client name", role: "Role, Company" },
-    { quote: "Add a real client quote here.", name: "Client name", role: "Role, Company" },
-    { quote: "Add a real client quote here.", name: "Client name", role: "Role, Company" },
+    {
+      // Verbatim apart from "The toolbox" -> "ToolBocks" and a tightened middle
+      // clause. Original: "The toolbox helped me increase my bookings and also
+      // gave me the confidence when handling an objection or knowing the right
+      // moment to end a call."
+      quote:
+        "ToolBocks helped me increase my bookings, and gave me the confidence to handle an objection or know the right moment to end a call.",
+      name: "Paulo Medeiros",
+      role: "SDR, Growth Boss",
+    },
+    {
+      // His own words, condensed to fit the card. The rest of his note was
+      // product feedback for the app backlog rather than testimonial copy, and
+      // is tracked there, not here.
+      quote:
+        "Super efficient for cold calling. It dials two people at a time, writes the emails, and audits the website and socials of every company we call. Really smooth to use.",
+      name: "Simon Chen",
+      role: "SDR, Growth Boss",
+    },
+    {
+      // His own words, condensed. His opening line was about efficiency and
+      // friction, which Simon's quote above already covers, so it was dropped
+      // in favour of the point only he made: quality holding up at volume. The
+      // second sentence is tightened from "Most useful has been the ability to
+      // make sure my call quality stays high while scaling the amount of volume
+      // I can do each day."
+      quote:
+        "Everything is tailored to each lead, so every conversation is fresh and specific. Most useful is keeping my call quality high while scaling the volume I do each day.",
+      name: "Josh Hoath",
+      role: "SDR, Growth Boss",
+    },
+    {
+      // Written on his behalf with his permission (per Bahaa), about the live
+      // coaching he singled out. No figures are claimed. He should sign off on
+      // this exact wording, since it publishes under his name.
+      quote:
+        "The live coaching is the part I did not expect to lean on. It reads the call as it happens and puts the right counter in front of me before I have to think about it.",
+      name: "Gabriel Narsaik",
+      role: "Sales lead, Growth Boss",
+    },
   ],
 };
 
