@@ -79,7 +79,12 @@ export function Testimonials() {
                   key={i}
                   className="w-[85%] shrink-0 snap-start sm:w-[52%] lg:w-[32%]"
                 >
-                  <figure className="surface-card flex h-[26rem] flex-col justify-between p-3xl">
+                  {/* min-h rather than a fixed h: at mobile widths the cards are
+                      narrow enough that a real quote runs past 26rem, and a fixed
+                      height pushed the name and photo outside the card. The `ul`
+                      is a flex row, so every card still stretches to the tallest
+                      one and the row stays even. */}
+                  <figure className="surface-card flex h-full min-h-[26rem] flex-col justify-between gap-2xl p-3xl">
                     <div className="flex flex-col gap-xl">
                       <div className="flex gap-xs text-sub" aria-hidden="true">
                         {Array.from({ length: 5 }, (_, s) => (
