@@ -260,20 +260,22 @@ export const testimonials = {
 };
 
 /**
- * PLACEHOLDER PRICES. ToolBocks does not have public pricing. The tier names,
- * feature lists and structure are real; every number below is invented for
- * layout only. Confirm real figures before publishing.
+ * ToolBocks has no published pricing, so no tier shows a figure: every one
+ * quotes on a call. The tier names, blurbs and feature lists are real.
+ *
+ * Each plan carries a single `price` rather than a monthly/annual pair, and the
+ * section has no billing-period toggle, because with nothing numeric to switch
+ * between, a toggle controls nothing and a "Save 20%" badge would be claiming a
+ * discount against prices that do not exist. Reinstate the pair, the toggle and
+ * the saving badge together whenever real figures land.
  */
 export const pricing = {
   eyebrow: "Pricing",
   title: "Pricing that scales with your seat count",
-  isPlaceholder: true,
-  annualSavingLabel: "Save 20%",
   plans: [
     {
       name: "Solo",
-      monthly: "$00",
-      annual: "$000",
+      price: "Custom",
       blurb: "One closer running their own pipeline.",
       features: [
         "Power dialer and call recording",
@@ -287,8 +289,7 @@ export const pricing = {
     },
     {
       name: "Team",
-      monthly: "$00",
-      annual: "$000",
+      price: "Custom",
       blurb: "SDR teams that need a supervisor view.",
       features: [
         "Everything in Solo",
@@ -302,8 +303,7 @@ export const pricing = {
     },
     {
       name: "Agency",
-      monthly: "Custom",
-      annual: "Custom",
+      price: "Custom",
       blurb: "Agencies running outbound for clients.",
       features: [
         "Everything in Team",
