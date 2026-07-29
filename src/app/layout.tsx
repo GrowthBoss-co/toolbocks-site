@@ -57,7 +57,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${dmSans.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        {/* GrowthHub review tool. Inert for normal visitors: it only activates
+            when the page is framed inside GrowthHub, so it stays in production.
+            Framing is permitted by the frame-ancestors CSP in next.config.ts,
+            which replaced X-Frame-Options for exactly this. */}
+        <script
+          src="https://growthhub.growthboss.co/review-embed.js"
+          defer
+        />
+      </body>
     </html>
   );
 }
