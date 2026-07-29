@@ -49,9 +49,13 @@ function Avatar({
 }
 
 /**
- * Orizon uses a Webflow slider here. This is a scroll-snap rail instead: same
- * peek-the-next-card look, no slider library, and it stays keyboard and
- * touch friendly.
+ * Orizon uses a Webflow slider here. This is a CSS marquee instead, reusing the
+ * `marquee-viewport` / `marquee-track` pair the closing band already uses, so
+ * there is no slider library and no client JS.
+ *
+ * It drifts rather than snapping, which means the cards are no longer manually
+ * scrollable. Hovering pauses it so a quote can be read in full, and the global
+ * prefers-reduced-motion rule stops the drift entirely.
  */
 export function Testimonials() {
   return (
@@ -73,46 +77,66 @@ export function Testimonials() {
               className="pointer-events-none absolute inset-y-0 right-0 z-10 w-[8%] bg-gradient-to-l from-strong to-transparent"
             />
 
-            <ul className="flex snap-x snap-mandatory gap-xl overflow-x-auto pb-lg [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {testimonials.items.map((t, i) => (
-                <li
-                  key={i}
-                  className="w-[85%] shrink-0 snap-start sm:w-[52%] lg:w-[32%]"
+            {/* Two identical tracks: the first scrolls out to -100% of its own
+                width exactly as the second arrives, which is what makes the loop
+                seamless. Spacing lives entirely on the track (gap plus a matching
+                pr) so the join between tracks is the same gap as between cards.
+                `marquee-viewport` pauses the animation on hover, and the global
+                prefers-reduced-motion rule stops it outright. */}
+            <div className="marquee-viewport flex overflow-hidden pb-lg">
+              {[0, 1].map((track) => (
+                <ul
+                  key={track}
+                  // The duplicate is decorative; without this a screen reader
+                  // reads every quote twice.
+                  aria-hidden={track === 1}
+                  className="marquee-track is-slow items-stretch gap-xl pr-xl"
                 >
-                  {/* min-h rather than a fixed h: at mobile widths the cards are
-                      narrow enough that a real quote runs past 26rem, and a fixed
-                      height pushed the name and photo outside the card. The `ul`
-                      is a flex row, so every card still stretches to the tallest
-                      one and the row stays even. */}
-                  <figure className="surface-card flex h-full min-h-[26rem] flex-col justify-between gap-2xl p-3xl">
-                    <div className="flex flex-col gap-xl">
-                      <div className="flex gap-xs text-sub" aria-hidden="true">
-                        {Array.from({ length: 5 }, (_, s) => (
-                          <StarIcon key={s} className="size-5" />
-                        ))}
-                      </div>
-                      <blockquote className="heading-h5">{t.quote}</blockquote>
-                    </div>
-                    <figcaption className="flex items-center gap-lg text-left">
-                      {t.avatar ? (
-                        <Avatar avatar={t.avatar} />
-                      ) : (
-                        <span
-                          aria-hidden="true"
-                          className="grid size-14 shrink-0 place-items-center rounded-round bg-surface-800 text-small text-sub"
-                        >
-                          {t.name.slice(0, 1)}
-                        </span>
-                      )}
-                      <span className="flex flex-col">
-                        <span className="text-small text-ink">{t.name}</span>
-                        <span className="text-small text-sub">{t.role}</span>
-                      </span>
-                    </figcaption>
-                  </figure>
-                </li>
+                  {testimonials.items.map((t, i) => (
+                    <li
+                      key={i}
+                      // Fixed widths, not percentages: the track sizes itself to
+                      // its content, so a percentage width would have nothing
+                      // stable to resolve against.
+                      className="w-[19rem] shrink-0 sm:w-[22rem] lg:w-[24rem]"
+                    >
+                      {/* min-h rather than a fixed h: at narrow widths a real
+                          quote runs past 26rem, and a fixed height pushed the
+                          name and photo outside the card. Cards stretch to the
+                          tallest in the track, so the row stays even. */}
+                      <figure className="surface-card flex h-full min-h-[26rem] flex-col justify-between gap-2xl p-3xl">
+                        <div className="flex flex-col gap-xl">
+                          <div className="flex gap-xs text-gold" aria-hidden="true">
+                            {Array.from({ length: 5 }, (_, s) => (
+                              <StarIcon key={s} className="size-5" />
+                            ))}
+                          </div>
+                          <blockquote className="heading-h5">
+                            {t.quote}
+                          </blockquote>
+                        </div>
+                        <figcaption className="flex items-center gap-lg text-left">
+                          {t.avatar ? (
+                            <Avatar avatar={t.avatar} />
+                          ) : (
+                            <span
+                              aria-hidden="true"
+                              className="grid size-14 shrink-0 place-items-center rounded-round bg-surface-800 text-small text-sub"
+                            >
+                              {t.name.slice(0, 1)}
+                            </span>
+                          )}
+                          <span className="flex flex-col">
+                            <span className="text-small text-ink">{t.name}</span>
+                            <span className="text-small text-sub">{t.role}</span>
+                          </span>
+                        </figcaption>
+                      </figure>
+                    </li>
+                  ))}
+                </ul>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
       </div>
