@@ -43,6 +43,8 @@
   --lime: #daff00;
   --cyan: #7fe7ff;
   --violet: #9d7cff;
+  /* Rating stars. Warmer and brighter than --warning, which is an alert amber. */
+  --gold: #f2b53c;
 
   /* -- flat / translucent -------------------------------------------------- */
   --flat-primary-10: rgb(92 90 255 / 0.1);
@@ -224,6 +226,7 @@
   --color-primary-950: var(--p-950);
 
   --color-lime: var(--lime);
+  --color-gold: var(--gold);
   --color-cyan-accent: var(--cyan);
   --color-green: var(--green);
   --color-warning: var(--warning);
@@ -564,6 +567,11 @@
   }
   .marquee-track.is-reverse {
     animation-name: tb-marquee-reverse;
+  }
+  /* Testimonial cards carry text people are meant to read as it passes, so they
+     drift far slower than the closing band's oversized wordmark. */
+  .marquee-track.is-slow {
+    animation-duration: 75s;
   }
   .marquee-viewport:hover .marquee-track {
     animation-play-state: paused;
