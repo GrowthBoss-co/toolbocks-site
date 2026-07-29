@@ -17,13 +17,6 @@ export function Testimonials() {
             title={testimonials.title}
           />
 
-          {testimonials.isPlaceholder ? (
-            <p className="-mt-5xl text-center text-small text-warning">
-              Placeholder content. Swap in real, attributable client quotes
-              before this page goes live.
-            </p>
-          ) : null}
-
           <div className="relative">
             <div
               aria-hidden="true"
