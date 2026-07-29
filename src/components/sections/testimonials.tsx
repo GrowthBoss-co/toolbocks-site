@@ -1,6 +1,52 @@
+import Image from "next/image";
 import { StarIcon } from "@/components/icons";
 import { SectionHeader } from "@/components/ui-kit";
 import { testimonials } from "@/lib/content";
+
+/** Every avatar source is a square Slack profile photo at this size. */
+const AVATAR_SOURCE = 512;
+
+/**
+ * Applies a testimonial's crop box in CSS rather than relying on a pre-cropped
+ * file, so the original photos stay untouched in `public/` and reframing someone
+ * is a number change in `content.ts`.
+ *
+ * The box is expressed in source pixels; converting it to percentages keeps the
+ * result independent of the rendered avatar size. `max-w-none` matters: the image
+ * has to be allowed past 100% width for a crop to zoom at all.
+ */
+function Avatar({
+  avatar,
+}: {
+  avatar: { src: string; crop: { left: number; top: number; size: number } };
+}) {
+  const { left, top, size } = avatar.crop;
+  return (
+    <span
+      aria-hidden="true"
+      className="relative size-14 shrink-0 overflow-hidden rounded-round bg-surface-800"
+    >
+      <Image
+        // Decorative: the name and role sit immediately beside it, so alt text
+        // would only repeat the caption.
+        alt=""
+        src={avatar.src}
+        width={AVATAR_SOURCE}
+        height={AVATAR_SOURCE}
+        // Ask for well over the 56px box: the tightest crop here shows about
+        // half the source, so a smaller request would go soft on a 3x screen.
+        sizes="384px"
+        className="absolute max-w-none"
+        style={{
+          width: `${(AVATAR_SOURCE / size) * 100}%`,
+          height: "auto",
+          left: `${(-left / size) * 100}%`,
+          top: `${(-top / size) * 100}%`,
+        }}
+      />
+    </span>
+  );
+}
 
 /**
  * Orizon uses a Webflow slider here. This is a scroll-snap rail instead: same
@@ -43,12 +89,16 @@ export function Testimonials() {
                       <blockquote className="heading-h5">{t.quote}</blockquote>
                     </div>
                     <figcaption className="flex items-center gap-lg text-left">
-                      <span
-                        aria-hidden="true"
-                        className="grid size-14 shrink-0 place-items-center rounded-round bg-surface-800 text-small text-sub"
-                      >
-                        {t.name.slice(0, 1)}
-                      </span>
+                      {t.avatar ? (
+                        <Avatar avatar={t.avatar} />
+                      ) : (
+                        <span
+                          aria-hidden="true"
+                          className="grid size-14 shrink-0 place-items-center rounded-round bg-surface-800 text-small text-sub"
+                        >
+                          {t.name.slice(0, 1)}
+                        </span>
+                      )}
                       <span className="flex flex-col">
                         <span className="text-small text-ink">{t.name}</span>
                         <span className="text-small text-sub">{t.role}</span>

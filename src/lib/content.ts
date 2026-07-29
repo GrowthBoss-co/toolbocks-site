@@ -211,6 +211,16 @@ export const system = {
  * entry so the originals are not lost.
  *
  * `role` is the one field NOT supplied and is inferred. Confirm each title.
+ *
+ * `avatar` is each person's Slack profile photo, unmodified, in
+ * `public/assets/testimonials/`. All four sources are 512x512.
+ *
+ * `crop` is a box on that source in source pixels, applied in CSS by the card
+ * rather than baked into the file, so the originals stay intact and a bad crop
+ * is a one-number fix. Two of the four need it: Gabriel's photo is a full-torso
+ * shot where his face sits small and high, and Simon's is a selfie with his face
+ * left of centre and a kayak filling the right, so a plain centred circular crop
+ * misses the face in both. `size: 512` means the whole frame, no crop.
  */
 export const testimonials = {
   eyebrow: "Testimonials",
@@ -225,6 +235,11 @@ export const testimonials = {
         "ToolBocks helped me increase my bookings, and gave me the confidence to handle an objection or know the right moment to end a call.",
       name: "Paulo Medeiros",
       role: "SDR, Growth Boss",
+      avatar: {
+        src: "/assets/testimonials/paulo-medeiros.jpg",
+        // Centred studio headshot, already well framed.
+        crop: { left: 0, top: 0, size: 512 },
+      },
     },
     {
       // His own words, condensed to fit the card. The rest of his note was
@@ -234,6 +249,11 @@ export const testimonials = {
         "Super efficient for cold calling. It dials two people at a time, writes the emails, and audits the website and socials of every company we call. Really smooth to use.",
       name: "Simon Chen",
       role: "SDR, Growth Boss",
+      avatar: {
+        src: "/assets/testimonials/simon-chen.png",
+        // Pulls in on his face; drops the kayak on the right.
+        crop: { left: 40, top: 80, size: 300 },
+      },
     },
     {
       // His own words, condensed. His opening line was about efficiency and
@@ -246,6 +266,14 @@ export const testimonials = {
         "Everything is tailored to each lead, so every conversation is fresh and specific. Most useful is keeping my call quality high while scaling the volume I do each day.",
       name: "Josh Hoath",
       role: "SDR, Growth Boss",
+      avatar: {
+        src: "/assets/testimonials/josh-hoath.png",
+        // His photo is a blue disc on a white square, and the disc is slightly
+        // off-centre (roughly centre 255,250 radius 225), so a symmetric trim
+        // leaves a white crescent on one edge. This box is centred on the disc
+        // and inset well inside it, which keeps the mask entirely blue.
+        crop: { left: 55, top: 50, size: 400 },
+      },
     },
     {
       // Written on his behalf with his permission (per Bahaa), about the live
@@ -255,6 +283,11 @@ export const testimonials = {
         "The live coaching is the part I did not expect to lean on. It reads the call as it happens and puts the right counter in front of me before I have to think about it.",
       name: "Gabriel Narsaik",
       role: "Sales lead, Growth Boss",
+      avatar: {
+        src: "/assets/testimonials/gabriel-narsaik.jpg",
+        // Face is small and high in a full-torso shot, so this crops in hard.
+        crop: { left: 127, top: 55, size: 260 },
+      },
     },
   ],
 };
