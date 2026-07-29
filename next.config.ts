@@ -22,7 +22,20 @@ const SECURITY_HEADERS = [
   },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  // Replaces X-Frame-Options: SAMEORIGIN, which blocked the GrowthHub review
+  // tool from framing the site. X-Frame-Options has no usable way to allow one
+  // specific third-party origin (ALLOW-FROM is dead in Chrome and Safari), and
+  // leaving it alongside a CSP would still block in any browser that honours it,
+  // so it is removed rather than kept. frame-ancestors is its modern equivalent
+  // and takes precedence where both are sent.
+  //
+  // This is the only directive here on purpose: CSP directives are opt-in, so it
+  // restricts who may frame the site and nothing else. Adding `default-src` or
+  // `script-src` later would need every inline Next script accounted for.
+  {
+    key: "Content-Security-Policy",
+    value: "frame-ancestors 'self' https://growthhub.growthboss.co",
+  },
 ];
 
 const nextConfig: NextConfig = {
