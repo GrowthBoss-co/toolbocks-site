@@ -15,6 +15,44 @@ const LEGACY_PAGES = [
   "privacy",
 ];
 
+/**
+ * toolbocks.com used to be the ToolBox app, not this site. Two kinds of URL are
+ * still in the world pointing at the apex, and both have to keep working now
+ * that Vercel answers here instead of Railway.
+ *
+ * APP_HOST — where humans go now. Bookmarks of /login and deep links into the
+ * SPA at /app/... belong here.
+ *
+ * MACHINE_HOST — the app's own Railway hostname, which is what its
+ * WEBHOOK_BASE_URL is set to. The links below were generated from the apex
+ * BEFORE that split and are sitting in places we cannot edit: /unsub in
+ * prospects' inboxes, /rec and /vm written into GoHighLevel timelines. They are
+ * tokenised against the instance's SERVER_SECRET, so a redirect that preserves
+ * the path still validates. A dead /unsub link is a CASL/CAN-SPAM problem, not
+ * a broken page, which is why these are not optional.
+ *
+ * Deliberately NOT redirected: /twilio/*, /td/twilio/*, /ghl/*, /crm/*. Those
+ * are signed POST webhooks — the signature covers the exact URL, and providers
+ * do not reliably follow redirects for them, so a redirect here would look like
+ * a fix while still failing. Those are repointed at the source instead, by
+ * re-provisioning Twilio and re-pasting the webhook URL in GHL.
+ */
+const APP_HOST = "https://app.toolbocks.com";
+const MACHINE_HOST = "https://growth-boss-toolbox-production.up.railway.app";
+
+/** Paths the app owns that may still be addressed at the apex. */
+const LEGACY_APP_PATHS = [
+  { source: "/login", destination: `${APP_HOST}/login` },
+  { source: "/app", destination: `${APP_HOST}/app` },
+  { source: "/app/:path*", destination: `${APP_HOST}/app/:path*` },
+  // Tokenised links already sent out. These go to the MACHINE host, not the app
+  // host: that is where the instance answers them, and it stays put even if the
+  // human front door moves again.
+  { source: "/unsub/:path*", destination: `${MACHINE_HOST}/unsub/:path*` },
+  { source: "/rec/:path*", destination: `${MACHINE_HOST}/rec/:path*` },
+  { source: "/vm/:path*", destination: `${MACHINE_HOST}/vm/:path*` },
+];
+
 const SECURITY_HEADERS = [
   {
     key: "Strict-Transport-Security",
@@ -58,6 +96,13 @@ const nextConfig: NextConfig = {
       source: `/${slug}`,
       destination: `/${slug}.html`,
     }));
+  },
+
+  // 307, not 308: these hand off to another host, and a permanent redirect gets
+  // cached by browsers indefinitely. If the app's hostnames ever change again we
+  // want to be able to change these, not fight a cache we cannot clear.
+  async redirects() {
+    return LEGACY_APP_PATHS.map((r) => ({ ...r, permanent: false }));
   },
 
   // Carried over from the static site's vercel.json.

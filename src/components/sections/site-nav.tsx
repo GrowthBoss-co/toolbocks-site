@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { CloseIcon, MenuIcon, ToolBocksLogo } from "@/components/icons";
 import { Button } from "@/components/ui-kit";
-import { DEMO_URL, navLinks } from "@/lib/content";
+import { APP_URL, DEMO_URL, navLinks } from "@/lib/content";
 
 export function SiteNav() {
   const [open, setOpen] = useState(false);
@@ -44,6 +44,9 @@ export function SiteNav() {
             </nav>
 
             <div className="hidden items-center justify-end gap-sm lg:flex">
+              <Button href={APP_URL} variant="dark" size="small">
+                Sign in
+              </Button>
               <Button href={DEMO_URL} variant="primary" size="small">
                 Book a demo
               </Button>
@@ -86,6 +89,9 @@ export function SiteNav() {
                 ))}
               </ul>
               <div className="mt-lg flex flex-col gap-sm">
+                <Button href={APP_URL} variant="dark" size="small">
+                  Sign in
+                </Button>
                 <Button href={DEMO_URL} variant="primary" size="small">
                   Book a demo
                 </Button>
