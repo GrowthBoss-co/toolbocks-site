@@ -31,11 +31,14 @@ const LEGACY_PAGES = [
  * the path still validates. A dead /unsub link is a CASL/CAN-SPAM problem, not
  * a broken page, which is why these are not optional.
  *
- * Deliberately NOT redirected: /twilio/*, /td/twilio/*, /ghl/*, /crm/*. Those
- * are signed POST webhooks — the signature covers the exact URL, and providers
- * do not reliably follow redirects for them, so a redirect here would look like
- * a fix while still failing. Those are repointed at the source instead, by
- * re-provisioning Twilio and re-pasting the webhook URL in GHL.
+ * Deliberately NOT touched here: /twilio/* and /td/twilio/*. Twilio signs the
+ * exact URL it was told to call and the app validates by rebuilding that URL, so
+ * a signature is only valid for one hostname. Redirecting loses the POST;
+ * proxying would arrive at a host that reconstructs a different URL and fails the
+ * signature check — and the mutating callbacks are fail-closed, so it would fail
+ * silently-but-hard. Those must be repointed at the source, by re-provisioning
+ * the TwiML app. See LEGACY_APP_PROXIES below for the endpoints that CAN be
+ * forwarded and why.
  */
 const APP_HOST = "https://app.toolbocks.com";
 const MACHINE_HOST = "https://growth-boss-toolbox-production.up.railway.app";
@@ -51,6 +54,44 @@ const LEGACY_APP_PATHS = [
   { source: "/unsub/:path*", destination: `${MACHINE_HOST}/unsub/:path*` },
   { source: "/rec/:path*", destination: `${MACHINE_HOST}/rec/:path*` },
   { source: "/vm/:path*", destination: `${MACHINE_HOST}/vm/:path*` },
+];
+
+/**
+ * GoHighLevel endpoints that get PROXIED to the app rather than redirected.
+ *
+ * The problem these solve: GHL stores our address in its own config, in an
+ * unknown number of places — one Webhook action per workflow, and there are
+ * dozens of workflows. Auditing them all by hand is error-prone, and a missed one
+ * fails SILENTLY: hot leads simply stop arriving, with no error anywhere.
+ *
+ * These two can be forwarded because of HOW they authenticate:
+ *
+ *   /ghl/webhook            authenticated by the ?w= workspace id and ?k= secret
+ *                           in the QUERY STRING, which a proxy preserves intact.
+ *                           Nothing is bound to the hostname.
+ *   /ghl/provider/delivery  no authentication at all; it just acknowledges.
+ *
+ * Contrast Twilio, which signs the exact URL — see the note above. The dividing
+ * line is not "webhook vs not", it is "secret in the URL" (proxyable) versus
+ * "signature over the URL" (not proxyable, ever).
+ *
+ * A rewrite, not a redirect: Vercel forwards the POST server-side and returns the
+ * app's own response, so it works whether or not GHL follows redirects. GHL never
+ * learns the address changed.
+ *
+ * This is a COMPATIBILITY SHIM for config already saved in GHL, not the intended
+ * path. New workflows should point at the machine host directly. It does mean this
+ * site sits in front of hot-lead ingest for those old URLs, so if MACHINE_HOST
+ * ever changes, this constant has to change with it.
+ *
+ * NOT included: /ghl/oauth/callback. The app now builds its redirect_uri from the
+ * machine host, so GHL only ever sends the browser there — the apex is never
+ * involved in the OAuth round-trip. The new address does still have to be added to
+ * the Marketplace app's allowed Redirect URLs, which is one field, not a hunt.
+ */
+const LEGACY_APP_PROXIES = [
+  { source: "/ghl/webhook", destination: `${MACHINE_HOST}/ghl/webhook` },
+  { source: "/ghl/provider/delivery", destination: `${MACHINE_HOST}/ghl/provider/delivery` },
 ];
 
 const SECURITY_HEADERS = [
@@ -92,10 +133,13 @@ const nextConfig: NextConfig = {
   // Replaces vercel.json's `cleanUrls: true`, which does not apply to a
   // Next.js project.
   async rewrites() {
-    return LEGACY_PAGES.map((slug) => ({
-      source: `/${slug}`,
-      destination: `/${slug}.html`,
-    }));
+    return [
+      ...LEGACY_PAGES.map((slug) => ({
+        source: `/${slug}`,
+        destination: `/${slug}.html`,
+      })),
+      ...LEGACY_APP_PROXIES,
+    ];
   },
 
   // 307, not 308: these hand off to another host, and a permanent redirect gets
