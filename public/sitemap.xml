@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- The landing page is the whole public site. /privacy is deliberately absent:
+     it is marked noindex, so listing it here would ask Google to crawl a page we
+     have told it not to index. The five feature pages that used to be listed were
+     retired on 2026-08-06 and now 307 to the landing page. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://toolbocks.com/</loc><lastmod>2026-07-16</lastmod><priority>1.0</priority></url>
-  <url><loc>https://toolbocks.com/ai-power-dialer</loc><lastmod>2026-07-16</lastmod><priority>0.8</priority></url>
-  <url><loc>https://toolbocks.com/sales-cadence-software</loc><lastmod>2026-07-16</lastmod><priority>0.8</priority></url>
-  <url><loc>https://toolbocks.com/ai-sales-audit-generator</loc><lastmod>2026-07-16</lastmod><priority>0.8</priority></url>
-  <url><loc>https://toolbocks.com/lead-generation</loc><lastmod>2026-07-16</lastmod><priority>0.8</priority></url>
-  <url><loc>https://toolbocks.com/sales-reporting</loc><lastmod>2026-07-16</lastmod><priority>0.8</priority></url>
+  <url><loc>https://toolbocks.com/</loc><lastmod>2026-08-06</lastmod><priority>1.0</priority></url>
 </urlset>

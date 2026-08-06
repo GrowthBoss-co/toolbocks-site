@@ -262,7 +262,10 @@ details p { padding: 0 22px 18px; color: var(--muted); }
 
 /* Footer */
 footer.site { border-top: 1px solid var(--border); padding: 56px 0 44px; color: var(--muted); font-size: 0.9rem; background: rgba(0, 0, 0, 0.25); }
-.foot { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 32px; }
+/* Two columns, not three: the "Platform" column was retired with the five
+   feature pages on 2026-08-06. privacy.html is the only page still using this
+   stylesheet. */
+.foot { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; margin-bottom: 32px; }
 .foot h3, .foot h4 { color: var(--off); font-size: 0.95rem; margin-bottom: 14px; }
 .foot a { display: block; color: var(--muted); text-decoration: none; margin-bottom: 9px; }
 .foot a:hover { color: var(--off); }

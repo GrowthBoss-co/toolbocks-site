@@ -410,6 +410,10 @@ export const footer = {
         { label: "Growth Boss", href: AGENCY_URL },
         { label: "Book a demo", href: DEMO_URL },
         { label: "Sign in", href: APP_URL },
+        // /privacy existed but nothing on the site linked to it. Ad platforms
+        // look for a reachable privacy policy, and a footer link is where people
+        // expect to find one.
+        { label: "Privacy policy", href: "/privacy" },
       ],
     },
   ],
