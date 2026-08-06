@@ -58,9 +58,13 @@ header.site {
 }
 header.site.scrolled { background: rgba(5, 7, 28, 0.94); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45); }
 .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; text-decoration: none; }
-.brand .bock { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: conic-gradient(from 210deg, var(--lime), #B4E830 30%, var(--lime)); color: var(--ink); font-weight: 900; font-size: 1rem; box-shadow: 0 0 18px rgba(218, 255, 0, 0.35); }
-.brand em { font-style: normal; color: var(--lime); }
+/* The lockup is two images now, not a lime tile plus styled text. Heights are
+   set here and widths left auto so the intrinsic aspect ratio drives the box;
+   the width/height attributes on the tags keep it from shifting while loading.
+   Kept in step with the React <ToolBocksLogo> at a 0.6 word-to-mark ratio. */
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.brand .brand-mark { height: 30px; width: auto; }
+.brand .brand-word { height: 18px; width: auto; }
 nav.links { display: flex; gap: 26px; align-items: center; }
 nav.links a { text-decoration: none; color: var(--muted); font-size: 0.95rem; font-weight: 500; transition: color .15s; }
 nav.links a:hover { color: var(--off); }
@@ -263,6 +267,15 @@ footer.site { border-top: 1px solid var(--border); padding: 56px 0 44px; color: 
 .foot a { display: block; color: var(--muted); text-decoration: none; margin-bottom: 9px; }
 .foot a:hover { color: var(--off); }
 .foot img { height: 22px; opacity: 0.8; margin-top: 14px; }
+/* `.foot a` and `.foot img` above exist for the link columns and the dimmed
+   Growth Boss badge, and both out-specify the base `.brand` rules. Left alone
+   they flatten the footer lockup: display:block drops the flex centring so the
+   two images baseline-align, and the badge's 80% opacity and 14px top margin
+   leak onto the logo. Reassert it here rather than weakening the rules the
+   columns depend on. margin-bottom is deliberately not touched — the text
+   lockup inherited the same 9px, so leaving it keeps the old spacing. */
+.foot .brand { display: flex; }
+.foot .brand img { opacity: 1; margin-top: 0; }
 .legal { border-top: 1px solid var(--border); padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
 
 /* Breadcrumbs / feature-page hero */
@@ -360,12 +373,8 @@ html.no-fx .cursor-glow { display: none; }
   background: rgba(8, 8, 11, 0.95);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
 }
-:root[data-hero="v2"] .brand .bock {
-  background: linear-gradient(150deg, #A78BFA, #8B5CF6 45%, #6D4AE6);
-  color: #fff;
-  box-shadow: 0 0 18px rgba(139, 92, 246, 0.5);
-}
-:root[data-hero="v2"] .brand em { color: #A78BFA; }
+/* The V2 recolours of .bock and .brand em are gone with the text lockup: the
+   logo is artwork now and does not retint per hero variant. */
 :root[data-hero="v2"] header.site .btn.sm {
   background: #8B5CF6;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 6px 22px -6px rgba(139, 92, 246, 0.55);

@@ -1,4 +1,6 @@
+import Image from "next/image";
 import type { SVGProps } from "react";
+import { cn } from "@/lib/utils";
 
 type IconProps = SVGProps<SVGSVGElement>;
 
@@ -377,24 +379,45 @@ export const systemIcons = {
 
 /* -- brand ---------------------------------------------------------------- */
 
+/**
+ * The mark-plus-wordmark lockup.
+ *
+ * Both pieces are raster, because the supplied artwork is raster — there is no
+ * vector master to trace. They ship at 4x the 28px display height, so the
+ * intrinsic sizes below are deliberately much larger than the rendered ones and
+ * the `h-*` classes are what actually set the size. Regenerate them with
+ * `npm run brand`.
+ *
+ * The wordmark carries the accessible name and the mark is decorative, so a
+ * screen reader announces "ToolBocks" once rather than twice. In the nav the
+ * wrapping link's own aria-label takes precedence over both.
+ */
 export function ToolBocksLogo({
   className,
+  priority = false,
 }: {
   className?: string;
+  /** Set on the nav copy only: it is above the fold and part of first paint. */
+  priority?: boolean;
 }) {
   return (
-    <span className={className}>
-      <span className="flex items-center gap-sm">
-        <span
-          aria-hidden="true"
-          className="grid size-7 place-items-center rounded-[7px] bg-lime text-[1.05rem] font-bold leading-none text-strong"
-        >
-          T
-        </span>
-        <span className="text-[1.35rem] font-medium leading-none text-ink">
-          Tool<span className="text-primary-400">Bocks</span>
-        </span>
-      </span>
+    <span className={cn("flex items-center gap-md", className)}>
+      <Image
+        src="/assets/logo-mark.png"
+        alt=""
+        width={138}
+        height={120}
+        priority={priority}
+        className="h-7 w-auto"
+      />
+      <Image
+        src="/assets/logo-wordmark.png"
+        alt="ToolBocks"
+        width={487}
+        height={70}
+        priority={priority}
+        className="h-[1.0625rem] w-auto"
+      />
     </span>
   );
 }
