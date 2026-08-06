@@ -24,7 +24,7 @@ export function SiteNav() {
         <div className="mt-lg rounded-large border border-flat-neutral bg-flat-neutral px-lg py-sm backdrop-blur-[10px] lg:pr-sm">
           <div className="flex items-center justify-between gap-lg lg:grid lg:grid-cols-[1fr_2.5fr_1fr]">
             <a href="#top" aria-label="ToolBocks home" className="shrink-0">
-              <ToolBocksLogo />
+              <ToolBocksLogo priority />
             </a>
 
             {/* desktop links */}

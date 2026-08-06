@@ -39,10 +39,15 @@ export const metadata: Metadata = {
       "Dialer, cadences, lead gen, AI documents and reporting in one login.",
     images: ["/assets/og-image.jpg"],
   },
+  // Smallest first: browsers pick the closest match rather than the first one
+  // they can use, but a wrong order still costs a needless 512px decode for a
+  // 16px tab. All five are generated from the logo mark by `npm run brand`.
   icons: {
     icon: [
-      { url: "/assets/favicon.svg", type: "image/svg+xml" },
+      { url: "/assets/favicon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/assets/favicon-48.png", type: "image/png", sizes: "48x48" },
       { url: "/assets/icon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/assets/icon-512.png", type: "image/png", sizes: "512x512" },
     ],
     apple: "/assets/apple-touch-icon.png",
   },
