@@ -2,17 +2,34 @@ import path from "node:path";
 import type { NextConfig } from "next";
 
 /**
- * The six pages that still ship as the original static build. They live in
- * `public/` and keep their live clean URLs via the rewrites below, so this
- * branch replaces the home page only and no existing URL 404s.
+ * The one page still served as the original static build. It lives in
+ * `public/privacy.html` and keeps its clean `/privacy` URL via the rewrite
+ * below.
  */
-const LEGACY_PAGES = [
+const LEGACY_PAGES = ["privacy"];
+
+/**
+ * The five feature pages retired on 2026-08-06. The site is deliberately a
+ * single landing page plus a privacy policy now; purpose-built feature pages
+ * will be written from scratch later rather than inherited from the pre-rebuild
+ * design.
+ *
+ * They redirect instead of 404ing because all five were in Google's index and
+ * listed in sitemap.xml, so real people still arrive on them from search and
+ * would otherwise dead-end on a missing page.
+ *
+ * 307, not 308: a permanent redirect is cached by browsers indefinitely, and
+ * these exact slugs are the obvious names for the eventual replacements, so they
+ * have to stay reusable. Google reads a redirect-to-homepage as a soft 404 and
+ * drops the URL, which is the wanted outcome; pulling them from sitemap.xml is
+ * the other half of that.
+ */
+const RETIRED_PAGES = [
   "ai-power-dialer",
   "ai-sales-audit-generator",
   "lead-generation",
   "sales-cadence-software",
   "sales-reporting",
-  "privacy",
 ];
 
 /**
@@ -142,11 +159,19 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // 307, not 308: these hand off to another host, and a permanent redirect gets
-  // cached by browsers indefinitely. If the app's hostnames ever change again we
-  // want to be able to change these, not fight a cache we cannot clear.
+  // 307, not 308, throughout: these hand off to another host or to the landing
+  // page, and a permanent redirect gets cached by browsers indefinitely. If the
+  // app's hostnames change again, or the retired slugs get reused by real feature
+  // pages, we want to be able to change these rather than fight a cache we cannot
+  // clear.
   async redirects() {
-    return LEGACY_APP_PATHS.map((r) => ({ ...r, permanent: false }));
+    return [
+      ...LEGACY_APP_PATHS,
+      ...RETIRED_PAGES.map((slug) => ({
+        source: `/${slug}`,
+        destination: "/",
+      })),
+    ].map((r) => ({ ...r, permanent: false }));
   },
 
   // Carried over from the static site's vercel.json.
