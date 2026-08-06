@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- The landing page is the whole public site. /privacy is deliberately absent:
-     it is marked noindex, so listing it here would ask Google to crawl a page we
-     have told it not to index. The five feature pages that used to be listed were
-     retired on 2026-08-06 and now 307 to the landing page. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://toolbocks.com/</loc><lastmod>2026-08-06</lastmod><priority>1.0</priority></url>
 </urlset>
