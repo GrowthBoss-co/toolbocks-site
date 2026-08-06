@@ -42,6 +42,9 @@ const BOX_WORD = { left: 156, top: 432, width: 695, height: 100 };
 /** Deep navy plate; matches theme_color / background_color in site.webmanifest. */
 const PLATE = "#010D2E";
 
+/** Secondary brand accent, used as the rule on the share card. */
+const LIME = "#daff00";
+
 /**
  * The artwork is a smooth two-stop gradient, so a 256-colour palette is
  * indistinguishable from full RGBA at any size this ships at — and roughly 6x
@@ -125,6 +128,65 @@ await icon("icon-512.png", 512, 0.64);
 // iOS applies its own squircle and ignores transparency: solid plate, square,
 // and slightly tighter than maskable because the crop is gentler.
 await icon("apple-touch-icon.png", 180, 0.72);
+
+/* -- social share card -----------------------------------------------------
+   1200x630 is the size every platform crops from. This replaced a piece of
+   abstract stock photography that carried no logo, no product and no name,
+   which is what showed in every LinkedIn post and Slack link.
+
+   Deliberately TEXT-FREE. Rendering a headline needs a real font, "DM Sans" is
+   not installed here, and asking librsvg for it silently falls back to whatever
+   it likes: the card would then look different on this machine, on a teammate's
+   and in CI. The wordmark is artwork rather than type, so the brand name is
+   legible without a single glyph being rendered. Putting a headline on this
+   properly means vendoring the DM Sans TTF and converting the text to SVG paths,
+   which is a bigger job than the card is worth today.
+
+   The indigo bloom echoes the landing-page hero so a share preview and the page
+   it opens look like the same product. */
+{
+  const W = 1200;
+  const H = 630;
+  const markH = 130;
+  const wordH = Math.round(markH * 0.6); // same ratio as the on-site lockup
+  const gap = Math.round(markH * 0.385);
+
+  const m = await mark().resize({ height: markH, kernel: "lanczos3" }).png().toBuffer();
+  const w = await word().resize({ height: wordH, kernel: "lanczos3" }).png().toBuffer();
+  const mMeta = await sharp(m).metadata();
+  const wMeta = await sharp(w).metadata();
+
+  const lockW = mMeta.width + gap + wMeta.width;
+  const startX = Math.round((W - lockW) / 2);
+  const midY = Math.round(H * 0.5);
+
+  const bg = Buffer.from(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
+       <defs>
+         <radialGradient id="bloom" cx="50%" cy="46%" r="64%">
+           <stop offset="0%" stop-color="#5c5aff" stop-opacity="0.55"/>
+           <stop offset="52%" stop-color="#2a2580" stop-opacity="0.30"/>
+           <stop offset="100%" stop-color="${PLATE}" stop-opacity="0"/>
+         </radialGradient>
+       </defs>
+       <rect width="${W}" height="${H}" fill="${PLATE}"/>
+       <rect width="${W}" height="${H}" fill="url(#bloom)"/>
+       <rect x="${W / 2 - 40}" y="${midY + 118}" width="80" height="4" rx="2" fill="${LIME}"/>
+     </svg>`,
+  );
+
+  await write(
+    "og-image.png",
+    sharp(bg).composite([
+      { input: m, left: startX, top: midY - Math.round(mMeta.height / 2) },
+      {
+        input: w,
+        left: startX + mMeta.width + gap,
+        top: midY - Math.round(wMeta.height / 2),
+      },
+    ]),
+  );
+}
 
 console.log(`brand assets -> ${path.relative(ROOT, OUT)}`);
 for (const line of written) console.log(`  ${line}`);

@@ -2,10 +2,13 @@
  * All ToolBocks landing-page copy lives here so it can be edited without
  * touching layout code.
  *
- * Entries flagged PLACEHOLDER are structural stand-ins that need real data
- * before this page goes public. Nothing in them is a claim ToolBocks can
- * currently make. See the two exported constants at the bottom of the file.
+ * Everything in this file is real copy. The PLACEHOLDER flag this comment used
+ * to describe, and the pricing and testimonial stand-ins that carried it, were
+ * removed once real figures and real quotes landed.
  */
+
+/** Canonical origin for this site. Shared by metadata and the JSON-LD graph. */
+export const SITE_URL = "https://toolbocks.com";
 
 export const DEMO_URL =
   "https://api.leadconnectorhq.com/widget/bookings/gabriel-narsaik";
