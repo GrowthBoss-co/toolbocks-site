@@ -4,14 +4,17 @@ import { useState } from "react";
 import {
   MinusIcon,
   PlusIcon,
+  RepeatIcon,
   ScalesIcon,
-  ShieldCheckIcon,
   UserCheckIcon,
 } from "@/components/icons";
 import { FairnessVisual } from "@/components/visuals";
 import { benefits } from "@/lib/content";
 
-const icons = [ScalesIcon, ShieldCheckIcon, UserCheckIcon];
+// Scales reads as fairness here rather than as compliance; the compliance
+// pillar in `System` took the gauge. Repeat is the two-way CRM sync item that
+// replaced the duplicated compliance benefit.
+const icons = [ScalesIcon, RepeatIcon, UserCheckIcon];
 
 export function Benefits() {
   const [open, setOpen] = useState(0);

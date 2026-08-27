@@ -36,12 +36,12 @@ export const navLinks = [
 
 export const hero = {
   eyebrow: "Sales engagement platform",
-  title: "Run your entire outbound motion from one login",
+  title: "Your reps talk. The system does the rest.",
   subtitle:
-    "Power dialer, multi-channel cadences, lead sourcing, AI-generated audits and proposals, and full pipeline reporting. ToolBocks runs Growth Boss's own outbound every single day, and now it can run yours.",
+    "It researches each lead, dials until a human picks up, and feeds the rep their next line while the call is live. Growth Boss runs its own outbound on it every day.",
   primaryCta: "Book a live demo",
   secondaryCta: "See the platform",
-  note: "Live walkthrough on real screens. No slideware.",
+  note: "A live walkthrough on real data, not slides.",
 };
 
 export const mission = {
@@ -49,46 +49,64 @@ export const mission = {
   text: "ToolBocks was not designed in a boardroom. It was built inside Growth Boss because calling 60 prospects used to take a rep an entire day. Every feature exists because our own SDR team needed it that week.",
 };
 
+/**
+ * Deliberately durable figures. The previous set was hardcoded but written as
+ * live measurements ("in the last 90 days"), so it went stale the day it
+ * shipped and had to be either maintained or quietly believed. Each of these
+ * stays true without anyone updating it, and each one is checkable in the app.
+ */
 export const stats = [
-  { value: "1,928", label: "calls logged in the last 90 days" },
-  { value: "20+", label: "tools replaced by one platform" },
-  { value: "9", label: "native integrations" },
-  { value: "~2 min", label: "to a full AI website audit" },
+  { value: "2", label: "CRMs supported natively" },
+  { value: "6", label: "channels in one conversation inbox" },
+  { value: "427", label: "area codes mapped to legal calling windows" },
+  { value: "Per rep", label: "AI cost metered and capped" },
 ];
 
 export const features = {
-  eyebrow: "Workflow efficiency",
-  title: "Stop dialing. Start closing.",
-  body: "Cut the manual work out of outbound. ToolBocks queues the calls, runs the follow-up, and writes research back to your CRM, so reps spend the day in conversations instead of in spreadsheets.",
+  eyebrow: "What changes",
+  title: "Reps spend the day talking, not typing.",
+  body: "The list, the research, the follow-up and the CRM updates all happen without anyone touching them. What is left on a rep's calendar is conversations.",
   cards: [
     {
-      eyebrow: "Live campaigns",
-      title: "Dial the queue, not the list",
-      body: "Campaign queues, live call coaching, recordings and transcripts, with pacer ratio and abandon rate tracked on the supervisor board as it happens.",
+      eyebrow: "On the call",
+      title: "Every call starts prepared",
+      body: "The rep picks up already knowing the business, the likely pain and an opener. When an objection lands, the counter is on screen before they have to think of one.",
     },
     {
-      eyebrow: "Follow-up",
-      title: "Never drop a follow-up",
-      body: "Multi-step email, SMS and call cadences built on named angles: Pattern Interrupt, Value Stack, Social Proof, Urgency, Breakup.",
+      eyebrow: "After the call",
+      title: "Follow-up nobody has to remember",
+      body: "A multi-step email, SMS and call sequence starts on its own and stops the moment someone replies or books. Nobody has to remember day four.",
     },
   ],
 };
 
+/**
+ * The middle item used to be "Compliance-first telephony". Compliance is now
+ * made once, in `system`, rather than three times across this page: it was also
+ * a System pillar and a Values card, and saying it three ways read as padding
+ * instead of as the differentiator it is.
+ *
+ * The replacement covers two-way CRM sync, which the page otherwise only
+ * mentions inside one walkthrough step.
+ */
 export const benefits = {
   eyebrow: "Benefits",
-  title: "The benefits of running outbound in one system",
+  title: "Three things that stop being your problem",
   items: [
     {
       title: "Provably fair for reps",
-      body: "A transparent fairness dashboard shows exactly how connects and idle time are distributed across the team, so nobody has to argue about who the dialer favours.",
+      body: "A fairness dashboard shows how connects and idle time are actually distributed, so nobody has to argue about who the dialer favours.",
     },
     {
-      title: "Compliance-first telephony",
-      body: "Abandon-rate tracking, pacer-ratio monitoring and DND checking sit inside the supervisor view, not bolted on after a complaint lands.",
+      title: "Your CRM stays current on its own",
+      body: "Every dial, reply, note and disposition writes itself back, and moving a deal between stages on the board updates the CRM. Nobody keeps two systems in sync by hand.",
     },
     {
+      // "and texts" was here and was wrong: the SMS blast is retired, and
+      // cadence SMS sends automatically rather than per-message approved. Email
+      // is the channel a rep reads and edits before anything goes out.
       title: "Human in the loop",
-      body: "Blast emails and texts are AI-drafted but human-approved, then sent through your own CRM at a measured pace. Your domain reputation stays yours.",
+      body: "Blast emails are AI-drafted and rep-approved before anything sends, then go out through your own CRM at a measured pace. Your domain reputation stays yours.",
     },
   ],
 };
@@ -129,42 +147,42 @@ export const walkthrough = {
     {
       kicker: "The live call",
       title: "Every call, coached in real time",
-      body: "The rep opens a lead that is already researched: the real signal, the pain, and an opener. While they talk, the live coach surfaces objection counters as the objection is being said.",
+      body: "The rep opens a lead that is already researched. While they talk, the coach reads the call and puts the counter to an objection on screen as it is being said.",
       visual: "coachedCall" as const,
       sample: true,
     },
     {
       kicker: "Power dialer",
       title: "Parallel dialing, several lines at once",
-      body: "Several lines dial at once and the first human to pick up is bridged to the rep. Answering-machine detection screens out machines, and any number outside its legal calling window is held automatically.",
+      body: "Several lines dial at once and the first human to answer is bridged to the rep. Machines are screened out, and numbers outside their legal calling window are held.",
       visual: "parallelLines" as const,
       sample: true,
     },
     {
       kicker: "Fill the pipeline",
       title: "AI research feeds every touch",
-      body: "Lead research runs a web and ad-library scan, then hands off to a multi-touch cadence that routes by tag. Email and SMS go out personalised and CASL-safe, so the follow-up is never the bottleneck.",
+      body: "Every lead is researched before anyone contacts it, down to whether they are already running ads. The follow-up then goes out personalised and CASL-safe, without a rep writing it.",
       visual: "researchFlow" as const,
       sample: false,
     },
     {
       kicker: "Pipeline",
       title: "A board that writes itself",
-      body: "Every dial, reply and disposition syncs back to your CRM both ways, so the rep never updates the board by hand. Live on GoHighLevel today, with a Salesforce integration in pilot.",
+      body: "Every dial, reply and disposition syncs back to your CRM both ways, and dragging a deal between stages writes through. Works natively with GoHighLevel and Salesforce.",
       visual: "pipelineBoard" as const,
       sample: true,
     },
     {
       kicker: "Close faster",
       title: "Branded audits and proposals, one click",
-      body: "Point it at a website and an Instagram handle and it returns a full on-brand marketing audit, ready to send. From a discovery-call transcript it writes a package-forward proposal with the right tier already recommended.",
+      body: "Point it at a website and an Instagram handle and it returns an on-brand marketing audit, ready to send. From a discovery-call transcript it writes the proposal.",
       visual: "auditProposal" as const,
       sample: false,
     },
     {
       kicker: "Analytics",
       title: "Every rep, every dollar, measured",
-      body: "Connect rate, best time to call, disposition mix and AI cost, broken out per rep. Each SDR also gets a personal report they can see for themselves, so the numbers are never a surprise in a review.",
+      body: "Connect rate, best time to call, disposition mix and AI cost, broken out per rep. Each SDR sees their own numbers, so a review is never a surprise.",
       visual: "analytics" as const,
       sample: true,
     },
@@ -177,6 +195,11 @@ export const walkthrough = {
  * "Licensed & locked", written for investors as an anti-cloning moat. Recast
  * here toward what the same fact means for a customer: the instance is yours
  * and cannot be copied out of your environment.
+ *
+ * This section absorbed the old `Values` section, which restated the same
+ * argument one scroll later with larger icons. The last two pillars and the
+ * `tags` strip below are what came across; the rest of Values was already said
+ * here. Six pillars means the grid is three across rather than four.
  */
 export const system = {
   eyebrow: "Why it holds up",
@@ -189,9 +212,9 @@ export const system = {
       body: "The close methodology that runs the Growth Boss floor is built into every coach prompt and every script, so a new rep inherits it on day one.",
     },
     {
-      icon: "scales" as const,
+      icon: "gauge" as const,
       title: "Compliance native",
-      body: "CASL and CRTC/TCPA calling windows and opt-out handling are enforced server-side, not left to a rep to remember.",
+      body: "Calling windows are enforced from the lead's own area code, opt-outs are handled server-side, and the dialer slows itself down before an abandon rate becomes a problem.",
     },
     {
       icon: "server" as const,
@@ -203,6 +226,28 @@ export const system = {
       title: "Licensed to you",
       body: "Each build is signed and bound to your domain, so an instance cannot be copied out of your environment and run somewhere else.",
     },
+    {
+      icon: "shield" as const,
+      title: "Encrypted by default",
+      body: "Integration credentials are encrypted and never shown again after you save them. Every instance holds its own key.",
+    },
+    {
+      icon: "chart" as const,
+      title: "Costs you can see",
+      body: "AI spend, call cost and campaign return are reported per rep in the same place as pipeline, so nothing about the platform is a black box.",
+    },
+  ],
+  // "DNC checking" was the industry term for scrubbing against the national
+  // registries, which this does not do. The do-not-call list it does keep is
+  // real, permanent and org-wide, so the chip now says exactly that.
+  tags: [
+    "Abandon-rate tracking",
+    "Pacer ratio",
+    "Do-not-call list",
+    "Local-time gating",
+    "Call recording",
+    "Consent records",
+    "Audit trail",
   ],
 };
 
@@ -355,41 +400,10 @@ export const pricing = {
   ],
 };
 
-export const values = {
-  eyebrow: "Built for real outbound",
-  title: "Foundation for high-performing sales teams",
-  cards: [
-    {
-      icon: "shield" as const,
-      title: "Encrypted by default",
-      body: "Integration credentials are sealed with AES-256-GCM and never shown again after you save them. Every instance holds its own key.",
-    },
-    {
-      icon: "gauge" as const,
-      title: "Compliance built in",
-      body: "Abandon rate, pacer ratio and DND state are tracked on every campaign, so the compliance conversation happens before the complaint does.",
-    },
-    {
-      icon: "chart" as const,
-      title: "Costs you can see",
-      body: "Per-user AI spend, call cost and campaign ROI are reported in the same place as pipeline, so nothing about the platform is a black box.",
-    },
-  ],
-  tags: [
-    "Abandon-rate tracking",
-    "Pacer ratio",
-    "DNC checking",
-    "Local-time gating",
-    "Call recording",
-    "Consent records",
-    "Audit trail",
-  ],
-};
-
 export const finalCta = {
   marquee: "Book a live demo",
-  title: "See ToolBocks running on real data",
-  body: "Book a walkthrough and we will show you the live platform: the dialer, the cadences, and an AI audit generated in front of you.",
+  title: "See it work on one of your leads.",
+  body: "Bring a company you want to sell to. We will research it, dial it and generate its audit while you watch.",
   cta: "Book a live demo",
 };
 
