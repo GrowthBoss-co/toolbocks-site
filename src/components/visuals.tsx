@@ -82,7 +82,7 @@ export function SupervisorBoardVisual() {
         {/* stat tiles */}
         <div className="grid grid-cols-3 gap-2.5">
           {[
-            { v: "1,928", l: "calls · 90 days", lit: true },
+            { v: "1,928", l: "calls this campaign", lit: true },
             { v: "2.1%", l: "abandon rate", lit: false },
             { v: "38", l: "meetings booked", lit: false },
           ].map((s) => (

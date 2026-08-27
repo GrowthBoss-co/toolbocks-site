@@ -35,7 +35,7 @@ export function buildStructuredData() {
         name: "ToolBocks",
         url: SITE_URL,
         description:
-          "AI sales engagement platform: power dialer, multi-channel cadences, lead sourcing, AI audits and pipeline reporting.",
+          "AI sales engagement platform: power dialer, multi-channel cadences, lead research, AI audits and pipeline reporting.",
         logo: {
           "@type": "ImageObject",
           url: `${SITE_URL}/assets/icon-512.png`,
@@ -73,12 +73,12 @@ export function buildStructuredData() {
         applicationCategory: "BusinessApplication",
         operatingSystem: "Web",
         description:
-          "Outbound sales platform combining a power dialer, multi-channel cadences, lead sourcing, AI-generated audits and proposals, and pipeline reporting in one login.",
+          "Outbound sales platform combining a power dialer, multi-channel cadences, AI lead research, AI-generated audits and proposals, and pipeline reporting in one login.",
         publisher: { "@id": org },
         featureList: [
           "Power dialer with live call coaching",
           "Multi-channel outbound cadences",
-          "Lead sourcing and enrichment",
+          "AI lead research and enrichment",
           "AI-generated sales audits and proposals",
           "Pipeline and rep performance reporting",
         ],

@@ -363,18 +363,21 @@ export function PlaybookIcon(props: IconProps) {
   );
 }
 
-export const valueIcons = {
-  shield: LockIcon,
-  gauge: GaugeIcon,
-  chart: ChartIcon,
-} as const;
-
-/** Icons for the "not a dialer, a sales system" pillars. */
+/**
+ * Icons for the "not a dialer, a sales system" pillars.
+ *
+ * `shield` and `chart` arrived with the two pillars absorbed from the retired
+ * Values section. `scales` moved out to Benefits, where it reads as fairness;
+ * compliance uses `gauge` here because what the pillar describes is the dialer
+ * watching its own rate.
+ */
 export const systemIcons = {
   playbook: PlaybookIcon,
-  scales: ScalesIcon,
+  gauge: GaugeIcon,
   server: ServerIcon,
   lock: LockIcon,
+  shield: ShieldCheckIcon,
+  chart: ChartIcon,
 } as const;
 
 /* -- brand ---------------------------------------------------------------- */

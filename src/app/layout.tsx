@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   // Kept under 160 characters so Google shows it whole; the previous version ran
   // to 162 and had its last few words clipped.
   description:
-    "Power dialer, multi-channel cadences, lead sourcing, AI audits, and full pipeline reporting in one login. Built and battle-tested inside a real agency.",
+    "ToolBocks researches every lead, dials until a human answers, and coaches the rep through the call. Built inside a working agency and run there daily.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     title: "ToolBocks | The outbound platform built inside a real agency",
     description:
-      "Dialer, cadences, lead gen, AI documents and reporting in one login. Not a demo product: it runs a real agency's outbound every day.",
+      "It researches every lead, dials until a human answers, and coaches the rep through the call. Not a demo product: it runs a real agency's outbound every day.",
     images: [
       {
         url: "/assets/og-image.png",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ToolBocks | The outbound platform built inside a real agency",
     description:
-      "Dialer, cadences, lead gen, AI documents and reporting in one login.",
+      "It researches every lead, dials until a human answers, and coaches the rep through the call.",
     images: ["/assets/og-image.png"],
   },
   // Smallest first: browsers pick the closest match rather than the first one
