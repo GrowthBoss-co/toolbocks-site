@@ -71,7 +71,7 @@ function connectorPath(from: Side, to: Side): string {
   ].join(" ");
 }
 
-const TRACK = "rgb(255 255 255 / 0.09)";
+const TRACK = "var(--track)";
 
 /* -------------------------------------------------------------------------- */
 
@@ -82,16 +82,8 @@ export function Walkthrough() {
   return (
     <section
       id="walkthrough"
-      className="grain relative isolate overflow-hidden bg-void"
+      className="scheme-cream relative isolate overflow-hidden bg-void"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 overflow-hidden"
-      >
-        <div className="aura left-[-10%] top-[12%] size-[48rem] opacity-50" />
-        <div className="aura is-violet right-[-12%] top-[55%] size-[44rem] opacity-60" />
-      </div>
-
       <div className="container-main pb-section-main pt-section-main">
         <header className="flex max-w-[44rem] flex-col gap-xl">
           <Reveal>
@@ -188,7 +180,7 @@ function Pill({
         "inline-flex h-12 shrink-0 items-center gap-sm whitespace-nowrap rounded-round border px-xl text-small font-medium transition-colors duration-500 ease-out",
         lit
           ? "border-primary-500 bg-primary-500 text-white"
-          : "border-white/[0.08] bg-surface text-sub",
+          : "border-[var(--pill-border)] bg-[var(--pill-bg)] text-[var(--pill-text)]",
         className,
       )}
     >
@@ -505,7 +497,7 @@ function Step({ step, side }: { step: StepData; side: Side }) {
             : "md:order-1 md:justify-start",
         )}
       >
-        <div className="lift-lg w-full max-w-[36rem] rounded-xlarge">
+        <div className="scheme-dark lift-lg w-full max-w-[34rem] rounded-xlarge">
           <Visual />
         </div>
       </motion.div>
@@ -526,7 +518,7 @@ function Closing() {
       <Reveal delay={0.25}>
         <p className="text-large max-w-[44ch] text-soft-400">{hero.note}</p>
       </Reveal>
-      <Reveal delay={0.4}>
+      <Reveal delay={0.4} className="scheme-dark">
         <Button href={DEMO_URL} variant="primary">
           {hero.primaryCta}
         </Button>

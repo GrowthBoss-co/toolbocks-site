@@ -66,6 +66,14 @@
   --warning: #e6a819;
   --red: #e93544;
 
+  /* -- scheme-dependent lines and chips ------------------------------------ */
+  /* Read by the walkthrough's connector lines and unlit pills, and remapped by
+     .scheme-cream below, so one section can sit on a light ground. */
+  --track: rgb(255 255 255 / 0.09);
+  --pill-bg: var(--n-900);
+  --pill-border: rgb(255 255 255 / 0.08);
+  --pill-text: var(--n-500);
+
   /* -- type ---------------------------------------------------------------- */
   /* Headings are a serif and body is a grotesque, so the two roles no longer
      look like the same voice at two weights. The product panels deliberately
@@ -581,6 +589,62 @@
       inset 0 1px 0 0 rgb(255 255 255 / 0.09),
       0 40px 110px -50px rgb(0 0 0 / 0.95),
       0 0 120px -60px rgb(92 90 255 / 0.65);
+  }
+
+  /* ==========================================================================
+     Schemes. The page is dark, but a section can sit on a light ground by
+     remapping the neutral ramp it is painted with: every utility that reads
+     --n-* or --void follows without a single class changing. .scheme-dark
+     restores the page defaults for a subtree inside a light section, which is
+     how the product panels stay dark on cream, the way the reference's
+     screenshots do.
+     ======================================================================= */
+  .scheme-cream {
+    --void: #f0efe3;
+    --n-0: #15161b;
+    --n-200: #2b2d35;
+    --n-300: #3d414b;
+    --n-400: #5f6470;
+    --n-500: #858a95;
+    --n-700: #d9d8cb;
+    --n-800: #e6e5d8;
+    --n-900: #ffffff;
+    --n-950: #f7f6ee;
+    --track: #e2e1d3;
+    --pill-bg: #f0efe3;
+    --pill-border: #e2e1d3;
+    --pill-text: #a3a292;
+  }
+  /* Light indigo reads as pastel on cream; step the eyebrow down the ramp. */
+  .scheme-cream .text-eyebrow {
+    color: var(--p-600);
+  }
+  /* A white card on cream wants a soft warm shadow, not the deep black drop
+     that lifts a card off the void. */
+  .scheme-cream .surface-card {
+    box-shadow:
+      0 1px 0 0 rgb(20 21 27 / 0.04),
+      0 24px 60px -30px rgb(20 21 27 / 0.28);
+  }
+  /* Dark panels on cream: a warm grounded shadow, no indigo bloom. The bloom
+     lifts a panel off the void; on cream it reads as a purple stain. */
+  .scheme-cream .lift-lg {
+    box-shadow:
+      0 0 0 1px rgb(20 21 27 / 0.06),
+      0 30px 70px -36px rgb(20 21 27 / 0.5);
+  }
+  .scheme-dark {
+    --void: #05060b;
+    --n-0: #ffffff;
+    --n-200: #e1e4ea;
+    --n-300: #cacfd8;
+    --n-400: #99a0ae;
+    --n-500: #717784;
+    --n-700: #2b303b;
+    --n-800: #222530;
+    --n-900: #181b25;
+    --n-950: #0e121b;
+    --track: rgb(255 255 255 / 0.09);
   }
 
   /* Radial ambient glow, positioned by the caller. */
