@@ -42,8 +42,8 @@ import { cn } from "@/lib/utils";
  * down its centre, and the connector below is inset by half of it on each side
  * so its endpoints land on the column centres. Change one, change all three.
  */
-const COLUMN = "20rem";
-const HALF_COLUMN = "10rem";
+const COLUMN = "28rem";
+const HALF_COLUMN = "14rem";
 
 const VB_W = 940;
 const VB_H = 369;
@@ -467,12 +467,12 @@ function Step({ step, side }: { step: StepData; side: Side }) {
 
         <motion.div
           style={{ opacity: copyOpacity, y: copyY, filter: copyBlur }}
-          className="relative flex flex-col gap-md py-sm md:items-center"
+          className="relative flex flex-col gap-lg py-sm md:items-center"
         >
-          <h3 className="heading-h5 max-w-[16ch] text-balance">{step.title}</h3>
-          <p className="text-small max-w-[30ch] text-soft-400">{step.body}</p>
+          <h3 className="heading-h3 max-w-[20ch] text-balance">{step.title}</h3>
+          <p className="text-large max-w-[40ch] text-soft-400">{step.body}</p>
           {step.sample ? (
-            <p className="text-[0.6875rem] leading-snug text-sub">
+            <p className="text-small leading-snug text-sub">
               {walkthrough.sampleNote}
             </p>
           ) : null}

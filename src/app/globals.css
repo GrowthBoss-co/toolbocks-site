@@ -626,12 +626,16 @@
       0 1px 0 0 rgb(20 21 27 / 0.04),
       0 24px 60px -30px rgb(20 21 27 / 0.28);
   }
-  /* Dark panels on cream: a warm grounded shadow, no indigo bloom. The bloom
-     lifts a panel off the void; on cream it reads as a purple stain. */
+  /* Dark panels on cream. A drop-shadow FILTER, not a box-shadow: several of
+     the product panels are two or three cards with cream showing between them,
+     and a box-shadow is cast by the wrapper's rectangle, so the gap read as a
+     lighter box behind the cards. A filter follows the rendered pixels, so each
+     card casts its own shadow and the gap is simply the page. No indigo bloom
+     either; it lifts a panel off the void but stains cream purple. */
   .scheme-cream .lift-lg {
-    box-shadow:
-      0 0 0 1px rgb(20 21 27 / 0.06),
-      0 30px 70px -36px rgb(20 21 27 / 0.5);
+    box-shadow: none;
+    filter: drop-shadow(0 24px 36px rgb(20 21 27 / 0.32))
+      drop-shadow(0 2px 4px rgb(20 21 27 / 0.12));
   }
   .scheme-dark {
     --void: #05060b;
