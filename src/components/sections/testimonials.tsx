@@ -59,7 +59,7 @@ function Avatar({
  */
 export function Testimonials() {
   return (
-    <section className="relative">
+    <section className="grain relative isolate">
       <div className="container-main pt-section-main pb-section-main">
         <div className="section-layout">
           <SectionHeader
@@ -70,11 +70,11 @@ export function Testimonials() {
           <div className="relative">
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[8%] bg-gradient-to-r from-strong to-transparent"
+              className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[8%] bg-gradient-to-r from-void to-transparent"
             />
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 right-0 z-10 w-[8%] bg-gradient-to-l from-strong to-transparent"
+              className="pointer-events-none absolute inset-y-0 right-0 z-10 w-[8%] bg-gradient-to-l from-void to-transparent"
             />
 
             {/* Two identical tracks: the first scrolls out to -100% of its own

@@ -1,50 +1,86 @@
-import {
-  CadenceVisual,
-  LiveCallVisual,
-  SupervisorBoardVisual,
-} from "@/components/visuals";
+import { Reveal } from "@/components/motion/reveal";
+import { SectionHeader } from "@/components/ui-kit";
+import { CadenceVisual, LiveCallVisual, SupervisorBoardVisual } from "@/components/visuals";
 import { features } from "@/lib/content";
 
-const cardVisuals = [LiveCallVisual, CadenceVisual];
+/**
+ * Chapters, not cards.
+ *
+ * These used to be three boxes in a grid, which framed two long-form claims and
+ * a whole supervisor console as peers of equal weight. As full-bleed bands
+ * separated by hairlines, each one gets the viewport to itself and the section
+ * reads at the pace it is meant to be read.
+ *
+ * The panels here are the same LiveCall and Cadence mocks that appear in the
+ * hero stage, and that repetition is deliberate: up there they are angled,
+ * dimmed and cropped — an establishing shot — and down here they are square-on
+ * and legible. The second look is where you are actually meant to read them.
+ */
+const bandVisuals = [LiveCallVisual, CadenceVisual];
 
 export function Features() {
   return (
-    <section id="platform">
-      <div className="container-main pt-section-main pb-section-main">
-        <div className="flex flex-col gap-[var(--site-gutter)]">
-          {/* Wide split panel: copy left, product visual bleeding off the right */}
-          <div className="surface-card grid grid-cols-1 gap-y-3xl overflow-hidden md:grid-cols-2 md:gap-0">
-            <div className="flex flex-col items-start justify-center px-2xl py-xl md:px-5xl md:py-0">
-              <div className="flex flex-col gap-lg">
-                <p className="text-eyebrow">{features.eyebrow}</p>
-                <h2 className="text-gradient text-balance">{features.title}</h2>
-                <p className="text-soft-400">{features.body}</p>
-              </div>
-            </div>
+    <section id="platform" className="relative isolate bg-abyss">
+      <div className="container-main pb-section-small pt-section-main">
+        <Reveal>
+          <SectionHeader
+            eyebrow={features.eyebrow}
+            title={features.title}
+            body={features.body}
+          />
+        </Reveal>
+      </div>
 
-            <div className="relative -order-1 overflow-hidden py-[0.875rem] pl-xl md:order-none">
-              <SupervisorBoardVisual />
-            </div>
-          </div>
+      {features.cards.map((card, i) => {
+        const Visual = bandVisuals[i];
+        const flip = i % 2 === 1;
 
-          {/* Two feature cards, each with its own product visual */}
-          <div className="grid grid-cols-1 gap-[var(--site-gutter)] md:grid-cols-2">
-            {features.cards.map((card, i) => {
-              const Visual = cardVisuals[i];
-              return (
-                <article key={card.title} className="surface-card flex flex-col">
-                  <div className="relative flex h-full items-center justify-center overflow-clip p-lg pt-3xl">
+        return (
+          <div
+            key={card.title}
+            className="grid-field border-t border-white/[0.07]"
+          >
+            <div className="container-main py-section-small">
+              <Reveal className="grid grid-cols-1 items-center gap-3xl lg:grid-cols-2 lg:gap-7xl">
+                <div
+                  className={`flex flex-col gap-lg ${flip ? "lg:order-2" : ""}`}
+                >
+                  <p className="text-eyebrow is-small">{card.eyebrow}</p>
+                  <h3 className="heading-h3 max-w-[16ch] text-balance">
+                    {card.title}
+                  </h3>
+                  <p className="text-large max-w-[46ch] text-soft-400">
+                    {card.body}
+                  </p>
+                </div>
+
+                <div
+                  className={`flex justify-center ${flip ? "lg:order-1 lg:justify-start" : "lg:justify-end"}`}
+                >
+                  <div className="lift-lg w-full max-w-[22rem] rounded-large">
                     <Visual />
                   </div>
-                  <div className="flex w-full flex-col gap-lg px-xl pb-xl pt-3xl md:px-5xl md:pb-6xl">
-                    <p className="text-eyebrow is-small">{card.eyebrow}</p>
-                    <h3>{card.title}</h3>
-                    <p className="text-soft-400">{card.body}</p>
-                  </div>
-                </article>
-              );
-            })}
+                </div>
+              </Reveal>
+            </div>
           </div>
+        );
+      })}
+
+      {/* The supervisor board closes the section on the widest view of the
+          product: everything above is one rep, this is the whole floor. It
+          bleeds off the right edge rather than sitting centred, so the panel
+          reads as a window onto something larger than the band. */}
+      <div className="grid-field border-y border-white/[0.07]">
+        <div className="container-main overflow-hidden py-section-small">
+          <Reveal
+            y={40}
+            className="flex justify-center lg:-mr-[var(--site-margin)] lg:justify-end"
+          >
+            <div className="lift-lg rounded-l-xlarge">
+              <SupervisorBoardVisual />
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>

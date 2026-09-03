@@ -49,7 +49,10 @@ function Frame({
 function LiveBadge() {
   return (
     <span className="flex items-center gap-1.5 rounded-round border border-green/40 bg-green/[0.14] px-2.5 py-1 text-[0.625rem] font-bold uppercase leading-none tracking-[0.1em] text-[#5fdd9d]">
-      <span className="size-1.5 rounded-full bg-[#5fdd9d]" />
+      <span className="relative flex size-1.5 items-center justify-center">
+        <span className="soft-ping absolute size-1.5 rounded-full bg-[#5fdd9d]" />
+        <span className="relative size-1.5 rounded-full bg-[#5fdd9d]" />
+      </span>
       Live
     </span>
   );
@@ -184,7 +187,10 @@ export function ParallelLinesVisual() {
               {l.tone === "good" ? (
                 <span className="size-1.5 shrink-0 rounded-full bg-[#5fdd9d]" />
               ) : (
-                <span className="size-1.5 shrink-0 animate-pulse rounded-full bg-primary-400" />
+                <span className="relative flex size-1.5 shrink-0 items-center justify-center">
+                  <span className="soft-ping absolute size-1.5 rounded-full bg-primary-400" />
+                  <span className="relative size-1.5 rounded-full bg-primary-400" />
+                </span>
               )}
             </div>
           ))}

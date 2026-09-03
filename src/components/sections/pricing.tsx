@@ -11,7 +11,7 @@ import { DEMO_URL, pricing } from "@/lib/content";
  */
 export function Pricing() {
   return (
-    <section id="pricing">
+    <section id="pricing" className="grain relative isolate bg-abyss">
       <div className="container-main pt-section-main pb-section-main">
         <div className="section-layout">
           <SectionHeader eyebrow={pricing.eyebrow} title={pricing.title} />
@@ -20,8 +20,14 @@ export function Pricing() {
             {pricing.plans.map((plan) => (
               <div
                 key={plan.name}
+                // The popular plan replaces .surface-card's box-shadow rather
+                // than adding to it, so the card's own hairline and drop have
+                // to be restated here alongside the indigo ring — otherwise the
+                // highlighted plan is the one card on the page with no edge.
                 className={`surface-card relative flex flex-col justify-between gap-3xl overflow-hidden p-xl md:p-3xl ${
-                  plan.popular ? "shadow-[inset_0_0_0_1px_var(--p-500)]" : ""
+                  plan.popular
+                    ? "shadow-[inset_0_0_0_1px_var(--p-500),inset_0_1px_0_0_rgb(255_255_255/0.10),0_40px_110px_-50px_rgb(0_0_0/0.95),0_0_120px_-60px_rgb(92_90_255/0.65)]"
+                    : ""
                 }`}
               >
                 {plan.popular ? (
@@ -34,9 +40,9 @@ export function Pricing() {
 
                 <div className="relative flex flex-col gap-3xl">
                   <div className="flex min-h-8 items-center justify-between">
-                    <h3 className="heading-h6">{plan.name}</h3>
+                    <h3 className="heading-h5">{plan.name}</h3>
                     {plan.popular ? (
-                      <span className="flex items-center gap-xs rounded-small bg-primary-950 py-xs pl-sm pr-md text-ink">
+                      <span className="flex items-center gap-xs rounded-round bg-primary-500/20 py-xs pl-sm pr-md text-ink">
                         <SparkleIcon className="size-5 text-primary-400" />
                         <span className="text-small">Popular</span>
                       </span>
@@ -44,15 +50,15 @@ export function Pricing() {
                   </div>
 
                   <div className="flex flex-col gap-lg">
-                    <p className="heading-h2">{plan.price}</p>
+                    <p className="heading-h3">{plan.price}</p>
                     <p className="text-soft-400">{plan.blurb}</p>
                   </div>
 
                   <ul className="grid gap-lg py-sm">
                     {plan.features.map((f) => (
                       <li key={f} className="flex gap-md">
-                        <span className="shrink-0 self-start text-primary-400">
-                          <CheckIcon className="size-6" />
+                        <span className="shrink-0 self-start pt-1 text-lime">
+                          <CheckIcon className="size-5" />
                         </span>
                         <span className="text-soft-400">{f}</span>
                       </li>

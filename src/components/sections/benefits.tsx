@@ -20,7 +20,7 @@ export function Benefits() {
   const [open, setOpen] = useState(0);
 
   return (
-    <section id="benefits">
+    <section id="benefits" className="grain relative isolate bg-abyss">
       <div className="container-main pt-section-main pb-section-main">
         <div className="grid grid-cols-1 items-center gap-4xl lg:grid-cols-2 lg:gap-6xl">
           <div className="flex flex-col gap-4xl lg:gap-6xl">
@@ -71,7 +71,7 @@ export function Benefits() {
                     {i < benefits.items.length - 1 ? (
                       <div
                         aria-hidden="true"
-                        className="mt-[var(--site-gutter)] h-px w-full bg-line"
+                        className="mt-[var(--site-gutter)] h-px w-full bg-white/[0.08]"
                       />
                     ) : null}
                   </div>
@@ -81,7 +81,13 @@ export function Benefits() {
           </div>
 
           <div className="relative flex size-full flex-col items-center justify-center">
-            <FairnessVisual />
+            <div
+              aria-hidden="true"
+              className="aura left-1/2 top-1/2 size-[30rem] -translate-x-1/2 -translate-y-1/2"
+            />
+            <div className="lift-lg relative w-full max-w-[26rem] rounded-xlarge">
+              <FairnessVisual />
+            </div>
           </div>
         </div>
       </div>

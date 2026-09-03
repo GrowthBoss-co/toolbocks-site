@@ -1,4 +1,5 @@
 import { CheckIcon, systemIcons } from "@/components/icons";
+import { Reveal } from "@/components/motion/reveal";
 import { SectionHeader } from "@/components/ui-kit";
 import { system } from "@/lib/content";
 
@@ -15,29 +16,35 @@ import { system } from "@/lib/content";
  */
 export function System() {
   return (
-    <section id="why">
+    <section id="why" className="grain relative isolate">
       <div className="container-main pt-section-main pb-section-main">
         <div className="flex flex-col gap-5xl">
-          <SectionHeader
-            eyebrow={system.eyebrow}
-            title={system.title}
-            body={system.body}
-          />
+          <Reveal>
+            <SectionHeader
+              eyebrow={system.eyebrow}
+              title={system.title}
+              body={system.body}
+            />
+          </Reveal>
 
           <div className="grid grid-cols-1 gap-[var(--site-gutter)] sm:grid-cols-2 lg:grid-cols-3">
-            {system.pillars.map((pillar) => {
+            {system.pillars.map((pillar, i) => {
               const Icon = systemIcons[pillar.icon];
               return (
-                <article
+                <Reveal
+                  as="article"
                   key={pillar.title}
+                  // Staggered by column, not by index, so each row arrives as a
+                  // sweep left-to-right instead of a six-beat queue.
+                  delay={(i % 3) * 0.08}
                   className="surface-card flex flex-col gap-lg px-xl py-2xl"
                 >
                   <span className="grid size-11 shrink-0 place-items-center rounded-medium bg-primary-500/15">
                     <Icon className="size-[1.375rem] text-primary-300" />
                   </span>
-                  <h3 className="heading-h6 text-balance">{pillar.title}</h3>
+                  <h3 className="heading-h5 text-balance">{pillar.title}</h3>
                   <p className="text-small text-soft-400">{pillar.body}</p>
-                </article>
+                </Reveal>
               );
             })}
           </div>
@@ -49,9 +56,9 @@ export function System() {
             {system.tags.map((tag) => (
               <li
                 key={tag}
-                className="surface-card flex items-center gap-md rounded-large px-lg py-sm"
+                className="flex items-center gap-md rounded-round border border-white/[0.08] bg-white/[0.03] px-lg py-sm"
               >
-                <CheckIcon className="size-[1.125rem] shrink-0 text-primary-500" />
+                <CheckIcon className="size-[1.125rem] shrink-0 text-lime" />
                 <span className="text-small text-soft-400">{tag}</span>
               </li>
             ))}

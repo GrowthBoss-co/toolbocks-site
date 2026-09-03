@@ -1,55 +1,67 @@
-import Image from "next/image";
+import { CharReveal } from "@/components/motion/char-reveal";
+import { HeroStage } from "@/components/sections/hero-stage";
 import { Button } from "@/components/ui-kit";
-import { DEMO_URL, hero } from "@/lib/content";
+import { DEMO_URL, hero, stats } from "@/lib/content";
+
+/**
+ * Everything above the fold animates in on a CSS timeline, not on scroll or
+ * hydration, so the first paint is already the finished hero. The delays below
+ * are the running order: eyebrow, headline (which runs its own per-character
+ * wave), subtitle, buttons, note.
+ */
+const RISE = {
+  subtitle: "0.5s",
+  ctas: "0.62s",
+  note: "0.8s",
+} as const;
 
 export function Hero() {
   return (
-    <section
-      id="top"
-      className="relative max-h-[64rem] overflow-hidden rounded-b-[2.5rem]"
-    >
-      {/* Orizon's three-part hero glow, rebuilt on the ToolBocks indigo ramp. */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div
-          className="absolute inset-x-0 bottom-[10%] min-h-[50%] w-full blur-[100px] max-lg:bottom-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(90deg, rgb(92 90 255 / 0.30), var(--p-600) 50%, rgb(92 90 255 / 0.30))",
-            mixBlendMode: "plus-lighter",
-          }}
-        />
-        <div
-          className="absolute inset-0 size-full opacity-80"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle farthest-corner at 0% 100%, var(--p-700), transparent 34%)",
-          }}
-        />
-        <div
-          className="absolute inset-0 size-full opacity-80"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle farthest-corner at 100% 100%, var(--p-700), transparent 34%)",
-          }}
-        />
+    <section id="top" className="grain relative isolate overflow-hidden">
+      <div
+        aria-hidden="true"
+        className="grid-field pointer-events-none absolute inset-0"
+      />
+
+      {/* Ambient light. Two indigo pools low in the frame and a violet one high
+          on the right, so the grid is unevenly lit rather than flatly tinted. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <div className="aura left-1/2 top-[-10%] size-[46rem] -translate-x-1/2 opacity-90" />
+        <div className="aura is-violet right-[-8%] top-[6%] size-[34rem]" />
+        <div className="aura bottom-[-14%] left-[-6%] size-[38rem] opacity-70" />
       </div>
 
-      <div className="container-main pt-section-hero">
-        <div className="section-layout">
-          <div className="flex flex-col items-center gap-2xl">
-            <div className="flex flex-col items-center gap-xl">
-              <p className="text-eyebrow">{hero.eyebrow}</p>
-              <div className="flex flex-col items-center gap-xl text-center">
-                <h1 className="heading-h1 text-gradient max-w-[22ch] text-balance">
-                  {hero.title}
-                </h1>
-                <p className="text-large max-w-[56ch] text-soft-200">
-                  {hero.subtitle}
-                </p>
-              </div>
-            </div>
+      {/* The ground fades to the section below, so the hero has no visible seam. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-b from-transparent to-abyss"
+      />
 
-            <div className="flex flex-col items-center gap-md">
+      <div className="container-main pt-section-hero">
+        <div className="flex flex-col items-center gap-6xl">
+          <div className="flex flex-col items-center gap-2xl text-center">
+            <p className="text-eyebrow rise-in">{hero.eyebrow}</p>
+
+            <CharReveal
+              text={hero.title}
+              accentWords={1}
+              className="heading-h1 max-w-[19ch] text-ink"
+            />
+
+            <p
+              className="text-large rise-in max-w-[54ch] text-soft-400"
+              style={{ "--rise-delay": RISE.subtitle } as React.CSSProperties}
+            >
+              {hero.subtitle}
+            </p>
+
+            <div
+              className="rise-in flex flex-col items-center gap-md"
+              style={{ "--rise-delay": RISE.ctas } as React.CSSProperties}
+            >
               <div className="flex flex-wrap items-center justify-center gap-lg">
                 <Button href={DEMO_URL} variant="primary">
                   {hero.primaryCta}
@@ -58,30 +70,32 @@ export function Hero() {
                   {hero.secondaryCta}
                 </Button>
               </div>
-              <p className="text-small text-soft">{hero.note}</p>
+              <p
+                className="text-small rise-in text-sub"
+                style={{ "--rise-delay": RISE.note } as React.CSSProperties}
+              >
+                {hero.note}
+              </p>
             </div>
           </div>
 
-          {/* Product screenshot, ringed and faded into the page like Orizon's */}
-          <div className="relative rounded-t-[1.5rem] shadow-[0_0_0_10px_rgb(255_255_255/0.08)]">
-            <Image
-              className="block h-auto w-full rounded-t-[1.5rem]"
-              src="/assets/hero-team-dashboard.png"
-              alt="The ToolBocks team dashboard: calls, connect rate, answer rate and AI cost across the team, with per-rep connect distribution, disposition mix and a best-time-to-call heatmap."
-              width={1915}
-              height={911}
-              sizes="(min-width: 1264px) 1200px, 100vw"
-              priority
-            />
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0"
-              style={{
-                backgroundImage:
-                  "linear-gradient(rgb(14 18 27 / 0) 20%, rgb(14 18 27 / 0.6) 70%, rgb(14 18 27))",
-              }}
-            />
-          </div>
+          <HeroStage />
+
+          {/* Durable figures, not live measurements. Sits under the stage so the
+              first scroll lands on evidence rather than another claim. */}
+          <dl className="grid w-full grid-cols-2 border-t border-white/[0.08] lg:grid-cols-4">
+            {stats.map((s, i) => (
+              <div
+                key={s.label}
+                className={`flex flex-col gap-sm border-white/[0.08] px-lg py-2xl text-center ${
+                  i % 2 === 1 ? "border-l" : ""
+                } ${i > 1 ? "border-t" : ""} lg:border-t-0 lg:[&:not(:first-child)]:border-l`}
+              >
+                <dt className="heading-h4 order-1 text-ink">{s.value}</dt>
+                <dd className="text-small order-2 text-sub">{s.label}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
     </section>

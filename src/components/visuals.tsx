@@ -153,8 +153,8 @@ export function LiveCallVisual() {
       <div className="flex items-center justify-between border-b border-white/[0.06] px-4 py-3">
         <div className="flex items-center gap-2">
           <span className="relative flex size-2 items-center justify-center">
-            <span className="absolute size-2 rounded-full bg-primary-400/60" />
-            <span className="size-1.5 rounded-full bg-primary-400" />
+            <span className="soft-ping absolute size-2 rounded-full bg-primary-400" />
+            <span className="relative size-1.5 rounded-full bg-primary-400" />
           </span>
           <span className="text-[0.75rem] text-soft-400">On call</span>
         </div>
@@ -173,13 +173,20 @@ export function LiveCallVisual() {
           </div>
         </div>
 
-        {/* waveform */}
+        {/* Waveform. The heights are deterministic, the breathing is not tied
+            to them: a fixed 1.1s cycle with a per-bar delay reads as live audio
+            without needing any state. */}
         <div className="flex h-12 items-center gap-[2px]">
           {bars.map((h, i) => (
             <span
               key={i}
-              style={{ height: `${h}%` }}
-              className={`w-full rounded-full ${
+              style={
+                {
+                  height: `${h}%`,
+                  "--wave-delay": `${((i % 7) * 0.09).toFixed(2)}s`,
+                } as React.CSSProperties
+              }
+              className={`wave-bar w-full rounded-full ${
                 i < 24 ? "bg-primary-500/70" : "bg-white/12"
               }`}
             />

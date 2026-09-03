@@ -1,12 +1,30 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans } from "next/font/google";
+import { Instrument_Serif, Work_Sans } from "next/font/google";
 import Script from "next/script";
 import { SITE_URL } from "@/lib/content";
 import { buildStructuredData } from "@/lib/structured-data";
 import "./globals.css";
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+/**
+ * Two faces, two jobs. Instrument Serif is the display voice and carries every
+ * heading; Work Sans is the body and every piece of UI chrome inside the
+ * product panels.
+ *
+ * Instrument Serif publishes a single weight, so the italic has to be requested
+ * explicitly — it is a real cut, and it is the emphasis lever the headings use
+ * (see .heading-accent). Without listing "italic" here the browser slants the
+ * roman itself and the serifs shear.
+ */
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const workSans = Work_Sans({
+  variable: "--font-work-sans",
   subsets: ["latin"],
   display: "swap",
 });
@@ -81,7 +99,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${instrumentSerif.variable} ${workSans.variable} h-full antialiased`}
+    >
       <head>
         {/* Organization + WebSite + SoftwareApplication. See structured-data.ts
             for what is deliberately NOT emitted here and why: no invented review
@@ -93,6 +114,14 @@ export default function RootLayout({
             __html: JSON.stringify(buildStructuredData()),
           }}
         />
+
+        {/* Scroll reveals start at opacity 0 and are switched on by an
+            IntersectionObserver, so with scripting off most of the page would
+            render as blank space. The markup is all server-rendered and present
+            either way — this just makes sure it is also visible. */}
+        <noscript>
+          <style>{`.reveal{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
       </head>
       <body className="flex min-h-full flex-col">
         {children}

@@ -4,7 +4,7 @@ import { AGENCY_URL, footer } from "@/lib/content";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-line bg-surface">
+    <footer className="grain relative isolate border-t border-white/[0.08] bg-abyss">
       <div className="container-main pb-section-tiny pt-section-small">
         <div className="grid grid-cols-1 gap-y-5xl lg:grid-cols-2">
           <div className="flex flex-col items-start gap-[1.25rem]">
@@ -29,7 +29,7 @@ export function SiteFooter() {
           <div className="flex justify-start gap-4xl lg:justify-end lg:gap-7xl">
             {footer.columns.map((col) => (
               <div key={col.heading}>
-                <h2 className="mb-md text-small text-sub">{col.heading}</h2>
+                <h2 className="mb-lg font-sans text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-sub">{col.heading}</h2>
                 <ul className="flex flex-col gap-md">
                   {col.links.map((l) => {
                     const external = l.href.startsWith("http");
@@ -53,7 +53,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-6xl flex flex-col gap-sm border-t border-line pt-2xl text-small text-soft-400 md:flex-row md:items-center md:justify-between">
+        <div className="mt-6xl flex flex-col gap-sm border-t border-white/[0.08] pt-2xl text-small text-soft-400 md:flex-row md:items-center md:justify-between">
           <span>{footer.legal.copyright}</span>
           <span>{footer.legal.address}</span>
         </div>

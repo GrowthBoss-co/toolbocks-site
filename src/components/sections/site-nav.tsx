@@ -21,7 +21,7 @@ export function SiteNav() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="container-main">
-        <div className="mt-lg rounded-large border border-flat-neutral bg-flat-neutral px-lg py-sm backdrop-blur-[10px] lg:pr-sm">
+        <div className="mt-lg rounded-round border border-white/[0.08] bg-void/70 px-lg py-sm shadow-[0_20px_50px_-30px_rgb(0_0_0/0.9)] backdrop-blur-xl lg:pr-sm">
           <div className="flex items-center justify-between gap-lg lg:grid lg:grid-cols-[1fr_2.5fr_1fr]">
             <a href="#top" aria-label="ToolBocks home" className="shrink-0">
               <ToolBocksLogo priority />
@@ -34,7 +34,7 @@ export function SiteNav() {
                   <li key={l.label}>
                     <a
                       href={l.href}
-                      className="flex items-center px-lg py-sm text-small text-ink transition-opacity duration-200 hover:opacity-70"
+                      className="flex items-center px-lg py-sm text-small text-soft-400 transition-colors duration-200 hover:text-ink"
                     >
                       {l.label}
                     </a>
@@ -73,7 +73,7 @@ export function SiteNav() {
             <nav
               id="mobile-nav"
               aria-label="Main"
-              className="mt-sm flex flex-col rounded-large border border-flat-neutral bg-surface px-xl py-lg lg:hidden"
+              className="mt-sm flex flex-col rounded-xlarge border border-white/[0.08] bg-void/95 px-xl py-lg backdrop-blur-xl lg:hidden"
             >
               <ul className="flex flex-col">
                 {navLinks.map((l) => (
