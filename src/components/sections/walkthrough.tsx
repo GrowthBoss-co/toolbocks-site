@@ -1,40 +1,83 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useReducedMotion, useSpring } from "motion/react";
-import { useInView } from "@/components/motion/reveal";
+import { useRef, useSyncExternalStore } from "react";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useTransform,
+  type MotionValue,
+} from "motion/react";
+import { PlaybookIcon, SparkleIcon } from "@/components/icons";
+import { Reveal } from "@/components/motion/reveal";
 import { useScrollProgress } from "@/components/motion/use-scroll-progress";
-import { SectionHeader } from "@/components/ui-kit";
+import { WordReveal } from "@/components/motion/word-reveal";
+import { Button } from "@/components/ui-kit";
 import { walkthroughVisuals } from "@/components/visuals-product";
-import { walkthrough } from "@/lib/content";
+import { DEMO_URL, hero, walkthrough } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
 /**
- * The six steps of a rep's day, threaded on a line that draws itself as you
- * scroll.
+ * A rep's day as one continuous line.
  *
- * How it is built: one rail spans the whole list. The undrawn part is a static
- * hairline; the drawn part is a gradient bar whose scaleY is bound to the
- * section's scroll progress, origin top, so it grows downward. The spring is
- * what stops it feeling like a progress bar — raw scrollYProgress tracks the
- * wheel exactly and reads as mechanical.
+ * The line starts at a prompt, runs to a pill that lights when it arrives, then
+ * snakes down the page: through each step's copy column, across to the other
+ * side, into the next step, and finally into a closing heading. Every segment
+ * draws itself as it moves up the viewport, so reading the section and
+ * watching the line are the same act.
  *
- * The offset is deliberately asymmetric. It starts drawing when the list is
- * still a quarter-viewport below the fold and finishes with a third of it still
- * to go, so the line is never caught standing still at either end.
+ * Nothing here is a one-shot. Each connector, fill, pill and paragraph has its
+ * own 0-to-1 progress from its own viewport position (useScrollProgress), so
+ * scrolling back rewinds it. That is what makes the line feel attached to the
+ * page rather than played at it.
  *
- * Each step lights independently off its own observer rather than off the
- * shared progress value, because a step should light when *it* reaches the
- * reader, which is not the same instant the rail happens to reach its node.
+ * Geometry is one reference viewBox, 940 x 369, and every connector is the
+ * same path mirrored: drop 156, a 24-radius corner, cross, corner, drop. The
+ * corners are cubic curves with the standard circle constant so they are true
+ * quarter-arcs, not approximations. The wrapper holds the aspect ratio, so the
+ * SVG is never distorted and the stroke stays 2px through
+ * vector-effect: non-scaling-stroke.
+ *
+ * COLUMN is load-bearing. Every copy column is exactly this wide, the line runs
+ * down its centre, and the connector below is inset by half of it on each side
+ * so its endpoints land on the column centres. Change one, change all three.
  */
-const STEP_ROOT_MARGIN = "0px 0px -45% 0px";
+const COLUMN = "20rem";
+const HALF_COLUMN = "10rem";
+
+const VB_W = 940;
+const VB_H = 369;
+const DROP = 156;
+const RADIUS = 24;
+const MID_Y = DROP + RADIUS;
+const KAPPA = 0.5523;
+const EDGE = { left: 1, right: VB_W - 1, center: VB_W / 2 } as const;
+
+type Side = keyof typeof EDGE;
+
+function connectorPath(from: Side, to: Side): string {
+  const x0 = EDGE[from];
+  const x1 = EDGE[to];
+  const d = x1 > x0 ? 1 : -1;
+  const k = RADIUS * KAPPA;
+  const r = RADIUS;
+  return [
+    `M ${x0} 0`,
+    `V ${DROP}`,
+    `C ${x0} ${DROP + k} ${x0 + d * (r - k)} ${MID_Y} ${x0 + d * r} ${MID_Y}`,
+    `H ${x1 - d * r}`,
+    `C ${x1 - d * (r - k)} ${MID_Y} ${x1} ${MID_Y + (r - k)} ${x1} ${MID_Y + r}`,
+    `V ${VB_H}`,
+  ].join(" ");
+}
+
+const TRACK = "rgb(255 255 255 / 0.09)";
+
+/* -------------------------------------------------------------------------- */
 
 export function Walkthrough() {
-  const listRef = useRef<HTMLOListElement>(null);
-  const reduceMotion = useReducedMotion();
-
-  const progress = useScrollProgress(listRef, 0.75, 0.35);
-  const drawn = useSpring(progress, { stiffness: 90, damping: 24 });
+  const steps = walkthrough.steps;
+  const lastSide: Side = (steps.length - 1) % 2 === 0 ? "left" : "right";
 
   return (
     <section
@@ -45,139 +88,449 @@ export function Walkthrough() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
-        <div className="aura left-1/2 top-[18%] size-[52rem] -translate-x-1/2 opacity-60" />
+        <div className="aura left-[-10%] top-[12%] size-[48rem] opacity-50" />
+        <div className="aura is-violet right-[-12%] top-[55%] size-[44rem] opacity-60" />
       </div>
 
       <div className="container-main pb-section-main pt-section-main">
-        <SectionHeader
-          eyebrow={walkthrough.eyebrow}
-          title={walkthrough.title}
-          body={walkthrough.body}
-        />
+        <header className="flex max-w-[44rem] flex-col gap-xl">
+          <Reveal>
+            <p className="text-eyebrow">{walkthrough.eyebrow}</p>
+          </Reveal>
+          <WordReveal
+            text={walkthrough.title}
+            className="heading-h2 max-w-[14ch] text-ink"
+          />
+          <WordReveal
+            as="p"
+            text={walkthrough.body}
+            stagger={0.012}
+            delay={0.25}
+            className="text-large max-w-[54ch] text-soft-400"
+          />
+        </header>
 
-        <ol ref={listRef} className="relative mt-7xl list-none">
-          {/* The rail. Left-anchored on mobile where there is no room for a
-              centred thread, dead centre from md up. */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-y-0 left-[1.375rem] w-px md:left-1/2"
-          >
-            <div className="absolute inset-0 bg-white/[0.09]" />
-            <motion.div
-              className="absolute inset-0 origin-top bg-gradient-to-b from-primary-500 to-lime"
-              style={reduceMotion ? { scaleY: 1 } : { scaleY: drawn }}
-            />
-          </div>
+        <div className="mt-7xl flex flex-col md:mt-8xl">
+          <Start />
 
-          {walkthrough.steps.map((step, i) => (
-            <Step key={step.title} step={step} index={i} />
-          ))}
-        </ol>
+          {steps.map((step, i) => {
+            const side: Side = i % 2 === 0 ? "left" : "right";
+            const from: Side = side === "left" ? "right" : "left";
+            // The connector INTO a step carries that step's tag: what the
+            // system is doing on the way there. The final connector, into the
+            // closing heading, carries none.
+            return (
+              <div key={step.title} className="flex flex-col">
+                <Connector from={from} to={side} tag={step.tag} />
+                <Step step={step} side={side} />
+              </div>
+            );
+          })}
+
+          <Connector from={lastSide} to="center" thick />
+
+          <Closing />
+        </div>
       </div>
     </section>
   );
 }
 
-type StepProps = {
-  step: (typeof walkthrough.steps)[number];
-  index: number;
-};
+/* -------------------------------------------------------------------------- */
 
-function Step({ step, index }: StepProps) {
-  const { ref, inView } = useInView<HTMLLIElement>(STEP_ROOT_MARGIN);
-  const Visual = walkthroughVisuals[step.visual];
+/**
+ * Progress that respects reduced motion: the same MotionValue everywhere else
+ * uses, or a constant 1 so every segment renders complete and nothing moves.
+ */
+function useProgress(
+  ref: React.RefObject<HTMLElement | null>,
+  startVh: number,
+  endVh: number,
+) {
+  const live = useScrollProgress(ref, startVh, endVh);
+  const done = useMotionValue(1);
+  return useReducedMotion() ? done : live;
+}
 
-  // Odd steps put the panel on the left, so the eye crosses the thread on
-  // every beat instead of running down one side of it.
-  const flip = index % 2 === 1;
-  const number = String(index + 1).padStart(2, "0");
+/**
+ * True while a progress value is at or past a threshold, for lit states.
+ *
+ * The current value is read at subscription time, not only on change. The
+ * progress hook measures once in its own effect, which runs before this one,
+ * so a subscription alone misses that first value — and an element that lands
+ * fully past its threshold in a single scroll jump then never changes again,
+ * leaving its pill grey with the line drawn straight through it.
+ */
+function useCrossed(progress: MotionValue<number>, at: number) {
+  return useSyncExternalStore(
+    (notify) => progress.on("change", notify),
+    () => progress.get() >= at,
+    () => false,
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+
+function Pill({
+  icon: Icon,
+  label,
+  lit,
+  className,
+}: {
+  icon: typeof SparkleIcon;
+  label: string;
+  lit: boolean;
+  className?: string;
+}) {
+  return (
+    <span
+      className={cn(
+        "inline-flex h-12 shrink-0 items-center gap-sm whitespace-nowrap rounded-round border px-xl text-small font-medium transition-colors duration-500 ease-out",
+        lit
+          ? "border-primary-500 bg-primary-500 text-white"
+          : "border-white/[0.08] bg-surface text-sub",
+        className,
+      )}
+    >
+      <Icon className="size-[1.125rem] shrink-0" />
+      {label}
+    </span>
+  );
+}
+
+/** The 2px line running vertically through a column, filling top-down. */
+function VerticalFill({
+  progress,
+  className,
+}: {
+  progress: MotionValue<number>;
+  className?: string;
+}) {
+  return (
+    <span
+      aria-hidden="true"
+      className={cn("pointer-events-none absolute w-[2px]", className)}
+    >
+      <span className="absolute inset-0" style={{ background: TRACK }} />
+      <motion.span
+        className="absolute inset-0 origin-top bg-primary-500"
+        style={{ scaleY: progress }}
+      />
+    </span>
+  );
+}
+
+/** Uppercase mono label whose characters arrive one at a time. */
+function TagText({ text, on }: { text: string; on: boolean }) {
+  return (
+    <span
+      aria-label={text}
+      className="font-mono text-[0.625rem] uppercase leading-none tracking-[0.18em] text-soft-400"
+    >
+      {[...text].map((ch, i) => (
+        <span
+          key={i}
+          aria-hidden="true"
+          className={cn(
+            "inline-block whitespace-pre transition-opacity duration-300",
+            on ? "opacity-100" : "opacity-0",
+          )}
+          style={{ transitionDelay: `${i * 28}ms` }}
+        >
+          {ch}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+
+/**
+ * The opening beat. A prompt on the left, a track running right into a pill
+ * that lights when the fill arrives. The pill sits in a column exactly as wide
+ * as every step column so the connector below lands on its centre.
+ */
+function Start() {
+  const ref = useRef<HTMLDivElement>(null);
+  const progress = useProgress(ref, 0.92, 0.62);
+
+  const boxOpacity = useTransform(progress, [0, 0.2], [0, 1]);
+  const boxY = useTransform(progress, [0, 0.2], [16, 0]);
+  const fill = useTransform(progress, [0.15, 0.6], [0, 1]);
+  const pillOpacity = useTransform(progress, [0.35, 0.65], [0, 1]);
+  const pillY = useTransform(progress, [0.35, 0.65], [22, 0]);
+  const lit = useCrossed(progress, 0.58);
 
   return (
-    <li
-      ref={ref}
-      className="relative grid grid-cols-1 gap-2xl pb-8xl pl-14 last:pb-0 md:grid-cols-[1fr_7rem_1fr] md:gap-0 md:pb-8xl md:pl-0 md:last:pb-0"
-    >
-      {/* Node. Absolutely placed rather than sat in the middle column, so one
-          rule keeps it on the rail at both breakpoints. */}
-      <span
-        aria-hidden="true"
-        className={cn(
-          "absolute left-[1.375rem] top-[1.75rem] z-10 size-3 -translate-x-1/2 rounded-full border transition-colors duration-500 md:left-1/2 md:top-[3.5rem]",
-          inView
-            ? "node-glow border-primary-300 bg-primary-500"
-            : "border-white/20 bg-void",
-        )}
-      />
-
-      {/* Elbow. A hairline from the node out toward the copy, lighting with it. */}
-      <span
-        aria-hidden="true"
-        className={cn(
-          "absolute top-[3.5rem] hidden h-px w-[3.5rem] transition-colors duration-500 md:block",
-          flip ? "left-1/2" : "right-1/2",
-          inView ? "bg-primary-500/50" : "bg-white/[0.09]",
-        )}
-      />
-
-      <div
-        style={{ "--reveal-y": "20px" } as React.CSSProperties}
-        className={cn(
-          "reveal flex flex-col gap-lg",
-          flip ? "md:order-3 md:pl-7xl" : "md:order-1 md:pr-7xl",
-          inView && "is-in",
-        )}
-      >
-        <div
-          className={cn(
-            "flex w-fit items-center gap-md rounded-round px-md py-xs transition-colors duration-500",
-            inView ? "bg-primary-500" : "bg-white/[0.06]",
-          )}
+    <div ref={ref} className="relative">
+      {/* Desktop: one row, the line threaded through it. */}
+      <div className="relative hidden h-12 items-center md:flex">
+        <motion.div
+          style={{ opacity: boxOpacity, y: boxY }}
+          className="surface-card relative z-10 w-[22rem] px-xl py-lg text-small leading-snug text-ink"
         >
-          <span
-            className={cn(
-              "text-[0.6875rem] font-semibold tabular-nums",
-              inView ? "text-white" : "text-sub",
-            )}
-          >
-            {number}
-          </span>
-          <span
-            className={cn(
-              "text-[0.6875rem] font-medium uppercase tracking-[0.14em]",
-              inView ? "text-primary-100" : "text-soft-400",
-            )}
-          >
-            {step.kicker}
-          </span>
-        </div>
+          {walkthrough.start.prompt}
+        </motion.div>
 
-        <h3 className="heading-h4 max-w-[18ch] text-balance">{step.title}</h3>
-        <p className="text-soft-400 md:max-w-[42ch]">{step.body}</p>
+        <span
+          aria-hidden="true"
+          className="absolute top-1/2 h-[2px] -translate-y-1/2"
+          style={{ left: "22rem", right: HALF_COLUMN }}
+        >
+          <span className="absolute inset-0" style={{ background: TRACK }} />
+          <motion.span
+            className="absolute inset-0 origin-left bg-primary-500"
+            style={{ scaleX: fill }}
+          />
+        </span>
 
-        {step.sample ? (
-          <p className="text-[0.75rem] leading-snug text-sub">
-            {walkthrough.sampleNote}
-          </p>
-        ) : null}
+        <motion.div
+          style={{ opacity: pillOpacity, y: pillY, width: COLUMN }}
+          className="absolute right-0 top-0 flex h-12 justify-center"
+        >
+          <Pill icon={SparkleIcon} label={walkthrough.start.pill} lit={lit} />
+        </motion.div>
       </div>
 
-      {/* Middle column is the rail's gutter and stays empty on purpose. */}
-      <div aria-hidden="true" className="hidden md:order-2 md:block" />
+      {/* Mobile: box, a short vertical run, then the pill, all on the rail. */}
+      <div className="relative flex flex-col gap-lg pl-14 md:hidden">
+        <VerticalFill progress={fill} className="inset-y-0 left-[1.3125rem]" />
+        <motion.div
+          style={{ opacity: boxOpacity, y: boxY }}
+          className="surface-card relative px-xl py-lg text-small leading-snug text-ink"
+        >
+          {walkthrough.start.prompt}
+        </motion.div>
+        <motion.div
+          style={{ opacity: pillOpacity, y: pillY }}
+          className="relative flex"
+        >
+          <Pill icon={SparkleIcon} label={walkthrough.start.pill} lit={lit} />
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+
+/**
+ * The snaking line between two beats, drawn by scroll. Two copies of one path:
+ * a static track and the coloured one whose dash offset runs 1 to 0. With
+ * pathLength normalised to 1 the offset needs no measuring.
+ *
+ * The tag sits on the horizontal run with the section ground behind it, so the
+ * line appears to break around the words.
+ */
+function Connector({
+  from,
+  to,
+  tag,
+  thick = false,
+}: {
+  from: Side;
+  to: Side;
+  tag?: string;
+  thick?: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const progress = useProgress(ref, 0.9, 0.4);
+  const dashOffset = useTransform(progress, [0, 1], [1, 0]);
+  const opacity = useTransform(progress, [0, 0.08], [0, 1]);
+  const tagOn = useCrossed(progress, 0.45);
+
+  const d = connectorPath(from, to);
+  const strokeWidth = thick ? 4 : 2;
+
+  return (
+    <div ref={ref} className="relative">
+      {/* Desktop: the S-curve, inset so its ends land on the column centres. */}
+      <motion.div
+        aria-hidden="true"
+        style={{
+          opacity,
+          marginLeft: HALF_COLUMN,
+          marginRight: HALF_COLUMN,
+          aspectRatio: `${VB_W} / ${VB_H}`,
+        }}
+        className="relative hidden md:block"
+      >
+        <svg
+          viewBox={`0 0 ${VB_W} ${VB_H}`}
+          className="absolute inset-0 size-full overflow-visible"
+          fill="none"
+        >
+          <path
+            d={d}
+            stroke={TRACK}
+            strokeWidth={strokeWidth}
+            vectorEffect="non-scaling-stroke"
+          />
+          <motion.path
+            d={d}
+            pathLength={1}
+            strokeDasharray="1 1"
+            style={{ strokeDashoffset: dashOffset }}
+            stroke="var(--p-500)"
+            strokeWidth={strokeWidth}
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+
+        {tag ? (
+          <span
+            className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 bg-void px-md py-xs"
+            style={{ top: `${(MID_Y / VB_H) * 100}%` }}
+          >
+            <TagText text={tag} on={tagOn} />
+          </span>
+        ) : null}
+      </motion.div>
+
+      {/* Mobile: a short vertical run on the rail, the tag beside it. */}
+      <motion.div
+        aria-hidden="true"
+        style={{ opacity }}
+        className="relative flex h-24 items-center pl-14 md:hidden"
+      >
+        <VerticalFill
+          progress={progress}
+          className={cn("inset-y-0 left-[1.3125rem]", thick && "w-[3px]")}
+        />
+        {tag ? <TagText text={tag} on={tagOn} /> : null}
+      </motion.div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+
+type StepData = (typeof walkthrough.steps)[number];
+
+function Step({ step, side }: { step: StepData; side: Side }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const progress = useProgress(ref, 0.85, 0.45);
+  const Visual = walkthroughVisuals[step.visual];
+
+  const lit = useCrossed(progress, 0.35);
+  const copyOpacity = useTransform(progress, [0.15, 0.55], [0, 1]);
+  const copyY = useTransform(progress, [0.15, 0.55], [32, 0]);
+  const copyBlur = useTransform(
+    progress,
+    [0.15, 0.55],
+    ["blur(5px)", "blur(0px)"],
+  );
+  const panelOpacity = useTransform(progress, [0.05, 0.5], [0, 1]);
+  const panelY = useTransform(progress, [0.05, 0.5], [28, 0]);
+
+  // The desktop rail is two segments, above and below the copy, so the line
+  // never runs through the words. The fill hands off between them: the upper
+  // one completes in the first half of the step's travel, the lower one takes
+  // the second, which reads as one line passing behind the copy.
+  const railTop = useTransform(progress, [0, 0.45], [0, 1]);
+  const railBottom = useTransform(progress, [0.55, 1], [0, 1]);
+
+  const copyFirst = side === "left";
+
+  return (
+    <div
+      ref={ref}
+      className="relative grid grid-cols-1 items-center gap-2xl pl-14 md:grid-cols-[var(--cols)] md:items-stretch md:gap-6xl md:pl-0"
+      style={
+        {
+          "--cols": copyFirst
+            ? `${COLUMN} minmax(0, 1fr)`
+            : `minmax(0, 1fr) ${COLUMN}`,
+        } as React.CSSProperties
+      }
+    >
+      {/* Mobile rail through the whole step. */}
+      <VerticalFill
+        progress={progress}
+        className="inset-y-0 left-[1.3125rem] md:hidden"
+      />
 
       <div
-        style={{ "--reveal-y": "32px" } as React.CSSProperties}
         className={cn(
-          "reveal flex",
-          flip
-            ? "md:order-1 md:justify-end md:pr-7xl"
-            : "md:order-3 md:justify-start md:pl-7xl",
-          inView && "is-in",
+          "relative flex flex-col items-start gap-lg md:items-center md:text-center",
+          copyFirst ? "md:order-1" : "md:order-2",
         )}
       >
-        <div className="lift w-full rounded-large">
+        {/* Upper rail: column top down to the pill's centre. The pill is
+            opaque and stacked above it, so the line appears to enter it. The
+            flex-1 spacer collapses to nothing when the copy is taller than the
+            panel, and the negative bottom keeps a stub across the gap so the
+            join with the connector above never opens. */}
+        <div className="relative hidden w-full flex-1 md:block">
+          <VerticalFill
+            progress={railTop}
+            className="-bottom-10 left-1/2 top-0 -translate-x-1/2"
+          />
+        </div>
+
+        <div className="relative z-10">
+          <Pill icon={PlaybookIcon} label={step.kicker} lit={lit} />
+        </div>
+
+        <motion.div
+          style={{ opacity: copyOpacity, y: copyY, filter: copyBlur }}
+          className="relative flex flex-col gap-md py-sm md:items-center"
+        >
+          <h3 className="heading-h5 max-w-[16ch] text-balance">{step.title}</h3>
+          <p className="text-small max-w-[30ch] text-soft-400">{step.body}</p>
+          {step.sample ? (
+            <p className="text-[0.6875rem] leading-snug text-sub">
+              {walkthrough.sampleNote}
+            </p>
+          ) : null}
+        </motion.div>
+
+        {/* Lower rail: from under the copy to the column bottom, where the
+            next connector picks it up. */}
+        <div className="relative hidden w-full flex-1 md:block">
+          <VerticalFill
+            progress={railBottom}
+            className="-top-4 bottom-0 left-1/2 -translate-x-1/2"
+          />
+        </div>
+      </div>
+
+      <motion.div
+        style={{ opacity: panelOpacity, y: panelY }}
+        className={cn(
+          "relative flex md:items-center",
+          copyFirst
+            ? "md:order-2 md:justify-end"
+            : "md:order-1 md:justify-start",
+        )}
+      >
+        <div className="lift-lg w-full max-w-[36rem] rounded-xlarge">
           <Visual />
         </div>
-      </div>
-    </li>
+      </motion.div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+
+function Closing() {
+  return (
+    <div className="flex flex-col items-center gap-xl pt-4xl text-center md:pt-2xl">
+      <WordReveal
+        as="h2"
+        text={walkthrough.title}
+        className="heading-h3 max-w-[18ch] text-ink"
+      />
+      <Reveal delay={0.25}>
+        <p className="text-large max-w-[44ch] text-soft-400">{hero.note}</p>
+      </Reveal>
+      <Reveal delay={0.4}>
+        <Button href={DEMO_URL} variant="primary">
+          {hero.primaryCta}
+        </Button>
+      </Reveal>
+    </div>
   );
 }

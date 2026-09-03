@@ -120,7 +120,7 @@ export default function RootLayout({
             render as blank space. The markup is all server-rendered and present
             either way — this just makes sure it is also visible. */}
         <noscript>
-          <style>{`.reveal{opacity:1!important;transform:none!important}`}</style>
+          <style>{`.reveal,.mask-word>span{opacity:1!important;transform:none!important}`}</style>
         </noscript>
       </head>
       <body className="flex min-h-full flex-col">

@@ -142,7 +142,19 @@ export const walkthrough = {
   // Deliberately not the deck's "Every call, coached in real time": that line is
   // step 1's headline just below, and repeating it verbatim reads as a mistake.
   title: "A rep's whole day, in one system",
-  body: "A rep's day used to be seven tools that do not talk to each other, with copy-paste between all of them. This is the same day inside ToolBocks.",
+  // "seven tools" was here. The product replaces far more than seven, and any
+  // count invites someone to check it, so the line no longer carries one.
+  body: "A rep's day used to be a stack of tools that do not talk to each other, with copy-paste between all of them. This is the same day inside ToolBocks.",
+  // The opening beat of the threaded walkthrough: a prompt on the left, a line
+  // running to a pill on the right that lights when the line reaches it. Sixty
+  // is the figure the mission statement already uses; the pill repeats the hero
+  // headline word for word so the section ties back to the promise at the top.
+  start: {
+    prompt: "A rep opens a list of sixty prospects.",
+    pill: "The system does the rest",
+  },
+  // `tag` is the small label on the connector line that leads INTO each step,
+  // naming what the system is doing on the way there.
   steps: [
     {
       kicker: "The live call",
@@ -150,6 +162,7 @@ export const walkthrough = {
       body: "The rep opens a lead that is already researched. While they talk, the coach reads the call and puts the counter to an objection on screen as it is being said.",
       visual: "coachedCall" as const,
       sample: true,
+      tag: "pulling lead intel",
     },
     {
       kicker: "Power dialer",
@@ -157,6 +170,7 @@ export const walkthrough = {
       body: "Several lines dial at once and the first human to answer is bridged to the rep. Machines are screened out, and numbers outside their legal calling window are held.",
       visual: "parallelLines" as const,
       sample: true,
+      tag: "queuing the next lines",
     },
     {
       kicker: "Fill the pipeline",
@@ -164,6 +178,7 @@ export const walkthrough = {
       body: "Every lead is researched before anyone contacts it, down to whether they are already running ads. The follow-up then goes out personalised and CASL-safe, without a rep writing it.",
       visual: "researchFlow" as const,
       sample: false,
+      tag: "researching every lead",
     },
     {
       kicker: "Pipeline",
@@ -171,6 +186,7 @@ export const walkthrough = {
       body: "Every dial, reply and disposition syncs back to your CRM both ways, and dragging a deal between stages writes through. Works natively with GoHighLevel and Salesforce.",
       visual: "pipelineBoard" as const,
       sample: true,
+      tag: "syncing both ways",
     },
     {
       kicker: "Close faster",
@@ -178,6 +194,7 @@ export const walkthrough = {
       body: "Point it at a website and an Instagram handle and it returns an on-brand marketing audit, ready to send. From a discovery-call transcript it writes the proposal.",
       visual: "auditProposal" as const,
       sample: false,
+      tag: "reading the transcript",
     },
     {
       kicker: "Analytics",
@@ -185,6 +202,7 @@ export const walkthrough = {
       body: "Connect rate, best time to call, disposition mix and AI cost, broken out per rep. Each SDR sees their own numbers, so a review is never a surprise.",
       visual: "analytics" as const,
       sample: true,
+      tag: "metering every rep",
     },
   ],
   sampleNote: "Illustrative interface. Figures shown are a sample view.",
