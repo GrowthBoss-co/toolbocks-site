@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { CharReveal } from "@/components/motion/char-reveal";
-import { HeroStage } from "@/components/sections/hero-stage";
+import { HeroDashboard, HeroLines } from "@/components/sections/hero-dashboard";
 import { Button } from "@/components/ui-kit";
 import { DEMO_URL, hero, integrations } from "@/lib/content";
 
@@ -19,6 +19,9 @@ const RISE = {
 export function Hero() {
   return (
     <section id="top" className="grain relative isolate overflow-hidden">
+      {/* Six lines from the top of the page into the dashboard, measured against
+          this section (see HeroLines). Behind everything, above the ground. */}
+      <HeroLines hostId="top" />
       {/* Ambient light. Two indigo pools low in the frame and a violet one high
           on the right, so the ground is unevenly lit rather than flatly tinted. */}
       <div
@@ -37,7 +40,7 @@ export function Hero() {
       />
 
       <div className="container-main pt-section-hero">
-        <div className="flex flex-col items-center gap-6xl">
+        <div className="relative z-10 flex flex-col items-center gap-6xl">
           <div className="flex flex-col items-center gap-2xl text-center">
             <p className="text-eyebrow rise-in">{hero.eyebrow}</p>
 
@@ -75,7 +78,7 @@ export function Hero() {
             </div>
           </div>
 
-          <HeroStage />
+          <HeroDashboard />
           {/* The CRMs, where the four numbers used to sit: a very small line and
               the marks in their own colours, no names. The id keeps the nav's
               "Integrations" link resolving. */}
