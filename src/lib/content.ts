@@ -63,22 +63,159 @@ export const stats = [
 ];
 
 export const features = {
+  // The "What changes" header, on its own again: the dot field the cursor
+  // draws through lives behind it. The two bands and the dashboard that used
+  // to follow it were removed; the all-features carousel follows instead.
   eyebrow: "What changes",
   title: "Reps spend the day talking, not typing.",
   body: "The list, the research, the follow-up and the CRM updates all happen without anyone touching them. What is left on a rep's calendar is conversations.",
-  cards: [
-    {
-      eyebrow: "On the call",
-      title: "Every call starts prepared",
-      body: "The rep picks up already knowing the business, the likely pain and an opener. When an objection lands, the counter is on screen before they have to think of one.",
-    },
-    {
-      eyebrow: "After the call",
-      title: "Follow-up nobody has to remember",
-      body: "A multi-step email, SMS and call sequence starts on its own and stops the moment someone replies or books. Nobody has to remember day four.",
-    },
-  ],
 };
+
+export const featureCatalog = {
+  // The "Explore all the features" carousel that replaced "What changes":
+  // one card per screen in the product, in the app's own nav order. Titles
+  // are the screen names; bodies are the screens' own one-line descriptions
+  // from the ToolBox at c41ec86, lightly trimmed. New copy, flagged for
+  // Bahaa's sign-off. `visual` keys the illustration and the icon.
+  eyebrow: "All features",
+  titleLead: "Explore",
+  titleAccent: "all the features",
+  titleLine2: "built into ToolBocks.",
+  items: [
+    {
+      visual: "today",
+      title: "Today",
+      body: "Everything due today in one queue: cadence steps, callbacks, replies waiting and meetings to confirm. Reps work it top to bottom.",
+    },
+    {
+      visual: "pipeline",
+      title: "Pipeline",
+      body: "A deal board that writes back to the CRM. Drag a card between stages and the CRM stage moves with it.",
+    },
+    {
+      visual: "leadGen",
+      title: "Lead Gen",
+      body: "Build a target list without leaving the app. Filter by industry, size and geography, preview the match count, then push straight into a cadence.",
+    },
+    {
+      visual: "leadResearch",
+      title: "Lead Research",
+      body: "One prospect, researched before the dial: what the business does, the likely pain, and an opener written from what was found.",
+    },
+    {
+      visual: "cadence",
+      title: "Cadence",
+      body: "Multi-step call, email and SMS sequences that run on their own and stop the moment someone replies or books.",
+    },
+    {
+      visual: "nurturer",
+      title: "Nurturer",
+      body: "The long game for leads that said not now. Something useful on a slow drip, and a hand back to a rep the day they engage.",
+    },
+    {
+      visual: "socialSelling",
+      title: "Social Selling",
+      body: "LinkedIn and Instagram worked like a channel. Openers drafted from the prospect's own posts, with the source kept beside the draft.",
+    },
+    {
+      visual: "powerDialer",
+      title: "Power Dialer",
+      body: "One rep, one queue. Local presence, dispositions in a click, and the recording, transcript and summary land on the contact.",
+    },
+    {
+      visual: "teamDialer",
+      title: "Team Dialer",
+      body: "A shared queue for the whole floor. Lines dial in parallel and the next connect goes to whoever is free.",
+    },
+    {
+      visual: "liveCoach",
+      title: "AI Live Coach",
+      body: "Reads the live transcript, catches the objection as it is said, and puts the counter on the rep's screen before the pause gets long.",
+    },
+    {
+      visual: "emailBlast",
+      title: "Email Blast",
+      body: "Write once, send to a tag, see what happened. Every send carries the unsubscribe footer the law wants.",
+    },
+    {
+      visual: "conversations",
+      title: "Conversations",
+      body: "Every reply, email and text in one inbox with the lead's history beside it. Replying here stops the cadence.",
+    },
+    {
+      visual: "audit",
+      title: "Digital Audit",
+      body: "A branded audit of the prospect's online presence, built from the research and published with your booking link on it.",
+    },
+    {
+      visual: "proposal",
+      title: "Proposal",
+      body: "A proposal drafted from the call and your Business Library, reviewed by the rep, then sent with your name on it.",
+    },
+    {
+      visual: "programStrategy",
+      title: "Program Strategy",
+      body: "The 90-day plan a client gets after they sign: what runs in which month, what it should produce, and what you need from them.",
+    },
+    {
+      visual: "salesHandoff",
+      title: "Sales Handoff",
+      body: "Everything delivery needs, written while it is fresh: what was promised, what was not, and where the lead came from.",
+    },
+    {
+      visual: "businessLibrary",
+      title: "Business Library",
+      body: "What the AI knows about your business: who you sell to, what you sell, the proof you use. Answer once and every document follows it.",
+    },
+    {
+      visual: "teamDashboard",
+      title: "Team Dashboard",
+      body: "The whole team on one page: calls, connects, meetings and talk time by rep, with the shape of the day hour by hour.",
+    },
+    {
+      visual: "productivity",
+      title: "Productivity",
+      body: "Per-rep activity and talk time, and where the day actually went, so nobody argues about who the dialer favours.",
+    },
+    {
+      visual: "roi",
+      title: "ROI",
+      body: "What the outreach is worth in money rather than activity: cost per lead, cost per meeting, and what a closed deal returned.",
+    },
+    {
+      visual: "campaignReports",
+      title: "Campaign Reports",
+      body: "How one campaign's leads actually moved: where they stopped, what they replied to, and how long anything took.",
+    },
+    {
+      visual: "dialerReports",
+      title: "Dialer Reports",
+      body: "Every call the instance placed, with the recording, the transcript and the summary attached to the row.",
+    },
+    {
+      visual: "aiCosts",
+      title: "AI Costs",
+      body: "What the AI actually cost, priced per operation at each model's own rate, so a research run and a proposal are never averaged together.",
+    },
+    {
+      visual: "coachPlaybook",
+      title: "Coach Playbook",
+      body: "The objections your team actually hears and what worked against them, built from your own call recordings rather than a book.",
+    },
+    {
+      visual: "usersRoles",
+      title: "Users & Roles",
+      body: "Who is on the instance and what they can reach. Roles carry a default set of screens; anything else is granted per person.",
+    },
+    {
+      visual: "integrations",
+      title: "Integrations",
+      body: "Your CRM, your phone numbers, your AI keys and your business profile. Credentials are encrypted on the instance and never leave it.",
+    },
+  ] as const,
+};
+
+export type FeatureVisualKey = (typeof featureCatalog.items)[number]["visual"];
 
 /**
  * The middle item used to be "Compliance-first telephony". Compliance is now
@@ -89,6 +226,23 @@ export const features = {
  * The replacement covers two-way CRM sync, which the page otherwise only
  * mentions inside one walkthrough step.
  */
+// The AI Live Coach gets its own beat: copy on the left, the real dialer demo
+// (public/demo/live-call.html, embedded as-is) on the right. Everything claimed
+// here was verified against the app in the PR #18 review: objection coaching
+// reads the live transcript (src/objections.ts), research happens before the
+// first contact, and the methodology is the floor's own playbook.
+export const coach = {
+  eyebrow: "AI Live Coach",
+  title: "A coach on the line for every call",
+  body: "It listens to the live transcript, catches the objection as it is being said, and puts the counter on the rep's screen before the pause gets long. The methodology underneath is the one that runs the Growth Boss floor, so a rep in their first week handles a pushback the way the floor does.",
+  points: [
+    "Reads the call as it happens, not after it ends",
+    "The counter is on screen before the rep has to think of one",
+    "Lead intel and research are already there when the call connects",
+  ],
+  demoNote: "Live demo on sample data. Click around.",
+};
+
 export const benefits = {
   eyebrow: "Benefits",
   title: "Three things that stop being your problem",
@@ -112,20 +266,28 @@ export const benefits = {
 };
 
 export const integrations = {
-  eyebrow: "Integrations",
-  title: "Connect the stack your outbound already runs on",
-  body: "Credentials are stored encrypted and never redisplayed once saved.",
+  // A very small line over a row of CRM wordmarks, sitting where the stat
+  // strip used to be under the hero. Official logos in their own colours,
+  // dark lettering turned white for the ground, no captions. HighLevel and
+  // Salesforce are wired today (both behind CrmClient); the rest are popular
+  // CRMs on the roadmap, listed at Bahaa's call. `w`/`h` are the artwork's
+  // aspect (from the file's viewBox); `size` is the rendered height in rem,
+  // tuned by eye so a squat cloud and a long wordmark read as the same weight.
+  heading: "Connects to the CRM you already run",
   brands: [
-    { name: "GoHighLevel", mark: "GHL" },
-    { name: "Twilio", mark: "TW" },
-    { name: "OpenAI", mark: "AI" },
-    { name: "Anthropic", mark: "AN" },
-    { name: "ElevenLabs", mark: "11" },
-    { name: "Google Places", mark: "GP" },
-    { name: "Amplemarket", mark: "AM" },
-    { name: "MiniMax", mark: "MM" },
-    { name: "Vercel", mark: "VC" },
-  ],
+    { name: "HighLevel", file: "highlevel.png", w: 1024, h: 232, size: 2.1 },
+    { name: "Salesforce", file: "salesforce.svg", w: 273, h: 191, size: 3.3 },
+    { name: "HubSpot", file: "hubspot.svg", w: 106, h: 30, size: 2.1 },
+    { name: "Zoho", file: "zoho.svg", w: 1024, h: 450, size: 2.3 },
+    { name: "Pipedrive", file: "pipedrive.svg", w: 668, h: 152, size: 1.7 },
+    { name: "monday.com", file: "monday.svg", w: 467, h: 47, size: 1.55 },
+    { name: "Microsoft Dynamics 365", file: "dynamics365.svg", w: 1017, h: 355, size: 2.5 },
+    { name: "Zendesk", file: "zendesk.svg", w: 363, h: 259, size: 2.6 },
+    { name: "Freshworks", file: "freshworks.svg", w: 600, h: 120, size: 1.75 },
+    { name: "ActiveCampaign", file: "activecampaign.svg", w: 136, h: 14, size: 1.35 },
+    { name: "Keap", file: "keap.svg", w: 600, h: 280, size: 2.2 },
+    { name: "Insightly", file: "insightly.svg", w: 134, h: 48, size: 2 },
+  ] as const,
 };
 
 /**
@@ -142,7 +304,19 @@ export const walkthrough = {
   // Deliberately not the deck's "Every call, coached in real time": that line is
   // step 1's headline just below, and repeating it verbatim reads as a mistake.
   title: "A rep's whole day, in one system",
-  body: "A rep's day used to be seven tools that do not talk to each other, with copy-paste between all of them. This is the same day inside ToolBocks.",
+  // "seven tools" was here. The product replaces far more than seven, and any
+  // count invites someone to check it, so the line no longer carries one.
+  body: "A rep's day used to be a stack of tools that do not talk to each other, with copy-paste between all of them. This is the same day inside ToolBocks.",
+  // The opening beat of the threaded walkthrough: a prompt on the left, a line
+  // running to a pill on the right that lights when the line reaches it. Sixty
+  // is the figure the mission statement already uses; the pill repeats the hero
+  // headline word for word so the section ties back to the promise at the top.
+  start: {
+    prompt: "A rep opens a list of sixty prospects.",
+    pill: "The system does the rest",
+  },
+  // `tag` is the small label on the connector line that leads INTO each step,
+  // naming what the system is doing on the way there.
   steps: [
     {
       kicker: "The live call",
@@ -150,6 +324,7 @@ export const walkthrough = {
       body: "The rep opens a lead that is already researched. While they talk, the coach reads the call and puts the counter to an objection on screen as it is being said.",
       visual: "coachedCall" as const,
       sample: true,
+      tag: "pulling lead intel",
     },
     {
       kicker: "Power dialer",
@@ -157,6 +332,7 @@ export const walkthrough = {
       body: "Several lines dial at once and the first human to answer is bridged to the rep. Machines are screened out, and numbers outside their legal calling window are held.",
       visual: "parallelLines" as const,
       sample: true,
+      tag: "queuing the next lines",
     },
     {
       kicker: "Fill the pipeline",
@@ -164,6 +340,7 @@ export const walkthrough = {
       body: "Every lead is researched before anyone contacts it, down to whether they are already running ads. The follow-up then goes out personalised and CASL-safe, without a rep writing it.",
       visual: "researchFlow" as const,
       sample: false,
+      tag: "researching every lead",
     },
     {
       kicker: "Pipeline",
@@ -171,6 +348,7 @@ export const walkthrough = {
       body: "Every dial, reply and disposition syncs back to your CRM both ways, and dragging a deal between stages writes through. Works natively with GoHighLevel and Salesforce.",
       visual: "pipelineBoard" as const,
       sample: true,
+      tag: "syncing both ways",
     },
     {
       kicker: "Close faster",
@@ -178,6 +356,7 @@ export const walkthrough = {
       body: "Point it at a website and an Instagram handle and it returns an on-brand marketing audit, ready to send. From a discovery-call transcript it writes the proposal.",
       visual: "auditProposal" as const,
       sample: false,
+      tag: "reading the transcript",
     },
     {
       kicker: "Analytics",
@@ -185,6 +364,7 @@ export const walkthrough = {
       body: "Connect rate, best time to call, disposition mix and AI cost, broken out per rep. Each SDR sees their own numbers, so a review is never a surprise.",
       visual: "analytics" as const,
       sample: true,
+      tag: "metering every rep",
     },
   ],
   sampleNote: "Illustrative interface. Figures shown are a sample view.",
@@ -205,34 +385,41 @@ export const system = {
   eyebrow: "Why it holds up",
   title: "Not a dialer. A sales system.",
   body: "Plenty of tools will dial a list. The difference is what surrounds the call.",
+  // `tag` is the small mono label in each bento card's corner, from the design.
   pillars: [
     {
       icon: "playbook" as const,
+      tag: "Method",
       title: "Encoded playbook",
       body: "The close methodology that runs the Growth Boss floor is built into every coach prompt and every script, so a new rep inherits it on day one.",
     },
     {
       icon: "gauge" as const,
+      tag: "Guardrails",
       title: "Compliance native",
       body: "Calling windows are enforced from the lead's own area code, opt-outs are handled server-side, and the dialer slows itself down before an abandon rate becomes a problem.",
     },
     {
       icon: "server" as const,
+      tag: "Isolation",
       title: "Instance per customer",
       body: "Your deployment is isolated, with its own keys and its own data. Nothing of yours shares a database with another agency.",
     },
     {
       icon: "lock" as const,
+      tag: "Ownership",
       title: "Licensed to you",
       body: "Each build is signed and bound to your domain, so an instance cannot be copied out of your environment and run somewhere else.",
     },
     {
       icon: "shield" as const,
+      tag: "Security",
       title: "Encrypted by default",
       body: "Integration credentials are encrypted and never shown again after you save them. Every instance holds its own key.",
     },
     {
       icon: "chart" as const,
+      tag: "Transparency",
       title: "Costs you can see",
       body: "AI spend, call cost and campaign return are reported per rep in the same place as pipeline, so nothing about the platform is a black box.",
     },
@@ -401,7 +588,6 @@ export const pricing = {
 };
 
 export const finalCta = {
-  marquee: "Book a live demo",
   title: "See it work on one of your leads.",
   body: "Bring a company you want to sell to. We will research it, dial it and generate its audit while you watch.",
   cta: "Book a live demo",
@@ -426,7 +612,6 @@ export const footer = {
       links: [
         { label: "Growth Boss", href: AGENCY_URL },
         { label: "Book a demo", href: DEMO_URL },
-        { label: "Sign in", href: APP_URL },
         // /privacy existed but nothing on the site linked to it. Ad platforms
         // look for a reachable privacy policy, and a footer link is where people
         // expect to find one.

@@ -1,7 +1,9 @@
 import Image from "next/image";
 import { StarIcon } from "@/components/icons";
+import { Reveal } from "@/components/motion/reveal";
 import { SectionHeader } from "@/components/ui-kit";
 import { testimonials } from "@/lib/content";
+import { cn } from "@/lib/utils";
 
 /** Every avatar source is a square Slack profile photo at this size. */
 const AVATAR_SOURCE = 512;
@@ -24,7 +26,7 @@ function Avatar({
   return (
     <span
       aria-hidden="true"
-      className="relative size-14 shrink-0 overflow-hidden rounded-round bg-surface-800"
+      className="relative size-11 shrink-0 overflow-hidden rounded-round bg-surface-800 ring-1 ring-white/10"
     >
       <Image
         // Decorative: the name and role sit immediately beside it, so alt text
@@ -33,9 +35,9 @@ function Avatar({
         src={avatar.src}
         width={AVATAR_SOURCE}
         height={AVATAR_SOURCE}
-        // Ask for well over the 56px box: the tightest crop here shows about
-        // half the source, so a smaller request would go soft on a 3x screen.
-        sizes="384px"
+        // Ask for well over the box: the tightest crop here shows about half
+        // the source, so a smaller request would go soft on a 3x screen.
+        sizes="320px"
         className="absolute max-w-none"
         style={{
           width: `${(AVATAR_SOURCE / size) * 100}%`,
@@ -49,95 +51,89 @@ function Avatar({
 }
 
 /**
- * Orizon uses a Webflow slider here. This is a CSS marquee instead, reusing the
- * `marquee-viewport` / `marquee-track` pair the closing band already uses, so
- * there is no slider library and no client JS.
+ * Four cards in a row, each set a little lower or higher than its neighbour
+ * and tilted a degree or so, so the row reads as a loose hand of cards rather
+ * than a grid. The stagger and tilt exist only from lg up; below that the
+ * cards stack and a tilt would just look like a mistake.
  *
- * It drifts rather than snapping, which means the cards are no longer manually
- * scrollable. Hovering pauses it so a quote can be read in full, and the global
- * prefers-reduced-motion rule stops the drift entirely.
+ * This replaced the drifting marquee. The cards are min-height, not fixed:
+ * a fixed height once pushed the name and photo out of the card at narrow
+ * widths, and nothing here reintroduces that.
  */
+const OFFSETS = ["lg:mt-0", "lg:mt-16", "lg:mt-6", "lg:mt-24"] as const;
+const TILTS = ["lg:-rotate-[1.2deg]", "lg:rotate-[0.8deg]", "lg:-rotate-[0.6deg]", "lg:rotate-[1.1deg]"] as const;
+
 export function Testimonials() {
   return (
-    <section className="relative">
-      <div className="container-main pt-section-main pb-section-main">
-        <div className="section-layout">
-          <SectionHeader
-            eyebrow={testimonials.eyebrow}
-            title={testimonials.title}
-          />
+    <section id="testimonials" className="grain relative isolate overflow-hidden bg-void">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <div className="aura left-1/2 top-[60%] size-[56rem] -translate-x-1/2 opacity-60" />
+      </div>
 
-          <div className="relative">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[8%] bg-gradient-to-r from-strong to-transparent"
+      <div className="container-main pb-section-main pt-section-main">
+        <div className="flex flex-col gap-6xl">
+          <Reveal>
+            <SectionHeader
+              eyebrow={testimonials.eyebrow}
+              title={testimonials.title}
             />
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 right-0 z-10 w-[8%] bg-gradient-to-l from-strong to-transparent"
-            />
+          </Reveal>
 
-            {/* Two identical tracks: the first scrolls out to -100% of its own
-                width exactly as the second arrives, which is what makes the loop
-                seamless. Spacing lives entirely on the track (gap plus a matching
-                pr) so the join between tracks is the same gap as between cards.
-                `marquee-viewport` pauses the animation on hover, and the global
-                prefers-reduced-motion rule stops it outright. */}
-            <div className="marquee-viewport flex overflow-hidden pb-lg">
-              {[0, 1].map((track) => (
-                <ul
-                  key={track}
-                  // The duplicate is decorative; without this a screen reader
-                  // reads every quote twice.
-                  aria-hidden={track === 1}
-                  className="marquee-track is-slow items-stretch gap-xl pr-xl"
+          <ul className="grid grid-cols-1 gap-xl sm:grid-cols-2 lg:grid-cols-4 lg:items-start">
+            {testimonials.items.map((t, i) => (
+              <Reveal
+                as="li"
+                key={t.name}
+                delay={i * 0.1}
+                y={36}
+                className={cn(OFFSETS[i % OFFSETS.length])}
+              >
+                <figure
+                  className={cn(
+                    "flex min-h-[24rem] flex-col justify-between gap-2xl rounded-[1.125rem] border border-white/[0.08] p-2xl transition-transform duration-500 ease-out lg:hover:rotate-0",
+                    TILTS[i % TILTS.length],
+                  )}
+                  style={{
+                    backgroundImage:
+                      "radial-gradient(70% 45% at 50% 100%, rgb(92 90 255 / 0.16), transparent), linear-gradient(180deg, #10121b 0%, #090a10 100%)",
+                    boxShadow:
+                      "inset 0 1px 0 0 rgb(255 255 255 / 0.06), 0 30px 70px -40px rgb(0 0 0 / 0.9)",
+                  }}
                 >
-                  {testimonials.items.map((t, i) => (
-                    <li
-                      key={i}
-                      // Fixed widths, not percentages: the track sizes itself to
-                      // its content, so a percentage width would have nothing
-                      // stable to resolve against.
-                      className="w-[19rem] shrink-0 sm:w-[22rem] lg:w-[24rem]"
-                    >
-                      {/* min-h rather than a fixed h: at narrow widths a real
-                          quote runs past 26rem, and a fixed height pushed the
-                          name and photo outside the card. Cards stretch to the
-                          tallest in the track, so the row stays even. */}
-                      <figure className="surface-card flex h-full min-h-[26rem] flex-col justify-between gap-2xl p-3xl">
-                        <div className="flex flex-col gap-xl">
-                          <div className="flex gap-xs text-gold" aria-hidden="true">
-                            {Array.from({ length: 5 }, (_, s) => (
-                              <StarIcon key={s} className="size-5" />
-                            ))}
-                          </div>
-                          <blockquote className="heading-h5">
-                            {t.quote}
-                          </blockquote>
-                        </div>
-                        <figcaption className="flex items-center gap-lg text-left">
-                          {t.avatar ? (
-                            <Avatar avatar={t.avatar} />
-                          ) : (
-                            <span
-                              aria-hidden="true"
-                              className="grid size-14 shrink-0 place-items-center rounded-round bg-surface-800 text-small text-sub"
-                            >
-                              {t.name.slice(0, 1)}
-                            </span>
-                          )}
-                          <span className="flex flex-col">
-                            <span className="text-small text-ink">{t.name}</span>
-                            <span className="text-small text-sub">{t.role}</span>
-                          </span>
-                        </figcaption>
-                      </figure>
-                    </li>
-                  ))}
-                </ul>
-              ))}
-            </div>
-          </div>
+                  <div className="flex flex-col gap-lg">
+                    <div className="flex gap-[3px] text-gold" aria-hidden="true">
+                      {Array.from({ length: 5 }, (_, s) => (
+                        <StarIcon key={s} className="size-[0.875rem]" />
+                      ))}
+                    </div>
+                    <blockquote className="heading-h6 text-balance leading-[1.35] text-ink">
+                      &ldquo;{t.quote}&rdquo;
+                    </blockquote>
+                  </div>
+
+                  <figcaption className="flex items-center gap-md border-t border-white/[0.08] pt-lg text-left">
+                    {t.avatar ? (
+                      <Avatar avatar={t.avatar} />
+                    ) : (
+                      <span
+                        aria-hidden="true"
+                        className="grid size-11 shrink-0 place-items-center rounded-round bg-surface-800 text-small text-sub"
+                      >
+                        {t.name.slice(0, 1)}
+                      </span>
+                    )}
+                    <span className="flex flex-col leading-tight">
+                      <span className="text-small font-semibold text-ink">{t.name}</span>
+                      <span className="text-[0.8125rem] text-sub">{t.role}</span>
+                    </span>
+                  </figcaption>
+                </figure>
+              </Reveal>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

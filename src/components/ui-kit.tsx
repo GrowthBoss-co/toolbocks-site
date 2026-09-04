@@ -10,15 +10,27 @@ import { cn } from "@/lib/utils";
 type ButtonVariant = "primary" | "dark" | "light";
 type ButtonSize = "default" | "small";
 
+/**
+ * Lime is the only saturated warm colour on the page, so it is spent entirely
+ * on the one thing every section is asking for: book the demo. Indigo stays the
+ * structural colour — rails, nodes, icons, chips — and never competes as a CTA.
+ *
+ * The ghost variant is a border, not a fill: a second filled button beside the
+ * lime one halves the pull of both.
+ */
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: "bg-primary-500 text-white hover:bg-primary-600",
-  dark: "bg-surface-800 text-ink hover:bg-surface-700",
+  primary:
+    "bg-lime text-void hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-10px_rgb(218_255_0/0.5)]",
+  dark: "border border-white/12 bg-white/[0.04] text-ink hover:border-primary-400 hover:bg-white/[0.07]",
   light: "bg-[var(--n-50)] text-strong hover:bg-white",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
-  default: "h-[3.25rem] px-xl text-base",
-  small: "h-10 px-lg text-small",
+  default: "h-[3.25rem] px-2xl text-base",
+  // text-[0.875rem] rather than .text-small: tailwind-merge cannot tell that
+  // `text-small` is a size, files it with the colours, and drops `text-void`
+  // from the lime button as a "conflict". The nav CTA shipped with grey-on-lime.
+  small: "h-10 px-lg text-[0.875rem]",
 };
 
 export function Button({
@@ -35,23 +47,24 @@ export function Button({
   className?: string;
 }) {
   const external = href.startsWith("http");
+  // Both labels must be exactly as tall as the window they slide inside, or the
+  // second one peeks out under the first. The small size sets .text-small,
+  // whose 1.6 line-height is shorter than the 1.5rem window — which showed as a
+  // clipped, doubled label on the nav CTA. Pinning h-6/leading-6 on the labels
+  // themselves makes the slide exactly one label tall at every size.
+  const label = "block h-6 shrink-0 leading-6 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/btn:-translate-y-full";
+
   const inner = (
     <span className="flex h-6 flex-col overflow-hidden text-center">
-      {/* shrink-0 matters: without it flex squashes both labels to half height */}
-      <span className="shrink-0 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/btn:-translate-y-full">
-        {children}
-      </span>
-      <span
-        aria-hidden="true"
-        className="shrink-0 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/btn:-translate-y-full"
-      >
+      <span className={label}>{children}</span>
+      <span aria-hidden="true" className={label}>
         {children}
       </span>
     </span>
   );
 
   const classes = cn(
-    "group/btn inline-flex shrink-0 items-center justify-center overflow-hidden rounded-small font-medium leading-6 transition-colors duration-200",
+    "group/btn inline-flex shrink-0 items-center justify-center overflow-hidden rounded-round font-medium leading-6 transition-all duration-200",
     variantClasses[variant],
     sizeClasses[size],
     className,

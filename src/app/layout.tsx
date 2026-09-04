@@ -1,12 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans } from "next/font/google";
+import { Instrument_Serif, Work_Sans } from "next/font/google";
 import Script from "next/script";
 import { SITE_URL } from "@/lib/content";
 import { buildStructuredData } from "@/lib/structured-data";
 import "./globals.css";
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+// One place uses the serif now: the mission statement. Normal weight only.
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
+
+const workSans = Work_Sans({
+  variable: "--font-work-sans",
   subsets: ["latin"],
   display: "swap",
 });
@@ -81,7 +89,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${instrumentSerif.variable} ${workSans.variable} h-full antialiased`}
+    >
       <head>
         {/* Organization + WebSite + SoftwareApplication. See structured-data.ts
             for what is deliberately NOT emitted here and why: no invented review
@@ -93,6 +104,14 @@ export default function RootLayout({
             __html: JSON.stringify(buildStructuredData()),
           }}
         />
+
+        {/* Scroll reveals start at opacity 0 and are switched on by an
+            IntersectionObserver, so with scripting off most of the page would
+            render as blank space. The markup is all server-rendered and present
+            either way — this just makes sure it is also visible. */}
+        <noscript>
+          <style>{`.reveal,.mask-word>span,.char-wave .cw{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
       </head>
       <body className="flex min-h-full flex-col">
         {children}

@@ -1,8 +1,14 @@
+import {
+  SMOOTH_CONTENT,
+  SMOOTH_WRAPPER,
+  SmoothScroll,
+} from "@/components/motion/smooth-scroll";
 import { Benefits } from "@/components/sections/benefits";
-import { Features } from "@/components/sections/features";
+import { Coach } from "@/components/sections/coach";
+import { FeatureCatalog } from "@/components/sections/feature-catalog";
+import { WhatChanges } from "@/components/sections/what-changes";
 import { FinalCta } from "@/components/sections/final-cta";
 import { Hero } from "@/components/sections/hero";
-import { Integrations } from "@/components/sections/integrations";
 import { Mission } from "@/components/sections/mission";
 import { Pricing } from "@/components/sections/pricing";
 import { SiteFooter } from "@/components/sections/site-footer";
@@ -21,19 +27,27 @@ export default function Home() {
         Skip to content
       </a>
       <SiteNav />
-      <main className="overflow-clip">
-        <Hero />
-        <Mission />
-        <Features />
-        <Walkthrough />
-        <System />
-        <Benefits />
-        <Integrations />
-        <Testimonials />
-        <Pricing />
-        <FinalCta />
-      </main>
-      <SiteFooter />
+      <SmoothScroll />
+      {/* Everything the smoother translates lives in here. The nav stays out,
+          because it is position: fixed and would otherwise move with the page. */}
+      <div id={SMOOTH_WRAPPER}>
+        <div id={SMOOTH_CONTENT}>
+          <main className="overflow-clip">
+            <Hero />
+            <Mission />
+            <Walkthrough />
+            <Coach />
+            <WhatChanges />
+            <FeatureCatalog />
+            <Benefits />
+            <System />
+            <Testimonials />
+            <Pricing />
+            <FinalCta />
+          </main>
+          <SiteFooter />
+        </div>
+      </div>
     </>
   );
 }

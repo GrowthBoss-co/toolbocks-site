@@ -1,26 +1,33 @@
-import { mission, stats } from "@/lib/content";
+import { Reveal } from "@/components/motion/reveal";
+import { ScrollCharReveal } from "@/components/motion/scroll-char-reveal";
+import { mission } from "@/lib/content";
 
+/**
+ * One statement, nothing else on the ground with it.
+ *
+ * The stat strip used to live here and now sits under the hero stage, which
+ * left this section doing a single job: a held beat between the hero and the
+ * product. The quiet is the design — a supporting element would turn the
+ * paragraph back into a subhead.
+ */
 export function Mission() {
   return (
-    <section>
-      <div className="container-main pt-section-main pb-section-small">
-        <div className="section-layout is-split">
-          <p className="text-eyebrow">{mission.eyebrow}</p>
-          <p className="heading-h3 max-w-[41ch] text-center text-ink">
-            {mission.text}
-          </p>
+    <section className="grain relative isolate bg-abyss">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <div className="aura left-1/2 top-1/2 size-[40rem] -translate-x-1/2 -translate-y-1/2 opacity-50" />
+      </div>
 
-          {/* Real numbers off the live instance, standing in for Orizon's
-              decorative background shape. */}
-          <dl className="mt-2xl grid w-full grid-cols-2 gap-x-xl gap-y-3xl border-t border-line pt-3xl lg:grid-cols-4">
-            {stats.map((s) => (
-              <div key={s.label} className="flex flex-col gap-sm text-center">
-                <dt className="heading-h4 text-gradient order-1">{s.value}</dt>
-                <dd className="text-small order-2 text-sub">{s.label}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+      <div className="container-main pb-section-main pt-section-main">
+        <Reveal className="flex flex-col items-center gap-2xl text-center">
+          <p className="text-eyebrow">{mission.eyebrow}</p>
+          <ScrollCharReveal
+            text={mission.text}
+            className="serif-statement max-w-[26ch] text-balance text-ink"
+          />
+        </Reveal>
       </div>
     </section>
   );

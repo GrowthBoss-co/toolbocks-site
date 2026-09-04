@@ -1,55 +1,65 @@
 import Image from "next/image";
+import { CharReveal } from "@/components/motion/char-reveal";
+import { HeroDashboard, HeroLines } from "@/components/sections/hero-dashboard";
 import { Button } from "@/components/ui-kit";
-import { DEMO_URL, hero } from "@/lib/content";
+import { DEMO_URL, hero, integrations } from "@/lib/content";
+
+/**
+ * Everything above the fold animates in on a CSS timeline, not on scroll or
+ * hydration, so the first paint is already the finished hero. The delays below
+ * are the running order: eyebrow, headline (which runs its own per-character
+ * wave), subtitle, buttons, note.
+ */
+const RISE = {
+  subtitle: "0.5s",
+  ctas: "0.62s",
+  note: "0.8s",
+} as const;
 
 export function Hero() {
   return (
-    <section
-      id="top"
-      className="relative max-h-[64rem] overflow-hidden rounded-b-[2.5rem]"
-    >
-      {/* Orizon's three-part hero glow, rebuilt on the ToolBocks indigo ramp. */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div
-          className="absolute inset-x-0 bottom-[10%] min-h-[50%] w-full blur-[100px] max-lg:bottom-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(90deg, rgb(92 90 255 / 0.30), var(--p-600) 50%, rgb(92 90 255 / 0.30))",
-            mixBlendMode: "plus-lighter",
-          }}
-        />
-        <div
-          className="absolute inset-0 size-full opacity-80"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle farthest-corner at 0% 100%, var(--p-700), transparent 34%)",
-          }}
-        />
-        <div
-          className="absolute inset-0 size-full opacity-80"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle farthest-corner at 100% 100%, var(--p-700), transparent 34%)",
-          }}
-        />
+    <section id="top" className="grain relative isolate overflow-hidden">
+      {/* Six lines from the top of the page into the dashboard, measured against
+          this section (see HeroLines). Behind everything, above the ground. */}
+      <HeroLines hostId="top" />
+      {/* Ambient light. Two indigo pools low in the frame and a violet one high
+          on the right, so the ground is unevenly lit rather than flatly tinted. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <div className="aura left-1/2 top-[-10%] size-[46rem] -translate-x-1/2 opacity-90" />
+        <div className="aura is-violet right-[-8%] top-[6%] size-[34rem]" />
       </div>
 
-      <div className="container-main pt-section-hero">
-        <div className="section-layout">
-          <div className="flex flex-col items-center gap-2xl">
-            <div className="flex flex-col items-center gap-xl">
-              <p className="text-eyebrow">{hero.eyebrow}</p>
-              <div className="flex flex-col items-center gap-xl text-center">
-                <h1 className="heading-h1 text-gradient max-w-[22ch] text-balance">
-                  {hero.title}
-                </h1>
-                <p className="text-large max-w-[56ch] text-soft-200">
-                  {hero.subtitle}
-                </p>
-              </div>
-            </div>
+      {/* The ground fades to the section below, so the hero has no visible seam. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-b from-transparent to-abyss"
+      />
 
-            <div className="flex flex-col items-center gap-md">
+      <div className="container-main pt-section-hero">
+        <div className="relative z-10 flex flex-col items-center gap-4xl">
+          <div className="flex flex-col items-center gap-2xl text-center">
+            <p className="text-eyebrow rise-in">{hero.eyebrow}</p>
+
+            <CharReveal
+              text={hero.title}
+              accentWords={1}
+              className="heading-h1 max-w-[22ch] text-ink"
+            />
+
+            <p
+              className="text-large rise-in max-w-[54ch] text-soft-400"
+              style={{ "--rise-delay": RISE.subtitle } as React.CSSProperties}
+            >
+              {hero.subtitle}
+            </p>
+
+            <div
+              className="rise-in flex flex-col items-center gap-md"
+              style={{ "--rise-delay": RISE.ctas } as React.CSSProperties}
+            >
               <div className="flex flex-wrap items-center justify-center gap-lg">
                 <Button href={DEMO_URL} variant="primary">
                   {hero.primaryCta}
@@ -58,29 +68,41 @@ export function Hero() {
                   {hero.secondaryCta}
                 </Button>
               </div>
-              <p className="text-small text-soft">{hero.note}</p>
+              <p
+                className="text-small rise-in text-sub"
+                style={{ "--rise-delay": RISE.note } as React.CSSProperties}
+              >
+                {hero.note}
+              </p>
             </div>
           </div>
 
-          {/* Product screenshot, ringed and faded into the page like Orizon's */}
-          <div className="relative rounded-t-[1.5rem] shadow-[0_0_0_10px_rgb(255_255_255/0.08)]">
-            <Image
-              className="block h-auto w-full rounded-t-[1.5rem]"
-              src="/assets/hero-team-dashboard.png"
-              alt="The ToolBocks team dashboard: calls, connect rate, answer rate and AI cost across the team, with per-rep connect distribution, disposition mix and a best-time-to-call heatmap."
-              width={1915}
-              height={911}
-              sizes="(min-width: 1264px) 1200px, 100vw"
-              priority
-            />
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0"
-              style={{
-                backgroundImage:
-                  "linear-gradient(rgb(14 18 27 / 0) 20%, rgb(14 18 27 / 0.6) 70%, rgb(14 18 27))",
-              }}
-            />
+          <HeroDashboard />
+          {/* The CRMs, where the four numbers used to sit: a very small line and
+              the marks in their own colours, no names. The id keeps the nav's
+              "Integrations" link resolving. */}
+          <div
+            id="integrations"
+            className="flex w-full flex-col items-center gap-2xl pt-2xl"
+          >
+            <p className="text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-sub">
+              {integrations.heading}
+            </p>
+            <ul className="grid w-full max-w-[68rem] grid-cols-3 items-center justify-items-center gap-x-6 gap-y-9 sm:grid-cols-4 lg:grid-cols-6 lg:gap-x-10">
+              {integrations.brands.map((b) => (
+                <li key={b.name} className="flex h-12 items-center justify-center">
+                  <Image
+                    src={`/logos/crm/${b.file}`}
+                    alt={b.name}
+                    width={b.w}
+                    height={b.h}
+                    unoptimized
+                    className="w-auto max-w-full transition-opacity duration-300 hover:opacity-100"
+                    style={{ height: `${b.size}rem`, opacity: 0.92 }}
+                  />
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
