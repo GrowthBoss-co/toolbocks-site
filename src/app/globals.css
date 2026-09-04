@@ -460,6 +460,16 @@
 
   /* The one emphasis lever a single-weight serif has. Used on the last phrase
      of a display heading. */
+  /* The mission statement is the one line on the page set in the display
+     serif, at Bahaa's call: everything else is Work Sans. */
+  .serif-statement {
+    font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 3.6vw, 3.125rem);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+  }
+
   .heading-accent {
     color: var(--p-200);
     -webkit-text-fill-color: var(--p-200);

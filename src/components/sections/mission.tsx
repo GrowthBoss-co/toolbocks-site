@@ -25,7 +25,7 @@ export function Mission() {
           <p className="text-eyebrow">{mission.eyebrow}</p>
           <ScrollCharReveal
             text={mission.text}
-            className="heading-h3 max-w-[26ch] text-balance text-ink"
+            className="serif-statement max-w-[26ch] text-balance text-ink"
           />
         </Reveal>
       </div>

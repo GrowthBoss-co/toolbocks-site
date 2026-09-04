@@ -37,12 +37,18 @@ export function ScrollCharReveal({
     if (!el) return;
     const io = new IntersectionObserver(
       (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
+        // In view, or already scrolled past: a fast flick under the smoother
+        // can carry the paragraph through the viewport between two checks,
+        // and a statement that never appears is worse than one that snaps in.
+        const hit = entries.some(
+          (e) => e.isIntersecting || e.boundingClientRect.bottom < (e.rootBounds?.top ?? 0),
+        );
+        if (hit) {
           setOn(true);
           io.disconnect();
         }
       },
-      { threshold: 0.35 },
+      { threshold: [0, 0.3] },
     );
     io.observe(el);
     return () => io.disconnect();

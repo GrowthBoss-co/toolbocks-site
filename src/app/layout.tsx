@@ -1,9 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Work_Sans } from "next/font/google";
+import { Instrument_Serif, Work_Sans } from "next/font/google";
 import Script from "next/script";
 import { SITE_URL } from "@/lib/content";
 import { buildStructuredData } from "@/lib/structured-data";
 import "./globals.css";
+
+// One place uses the serif now: the mission statement. Normal weight only.
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
 
 const workSans = Work_Sans({
   variable: "--font-work-sans",
@@ -83,7 +91,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${workSans.variable} h-full antialiased`}
+      className={`${instrumentSerif.variable} ${workSans.variable} h-full antialiased`}
     >
       <head>
         {/* Organization + WebSite + SoftwareApplication. See structured-data.ts
