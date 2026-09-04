@@ -588,6 +588,8 @@ export const pricing = {
 };
 
 export const finalCta = {
+  // The bracketed eyebrow on the closing card, from the reference layout.
+  eyebrow: "Live demo",
   title: "See it work on one of your leads.",
   body: "Bring a company you want to sell to. We will research it, dial it and generate its audit while you watch.",
   cta: "Book a live demo",
