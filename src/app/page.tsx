@@ -8,7 +8,6 @@ import { Coach } from "@/components/sections/coach";
 import { Features } from "@/components/sections/features";
 import { FinalCta } from "@/components/sections/final-cta";
 import { Hero } from "@/components/sections/hero";
-import { Integrations } from "@/components/sections/integrations";
 import { Mission } from "@/components/sections/mission";
 import { Pricing } from "@/components/sections/pricing";
 import { SiteFooter } from "@/components/sections/site-footer";
@@ -34,7 +33,6 @@ export default function Home() {
         <div id={SMOOTH_CONTENT}>
           <main className="overflow-clip">
             <Hero />
-            <Integrations />
             <Mission />
             <Walkthrough />
             <Coach />

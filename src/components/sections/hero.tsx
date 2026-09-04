@@ -1,7 +1,8 @@
 import { CharReveal } from "@/components/motion/char-reveal";
 import { HeroStage } from "@/components/sections/hero-stage";
 import { Button } from "@/components/ui-kit";
-import { DEMO_URL, hero, stats } from "@/lib/content";
+import { BrandMark } from "@/components/brand-icons";
+import { DEMO_URL, hero, integrations } from "@/lib/content";
 
 /**
  * Everything above the fold animates in on a CSS timeline, not on scroll or
@@ -75,22 +76,29 @@ export function Hero() {
           </div>
 
           <HeroStage />
-
-          {/* Durable figures, not live measurements. Sits under the stage so the
-              first scroll lands on evidence rather than another claim. */}
-          <dl className="grid w-full grid-cols-2 border-t border-white/[0.08] lg:grid-cols-4">
-            {stats.map((s, i) => (
-              <div
-                key={s.label}
-                className={`flex flex-col gap-sm border-white/[0.08] px-lg py-2xl text-center ${
-                  i % 2 === 1 ? "border-l" : ""
-                } ${i > 1 ? "border-t" : ""} lg:border-t-0 lg:[&:not(:first-child)]:border-l`}
-              >
-                <dt className="heading-h4 order-1 text-ink">{s.value}</dt>
-                <dd className="text-small order-2 text-sub">{s.label}</dd>
-              </div>
-            ))}
-          </dl>
+          {/* The CRMs, where the four numbers used to sit: a very small line and
+              the marks in their own colours, no names. The id keeps the nav's
+              "Integrations" link resolving. */}
+          <div
+            id="integrations"
+            className="flex w-full flex-col items-center gap-lg border-t border-white/[0.08] pt-2xl"
+          >
+            <p className="text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-sub">
+              {integrations.heading}
+            </p>
+            <ul className="flex flex-wrap items-center justify-center gap-3">
+              {integrations.brands.map((b) => (
+                <li
+                  key={b.name}
+                  title={b.name}
+                  aria-label={b.name}
+                  className="grid size-14 place-items-center rounded-[0.875rem] border border-white/[0.07] bg-white/[0.03] transition-[transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-white/[0.14]"
+                >
+                  <BrandMark slug={b.slug} color={b.color} className="size-7" />
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>

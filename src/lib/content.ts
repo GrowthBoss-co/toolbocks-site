@@ -129,29 +129,16 @@ export const benefits = {
 };
 
 export const integrations = {
-  eyebrow: "Integrations",
-  title: "Connect the stack your outbound already runs on",
-  body: "Credentials are stored encrypted and never redisplayed once saved.",
-  // Every entry below is wired in the app today (GB-ToolBox src/ at c541986):
-  // the two CRM adapters behind the shared CrmClient interface, Twilio for
-  // calling and SMS, the AI engines and the transcription chain, the research
-  // sources, and the channels the Conversations inbox and Social Selling read.
-  // Vercel used to sit in this list; the product does not integrate with it,
-  // so it is gone. `slug` keys into BrandMark in src/components/brand-icons.tsx.
+  // A very small line over a row of CRM marks, sitting where the stat strip
+  // used to be under the hero. Logos only, no names, in their own colours.
+  // GoHighLevel and Salesforce are wired today (both behind CrmClient);
+  // HubSpot and Zoho are on the roadmap and listed at Bahaa's call.
+  heading: "Connects to the CRM you already run",
   brands: [
-    { name: "GoHighLevel", slug: "gohighlevel", role: "CRM, two-way sync" },
-    { name: "Salesforce", slug: "salesforce", role: "CRM, two-way sync" },
-    { name: "Twilio", slug: "twilio", role: "Calling and SMS" },
-    { name: "Anthropic", slug: "anthropic", role: "Coach and research" },
-    { name: "OpenAI", slug: "openai", role: "Research and transcripts" },
-    { name: "MiniMax", slug: "minimax", role: "Alternate AI engine" },
-    { name: "ElevenLabs", slug: "elevenlabs", role: "Call transcription" },
-    { name: "Google Places", slug: "googlemaps", role: "Business research" },
-    { name: "Amplemarket", slug: "amplemarket", role: "Lead data" },
-    { name: "WhatsApp", slug: "whatsapp", role: "Conversations inbox" },
-    { name: "Instagram", slug: "instagram", role: "Inbox and social selling" },
-    { name: "Facebook", slug: "facebook", role: "Conversations inbox" },
-    { name: "LinkedIn", slug: "linkedin", role: "Social selling" },
+    { name: "GoHighLevel", slug: "gohighlevel", color: "#2D6FF0" },
+    { name: "Salesforce", slug: "salesforce", color: "#00A1E0" },
+    { name: "HubSpot", slug: "hubspot", color: "#FF7A59" },
+    { name: "Zoho", slug: "zoho", color: "#E42527" },
   ] as const,
 };
 
