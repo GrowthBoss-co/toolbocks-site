@@ -5,7 +5,7 @@ import {
 } from "@/components/motion/smooth-scroll";
 import { Benefits } from "@/components/sections/benefits";
 import { Coach } from "@/components/sections/coach";
-import { Features } from "@/components/sections/features";
+import { FeatureCatalog } from "@/components/sections/feature-catalog";
 import { FinalCta } from "@/components/sections/final-cta";
 import { Hero } from "@/components/sections/hero";
 import { Mission } from "@/components/sections/mission";
@@ -36,7 +36,7 @@ export default function Home() {
             <Mission />
             <Walkthrough />
             <Coach />
-            <Features />
+            <FeatureCatalog />
             <Benefits />
             <System />
             <Testimonials />

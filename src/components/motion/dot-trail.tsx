@@ -28,10 +28,27 @@ const MAX_NODES = 28;
 
 type Node = { c: number; r: number; t: number };
 
-export function DotTrail({ className }: { className?: string }) {
+/**
+ * Two palettes: the field is faint white on the void and faint ink on cream,
+ * the trail is pale indigo on both so it reads as the same object wherever the
+ * section sits. Each entry is an rgb triple; alpha is applied per frame.
+ */
+const PALETTES = {
+  dark: { field: "255,255,255", fieldA: 0.13, line: "226,225,255", node: "226,225,255", head: "255,255,255", glow: "132,130,255" },
+  light: { field: "21,22,27", fieldA: 0.16, line: "92,90,255", node: "92,90,255", head: "21,22,27", glow: "92,90,255" },
+} as const;
+
+export function DotTrail({
+  className,
+  tone = "dark",
+}: {
+  className?: string;
+  tone?: keyof typeof PALETTES;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const pal = PALETTES[tone];
     const canvas = canvasRef.current;
     const host = canvas?.parentElement;
     if (!canvas || !host) return;
@@ -76,7 +93,7 @@ export function DotTrail({ className }: { className?: string }) {
       ctx.clearRect(0, 0, width, height);
 
       // The field.
-      ctx.fillStyle = "rgba(255,255,255,0.13)";
+      ctx.fillStyle = `rgba(${pal.field},${pal.fieldA})`;
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
           ctx.beginPath();
@@ -102,7 +119,7 @@ export function DotTrail({ className }: { className?: string }) {
         const a = trail[i - 1];
         const b = trail[i];
         const alpha = fade(b.t);
-        ctx.strokeStyle = `rgba(226,225,255,${(alpha * 0.85).toFixed(3)})`;
+        ctx.strokeStyle = `rgba(${pal.line},${(alpha * 0.85).toFixed(3)})`;
         ctx.beginPath();
         ctx.moveTo(px(a.c), py(a.r));
         ctx.lineTo(px(b.c), py(b.r));
@@ -115,13 +132,13 @@ export function DotTrail({ className }: { className?: string }) {
         const alpha = fade(n.t);
         const head = i === trail.length - 1;
         ctx.fillStyle = head
-          ? `rgba(255,255,255,${alpha.toFixed(3)})`
-          : `rgba(226,225,255,${(alpha * 0.9).toFixed(3)})`;
+          ? `rgba(${pal.head},${alpha.toFixed(3)})`
+          : `rgba(${pal.node},${(alpha * 0.9).toFixed(3)})`;
         ctx.beginPath();
         ctx.arc(px(n.c), py(n.r), head ? 3.2 : 2.1, 0, Math.PI * 2);
         ctx.fill();
         if (head) {
-          ctx.fillStyle = `rgba(132,130,255,${(alpha * 0.35).toFixed(3)})`;
+          ctx.fillStyle = `rgba(${pal.glow},${(alpha * 0.35).toFixed(3)})`;
           ctx.beginPath();
           ctx.arc(px(n.c), py(n.r), 7, 0, Math.PI * 2);
           ctx.fill();
@@ -181,7 +198,7 @@ export function DotTrail({ className }: { className?: string }) {
       window.removeEventListener("pointermove", onMove);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [tone]);
 
   return (
     <canvas

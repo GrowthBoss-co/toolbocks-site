@@ -62,23 +62,151 @@ export const stats = [
   { value: "Per rep", label: "AI cost metered and capped" },
 ];
 
-export const features = {
-  eyebrow: "What changes",
-  title: "Reps spend the day talking, not typing.",
-  body: "The list, the research, the follow-up and the CRM updates all happen without anyone touching them. What is left on a rep's calendar is conversations.",
-  cards: [
+export const featureCatalog = {
+  // The "Explore all the features" carousel that replaced "What changes":
+  // one card per screen in the product, in the app's own nav order. Titles
+  // are the screen names; bodies are the screens' own one-line descriptions
+  // from the ToolBox at c41ec86, lightly trimmed. New copy, flagged for
+  // Bahaa's sign-off. `visual` keys the illustration and the icon.
+  eyebrow: "All features",
+  titleLead: "Explore",
+  titleAccent: "all the features",
+  titleLine2: "built into ToolBocks.",
+  items: [
     {
-      eyebrow: "On the call",
-      title: "Every call starts prepared",
-      body: "The rep picks up already knowing the business, the likely pain and an opener. When an objection lands, the counter is on screen before they have to think of one.",
+      visual: "today",
+      title: "Today",
+      body: "Everything due today in one queue: cadence steps, callbacks, replies waiting and meetings to confirm. Reps work it top to bottom.",
     },
     {
-      eyebrow: "After the call",
-      title: "Follow-up nobody has to remember",
-      body: "A multi-step email, SMS and call sequence starts on its own and stops the moment someone replies or books. Nobody has to remember day four.",
+      visual: "pipeline",
+      title: "Pipeline",
+      body: "A deal board that writes back to the CRM. Drag a card between stages and the CRM stage moves with it.",
     },
-  ],
+    {
+      visual: "leadGen",
+      title: "Lead Gen",
+      body: "Build a target list without leaving the app. Filter by industry, size and geography, preview the match count, then push straight into a cadence.",
+    },
+    {
+      visual: "leadResearch",
+      title: "Lead Research",
+      body: "One prospect, researched before the dial: what the business does, the likely pain, and an opener written from what was found.",
+    },
+    {
+      visual: "cadence",
+      title: "Cadence",
+      body: "Multi-step call, email and SMS sequences that run on their own and stop the moment someone replies or books.",
+    },
+    {
+      visual: "nurturer",
+      title: "Nurturer",
+      body: "The long game for leads that said not now. Something useful on a slow drip, and a hand back to a rep the day they engage.",
+    },
+    {
+      visual: "socialSelling",
+      title: "Social Selling",
+      body: "LinkedIn and Instagram worked like a channel. Openers drafted from the prospect's own posts, with the source kept beside the draft.",
+    },
+    {
+      visual: "powerDialer",
+      title: "Power Dialer",
+      body: "One rep, one queue. Local presence, dispositions in a click, and the recording, transcript and summary land on the contact.",
+    },
+    {
+      visual: "teamDialer",
+      title: "Team Dialer",
+      body: "A shared queue for the whole floor. Lines dial in parallel and the next connect goes to whoever is free.",
+    },
+    {
+      visual: "liveCoach",
+      title: "AI Live Coach",
+      body: "Reads the live transcript, catches the objection as it is said, and puts the counter on the rep's screen before the pause gets long.",
+    },
+    {
+      visual: "emailBlast",
+      title: "Email Blast",
+      body: "Write once, send to a tag, see what happened. Every send carries the unsubscribe footer the law wants.",
+    },
+    {
+      visual: "conversations",
+      title: "Conversations",
+      body: "Every reply, email and text in one inbox with the lead's history beside it. Replying here stops the cadence.",
+    },
+    {
+      visual: "audit",
+      title: "Digital Audit",
+      body: "A branded audit of the prospect's online presence, built from the research and published with your booking link on it.",
+    },
+    {
+      visual: "proposal",
+      title: "Proposal",
+      body: "A proposal drafted from the call and your Business Library, reviewed by the rep, then sent with your name on it.",
+    },
+    {
+      visual: "programStrategy",
+      title: "Program Strategy",
+      body: "The 90-day plan a client gets after they sign: what runs in which month, what it should produce, and what you need from them.",
+    },
+    {
+      visual: "salesHandoff",
+      title: "Sales Handoff",
+      body: "Everything delivery needs, written while it is fresh: what was promised, what was not, and where the lead came from.",
+    },
+    {
+      visual: "businessLibrary",
+      title: "Business Library",
+      body: "What the AI knows about your business: who you sell to, what you sell, the proof you use. Answer once and every document follows it.",
+    },
+    {
+      visual: "teamDashboard",
+      title: "Team Dashboard",
+      body: "The whole team on one page: calls, connects, meetings and talk time by rep, with the shape of the day hour by hour.",
+    },
+    {
+      visual: "productivity",
+      title: "Productivity",
+      body: "Per-rep activity and talk time, and where the day actually went, so nobody argues about who the dialer favours.",
+    },
+    {
+      visual: "roi",
+      title: "ROI",
+      body: "What the outreach is worth in money rather than activity: cost per lead, cost per meeting, and what a closed deal returned.",
+    },
+    {
+      visual: "campaignReports",
+      title: "Campaign Reports",
+      body: "How one campaign's leads actually moved: where they stopped, what they replied to, and how long anything took.",
+    },
+    {
+      visual: "dialerReports",
+      title: "Dialer Reports",
+      body: "Every call the instance placed, with the recording, the transcript and the summary attached to the row.",
+    },
+    {
+      visual: "aiCosts",
+      title: "AI Costs",
+      body: "What the AI actually cost, priced per operation at each model's own rate, so a research run and a proposal are never averaged together.",
+    },
+    {
+      visual: "coachPlaybook",
+      title: "Coach Playbook",
+      body: "The objections your team actually hears and what worked against them, built from your own call recordings rather than a book.",
+    },
+    {
+      visual: "usersRoles",
+      title: "Users & Roles",
+      body: "Who is on the instance and what they can reach. Roles carry a default set of screens; anything else is granted per person.",
+    },
+    {
+      visual: "integrations",
+      title: "Integrations",
+      body: "Your CRM, your phone numbers, your AI keys and your business profile. Credentials are encrypted on the instance and never leave it.",
+    },
+  ] as const,
 };
+
+export type FeatureVisualKey = (typeof featureCatalog.items)[number]["visual"];
 
 /**
  * The middle item used to be "Compliance-first telephony". Compliance is now

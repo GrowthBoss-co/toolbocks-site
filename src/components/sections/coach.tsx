@@ -22,17 +22,19 @@ import { coach } from "@/lib/content";
  * the three-column live-call screen is what shows in the column, not the
  * demo's own stacked mobile layout with a scrollbar. Below lg it goes under
  * the copy at full width, still scaled.
+ *
+ * The section sits on the same cream as the walkthrough above it, with a
+ * hairline between the two so they read as consecutive chapters rather than
+ * one long page. The demo keeps its dark chrome inside a `.scheme-dark`
+ * island, which is how the product stays the product on a light ground.
  */
 export function Coach() {
   return (
-    <section id="coach" className="grain relative isolate overflow-hidden bg-abyss">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 overflow-hidden"
-      >
-        <div className="aura right-[-6%] top-1/2 size-[46rem] -translate-y-1/2 opacity-70" />
-      </div>
-
+    <section
+      id="coach"
+      className="scheme-cream relative isolate overflow-hidden bg-void"
+      style={{ borderTop: "1px solid var(--track)" }}
+    >
       <div className="container-main pb-section-main pt-section-main">
         {/* The copy keeps a fixed, readable column; the demo takes everything
             else and runs out into the right page margin (.bleed-right), so the
@@ -41,15 +43,13 @@ export function Coach() {
         <div className="grid grid-cols-1 items-center gap-4xl lg:grid-cols-[minmax(0,30rem)_minmax(0,1fr)] lg:gap-5xl">
           <Reveal className="flex flex-col gap-xl">
             <p className="text-eyebrow">{coach.eyebrow}</p>
-            <h2 className="text-gradient max-w-[16ch] text-balance">
-              {coach.title}
-            </h2>
+            <h2 className="max-w-[16ch] text-balance text-ink">{coach.title}</h2>
             <p className="text-large max-w-[54ch] text-soft-400">{coach.body}</p>
 
             <ul className="mt-sm flex flex-col gap-md">
               {coach.points.map((point) => (
                 <li key={point} className="flex items-start gap-md">
-                  <CheckIcon className="mt-[0.2rem] size-5 shrink-0 text-lime" />
+                  <CheckIcon className="mt-[0.2rem] size-5 shrink-0 text-[var(--p-600)]" />
                   <span className="text-soft-200">{point}</span>
                 </li>
               ))}
@@ -57,7 +57,7 @@ export function Coach() {
           </Reveal>
 
           <Reveal y={40} className="bleed-right flex flex-col items-center gap-lg">
-            <div className="lift-lg w-full overflow-hidden rounded-xlarge border border-white/[0.08] bg-[#050507]">
+            <div className="scheme-dark lift-lg w-full overflow-hidden rounded-xlarge border border-white/[0.08] bg-[#050507]">
               <DemoFrame
                 src="/demo/live-call.html"
                 title="ToolBocks live call with the AI coach, running on sample data"
