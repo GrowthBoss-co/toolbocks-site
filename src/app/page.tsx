@@ -1,4 +1,5 @@
 import { Benefits } from "@/components/sections/benefits";
+import { Coach } from "@/components/sections/coach";
 import { Features } from "@/components/sections/features";
 import { FinalCta } from "@/components/sections/final-cta";
 import { Hero } from "@/components/sections/hero";
@@ -24,8 +25,9 @@ export default function Home() {
       <main className="overflow-clip">
         <Hero />
         <Mission />
-        <Features />
         <Walkthrough />
+        <Coach />
+        <Features />
         <Benefits />
         <System />
         <Integrations />

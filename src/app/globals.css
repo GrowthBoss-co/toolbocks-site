@@ -557,15 +557,6 @@
      near-black page look like a photographed set rather than a blank div.
      ======================================================================= */
 
-  /* Faint engineering grid. Deliberately 2.8% white: at 4% it reads as a
-     visible table, below 2% it disappears on a dim laptop panel. */
-  .grid-field {
-    background-image:
-      linear-gradient(to right, rgb(255 255 255 / 0.028) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(255 255 255 / 0.028) 1px, transparent 1px);
-    background-size: 72px 72px;
-  }
-
   /* Film grain. An inline feTurbulence data URI rather than a PNG so it costs
      no request and cannot 404. Sits above the ground and below the content. */
   .grain::after {

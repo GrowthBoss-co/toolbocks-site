@@ -89,6 +89,23 @@ export const features = {
  * The replacement covers two-way CRM sync, which the page otherwise only
  * mentions inside one walkthrough step.
  */
+// The AI Live Coach gets its own beat: copy on the left, the real dialer demo
+// (public/demo/live-call.html, embedded as-is) on the right. Everything claimed
+// here was verified against the app in the PR #18 review: objection coaching
+// reads the live transcript (src/objections.ts), research happens before the
+// first contact, and the methodology is the floor's own playbook.
+export const coach = {
+  eyebrow: "AI Live Coach",
+  title: "A coach on the line for every call",
+  body: "It listens to the live transcript, catches the objection as it is being said, and puts the counter on the rep's screen before the pause gets long. The methodology underneath is the one that runs the Growth Boss floor, so a rep in their first week handles a pushback the way the floor does.",
+  points: [
+    "Reads the call as it happens, not after it ends",
+    "The counter is on screen before the rep has to think of one",
+    "Lead intel and research are already there when the call connects",
+  ],
+  demoNote: "Live demo on sample data. Click around.",
+};
+
 export const benefits = {
   eyebrow: "Benefits",
   title: "Three things that stop being your problem",

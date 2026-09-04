@@ -20,7 +20,7 @@ const bandVisuals = [LiveCallVisual, CadenceVisual];
 
 export function Features() {
   return (
-    <section id="platform" className="relative isolate bg-abyss">
+    <section id="platform" className="relative isolate bg-void">
       <div className="container-main pb-section-small pt-section-main">
         <Reveal>
           <SectionHeader
@@ -38,7 +38,7 @@ export function Features() {
         return (
           <div
             key={card.title}
-            className="grid-field border-t border-white/[0.07]"
+            className="border-t border-white/[0.07]"
           >
             <div className="container-main py-section-small">
               <Reveal className="grid grid-cols-1 items-center gap-3xl lg:grid-cols-2 lg:gap-7xl">
@@ -71,7 +71,7 @@ export function Features() {
           product: everything above is one rep, this is the whole floor. It
           bleeds off the right edge rather than sitting centred, so the panel
           reads as a window onto something larger than the band. */}
-      <div className="grid-field border-y border-white/[0.07]">
+      <div className="border-y border-white/[0.07]">
         <div className="container-main overflow-hidden py-section-small">
           <Reveal
             y={40}

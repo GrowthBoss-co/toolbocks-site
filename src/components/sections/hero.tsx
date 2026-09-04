@@ -18,13 +18,8 @@ const RISE = {
 export function Hero() {
   return (
     <section id="top" className="grain relative isolate overflow-hidden">
-      <div
-        aria-hidden="true"
-        className="grid-field pointer-events-none absolute inset-0"
-      />
-
       {/* Ambient light. Two indigo pools low in the frame and a violet one high
-          on the right, so the grid is unevenly lit rather than flatly tinted. */}
+          on the right, so the ground is unevenly lit rather than flatly tinted. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"

@@ -1,0 +1,71 @@
+import { CheckIcon } from "@/components/icons";
+import { Reveal } from "@/components/motion/reveal";
+import { coach } from "@/lib/content";
+
+/**
+ * The AI Live Coach, with the real thing beside the copy.
+ *
+ * The right-hand panel is the dialer's live-call screen, embedded as-is from
+ * public/demo/live-call.html. It is a self-contained snapshot of the app: its
+ * own styles, fonts and scripts, and it runs a scripted call on sample data
+ * (rings, connects, the transcript fills, the coach suggests). An iframe is the
+ * only honest way to show 400KB of someone else's HTML without rewriting it,
+ * and it keeps the demo's CSS from ever touching the page's.
+ *
+ * The file is served from our own origin, so the sandbox grants it nothing it
+ * would not already have; the attribute is there so a future edit that swaps in
+ * a third-party URL is not silently trusted. The demo calls /api/me on boot and
+ * shrugs off the 404, and it makes no other request.
+ *
+ * Below lg the demo goes under the copy at full width. Its own layout stacks
+ * into a single column somewhere around 900px, so in the right-hand column it
+ * is already in that mode; that is by design, the stacked view is the one that
+ * reads at this size, and the frame is tall enough to show the call, the lead
+ * intel and the coach together.
+ */
+export function Coach() {
+  return (
+    <section id="coach" className="grain relative isolate overflow-hidden bg-abyss">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <div className="aura right-[-6%] top-1/2 size-[46rem] -translate-y-1/2 opacity-70" />
+      </div>
+
+      <div className="container-main pb-section-main pt-section-main">
+        <div className="grid grid-cols-1 items-center gap-4xl lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-7xl">
+          <Reveal className="flex flex-col gap-xl">
+            <p className="text-eyebrow">{coach.eyebrow}</p>
+            <h2 className="text-gradient max-w-[16ch] text-balance">
+              {coach.title}
+            </h2>
+            <p className="text-large max-w-[46ch] text-soft-400">{coach.body}</p>
+
+            <ul className="mt-sm flex flex-col gap-md">
+              {coach.points.map((point) => (
+                <li key={point} className="flex items-start gap-md">
+                  <CheckIcon className="mt-[0.2rem] size-5 shrink-0 text-lime" />
+                  <span className="text-soft-200">{point}</span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+
+          <Reveal y={40} className="flex flex-col items-center gap-lg">
+            <div className="lift-lg w-full overflow-hidden rounded-xlarge border border-white/[0.08] bg-[#050507]">
+              <iframe
+                src="/demo/live-call.html"
+                title="ToolBocks live call with the AI coach, running on sample data"
+                loading="lazy"
+                sandbox="allow-scripts allow-same-origin"
+                className="block h-[36rem] w-full sm:h-[40rem] lg:h-[46rem]"
+              />
+            </div>
+            <p className="text-small text-sub">{coach.demoNote}</p>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
