@@ -34,7 +34,10 @@ export function Coach() {
       </div>
 
       <div className="container-main pb-section-main pt-section-main">
-        <div className="grid grid-cols-1 items-center gap-4xl lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-7xl">
+        {/* The demo takes two thirds of the row and runs out into the right
+            page margin, the way the supervisor board does above. Every pixel
+            of column here is legibility inside the scaled frame. */}
+        <div className="grid grid-cols-1 items-center gap-4xl lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-5xl">
           <Reveal className="flex flex-col gap-xl">
             <p className="text-eyebrow">{coach.eyebrow}</p>
             <h2 className="text-gradient max-w-[16ch] text-balance">
@@ -52,7 +55,7 @@ export function Coach() {
             </ul>
           </Reveal>
 
-          <Reveal y={40} className="flex flex-col items-center gap-lg">
+          <Reveal y={40} className="flex flex-col items-center gap-lg lg:-mr-[var(--site-margin)]">
             <div className="lift-lg w-full overflow-hidden rounded-xlarge border border-white/[0.08] bg-[#050507]">
               <DemoFrame
                 src="/demo/live-call.html"
