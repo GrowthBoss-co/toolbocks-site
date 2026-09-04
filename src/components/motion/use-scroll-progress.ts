@@ -52,6 +52,10 @@ export function useScrollProgress(
     measure();
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
+    // The smooth scroller translates content for ~1.2s after the last native
+    // scroll event; it dispatches this every frame it moves so the mapping
+    // keeps tracking the content people actually see.
+    window.addEventListener("smoothscroll", schedule);
 
     return () => {
       // Clearing the handle matters as much as cancelling it. React runs
@@ -62,6 +66,7 @@ export function useScrollProgress(
       frame.current = 0;
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
+      window.removeEventListener("smoothscroll", schedule);
     };
   }, [ref, progress, startVh, endVh]);
 
