@@ -1,5 +1,6 @@
 import { CheckIcon } from "@/components/icons";
 import { Reveal } from "@/components/motion/reveal";
+import { DemoFrame } from "@/components/sections/demo-frame";
 import { coach } from "@/lib/content";
 
 /**
@@ -17,11 +18,10 @@ import { coach } from "@/lib/content";
  * a third-party URL is not silently trusted. The demo calls /api/me on boot and
  * shrugs off the 404, and it makes no other request.
  *
- * Below lg the demo goes under the copy at full width. Its own layout stacks
- * into a single column somewhere around 900px, so in the right-hand column it
- * is already in that mode; that is by design, the stacked view is the one that
- * reads at this size, and the frame is tall enough to show the call, the lead
- * intel and the coach together.
+ * The frame is rendered at desktop size and scaled down (see DemoFrame), so
+ * the three-column live-call screen is what shows in the column, not the
+ * demo's own stacked mobile layout with a scrollbar. Below lg it goes under
+ * the copy at full width, still scaled.
  */
 export function Coach() {
   return (
@@ -54,12 +54,9 @@ export function Coach() {
 
           <Reveal y={40} className="flex flex-col items-center gap-lg">
             <div className="lift-lg w-full overflow-hidden rounded-xlarge border border-white/[0.08] bg-[#050507]">
-              <iframe
+              <DemoFrame
                 src="/demo/live-call.html"
                 title="ToolBocks live call with the AI coach, running on sample data"
-                loading="lazy"
-                sandbox="allow-scripts allow-same-origin"
-                className="block h-[36rem] w-full sm:h-[40rem] lg:h-[46rem]"
               />
             </div>
             <p className="text-small text-sub">{coach.demoNote}</p>
