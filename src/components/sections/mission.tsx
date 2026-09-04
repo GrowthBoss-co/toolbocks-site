@@ -11,7 +11,7 @@ import { mission } from "@/lib/content";
  */
 export function Mission() {
   return (
-    <section className="grain relative isolate bg-abyss">
+    <section className="grain relative isolate bg-void">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"

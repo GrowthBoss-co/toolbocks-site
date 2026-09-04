@@ -34,13 +34,13 @@ export default function Home() {
         <div id={SMOOTH_CONTENT}>
           <main className="overflow-clip">
             <Hero />
+            <Integrations />
             <Mission />
             <Walkthrough />
             <Coach />
             <Features />
             <Benefits />
             <System />
-            <Integrations />
             <Testimonials />
             <Pricing />
             <FinalCta />

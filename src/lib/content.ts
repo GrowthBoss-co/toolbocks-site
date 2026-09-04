@@ -132,17 +132,27 @@ export const integrations = {
   eyebrow: "Integrations",
   title: "Connect the stack your outbound already runs on",
   body: "Credentials are stored encrypted and never redisplayed once saved.",
+  // Every entry below is wired in the app today (GB-ToolBox src/ at c541986):
+  // the two CRM adapters behind the shared CrmClient interface, Twilio for
+  // calling and SMS, the AI engines and the transcription chain, the research
+  // sources, and the channels the Conversations inbox and Social Selling read.
+  // Vercel used to sit in this list; the product does not integrate with it,
+  // so it is gone. `slug` keys into BrandMark in src/components/brand-icons.tsx.
   brands: [
-    { name: "GoHighLevel", mark: "GHL" },
-    { name: "Twilio", mark: "TW" },
-    { name: "OpenAI", mark: "AI" },
-    { name: "Anthropic", mark: "AN" },
-    { name: "ElevenLabs", mark: "11" },
-    { name: "Google Places", mark: "GP" },
-    { name: "Amplemarket", mark: "AM" },
-    { name: "MiniMax", mark: "MM" },
-    { name: "Vercel", mark: "VC" },
-  ],
+    { name: "GoHighLevel", slug: "gohighlevel", role: "CRM, two-way sync" },
+    { name: "Salesforce", slug: "salesforce", role: "CRM, two-way sync" },
+    { name: "Twilio", slug: "twilio", role: "Calling and SMS" },
+    { name: "Anthropic", slug: "anthropic", role: "Coach and research" },
+    { name: "OpenAI", slug: "openai", role: "Research and transcripts" },
+    { name: "MiniMax", slug: "minimax", role: "Alternate AI engine" },
+    { name: "ElevenLabs", slug: "elevenlabs", role: "Call transcription" },
+    { name: "Google Places", slug: "googlemaps", role: "Business research" },
+    { name: "Amplemarket", slug: "amplemarket", role: "Lead data" },
+    { name: "WhatsApp", slug: "whatsapp", role: "Conversations inbox" },
+    { name: "Instagram", slug: "instagram", role: "Inbox and social selling" },
+    { name: "Facebook", slug: "facebook", role: "Conversations inbox" },
+    { name: "LinkedIn", slug: "linkedin", role: "Social selling" },
+  ] as const,
 };
 
 /**

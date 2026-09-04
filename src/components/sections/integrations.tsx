@@ -1,44 +1,27 @@
+import { BrandMark } from "@/components/brand-icons";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeader } from "@/components/ui-kit";
 import { integrations } from "@/lib/content";
 
-/* Lit from the top-left so a row of chips reads as physical objects on a dark
-   floor rather than as flat holes punched in it. */
-const CHIP_GRADIENT =
-  "linear-gradient(135deg, var(--n-800), var(--n-900) 55%, var(--void))";
-
-/** Two tracks of identical content so the loop has no seam. */
-function Marquee({
-  children,
-  reverse,
-  className,
-}: {
-  children: React.ReactNode;
-  reverse?: boolean;
-  className?: string;
-}) {
-  return (
-    <div className={`marquee-viewport relative flex overflow-hidden ${className ?? ""}`}>
-      {[0, 1].map((k) => (
-        <div
-          key={k}
-          aria-hidden={k === 1}
-          className={`marquee-track items-center justify-around gap-lg pr-lg ${
-            reverse ? "is-reverse" : ""
-          }`}
-        >
-          {children}
-        </div>
-      ))}
-    </div>
-  );
-}
-
+/**
+ * The stack, straight under the hero.
+ *
+ * Thirteen tiles, one per integration the app actually has, each with the
+ * brand's mark, its name, and one line on what it does inside ToolBocks. The
+ * role line is what makes this more than a logo wall: a buyer reads
+ * "two-way sync" next to Salesforce and "call transcription" next to ElevenLabs
+ * and knows what they are getting without opening a docs page.
+ *
+ * Marks are monochrome and take the tile's text colour, so the row reads as one
+ * system rather than thirteen brand palettes fighting on a dark ground; the
+ * brand's own colour arrives on hover, which is where a logo wall usually
+ * starts anyway.
+ */
 export function Integrations() {
   return (
     <section id="integrations" className="grain relative isolate bg-abyss">
-      <div className="container-main pt-section-main pb-section-main">
-        <div className="section-layout is-integration">
+      <div className="container-main pb-section-main pt-section-small">
+        <div className="flex flex-col gap-5xl">
           <Reveal>
             <SectionHeader
               eyebrow={integrations.eyebrow}
@@ -47,34 +30,25 @@ export function Integrations() {
             />
           </Reveal>
 
-          <div className="flex flex-col gap-lg">
-            {/* row one: monogram chips */}
-            <Marquee className="mx-auto w-[86%] md:w-[70%]">
-              {integrations.brands.map((b) => (
-                <span
-                  key={b.name}
-                  title={b.name}
-                  className="lift grid aspect-square size-16 shrink-0 place-items-center rounded-full text-[0.8125rem] font-semibold tracking-tight text-soft-400"
-                  style={{ backgroundImage: CHIP_GRADIENT }}
-                >
-                  {b.mark}
+          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-[repeat(13,minmax(0,1fr))] xl:gap-2">
+            {integrations.brands.map((b, i) => (
+              <Reveal
+                as="li"
+                key={b.name}
+                delay={0.04 * i}
+                y={18}
+                className="group flex flex-col items-center gap-2.5 rounded-[0.875rem] border border-white/[0.07] bg-white/[0.02] px-2 py-4 text-center transition-[border-color,background-color,transform] duration-300 hover:-translate-y-0.5 hover:border-primary-400/40 hover:bg-white/[0.04]"
+              >
+                <span className="grid size-11 place-items-center rounded-[0.75rem] bg-white/[0.04] text-soft-200 transition-colors duration-300 group-hover:text-ink">
+                  <BrandMark slug={b.slug} className="size-6" />
                 </span>
-              ))}
-            </Marquee>
-
-            {/* row two: names, travelling the other way */}
-            <Marquee reverse className="mx-auto w-[92%] md:w-[56%]">
-              {integrations.brands.map((b) => (
-                <span
-                  key={b.name}
-                  className="shrink-0 whitespace-nowrap rounded-round border border-white/[0.08] px-lg py-sm text-small text-soft-400"
-                  style={{ backgroundImage: CHIP_GRADIENT }}
-                >
-                  {b.name}
+                <span className="flex flex-col gap-0.5">
+                  <span className="text-[0.8125rem] font-medium leading-tight text-ink">{b.name}</span>
+                  <span className="text-[0.6875rem] leading-snug text-sub">{b.role}</span>
                 </span>
-              ))}
-            </Marquee>
-          </div>
+              </Reveal>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

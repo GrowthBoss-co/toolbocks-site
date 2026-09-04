@@ -23,8 +23,8 @@ import { useEffect, useRef } from "react";
  */
 const GRID = 32;
 const DOT = 1.2;
-const TAIL_MS = 2200;
-const MAX_NODES = 80;
+const TAIL_MS = 1100;
+const MAX_NODES = 28;
 
 type Node = { c: number; r: number; t: number };
 
