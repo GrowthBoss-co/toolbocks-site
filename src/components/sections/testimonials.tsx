@@ -65,7 +65,7 @@ const TILTS = ["lg:-rotate-[1.2deg]", "lg:rotate-[0.8deg]", "lg:-rotate-[0.6deg]
 
 export function Testimonials() {
   return (
-    <section id="testimonials" className="grain relative isolate overflow-hidden">
+    <section id="testimonials" className="grain relative isolate overflow-hidden bg-void">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"

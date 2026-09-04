@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { featureVisuals } from "@/components/feature-visuals";
 import { featureIcons } from "@/components/feature-icons";
-import { DotTrail } from "@/components/motion/dot-trail";
 import { Reveal } from "@/components/motion/reveal";
 import { featureCatalog } from "@/lib/content";
 
@@ -75,16 +74,15 @@ export function FeatureCatalog() {
       style={{ borderTop: "1px solid var(--track)" }}
     >
       <div className="relative">
-        <DotTrail tone="light" />
         <div className="container-main relative pt-section-main">
           <Reveal className="flex flex-col gap-lg">
             <p className="text-eyebrow">[ {featureCatalog.eyebrow} ]</p>
             <h2 className="max-w-[22ch] text-[clamp(2rem,3.6vw,2.875rem)] font-medium leading-[1.12] tracking-[-0.02em] text-ink [font-family:var(--font-body-family)]">
               <span className="text-soft-400">
                 {featureCatalog.titleLead}{" "}
-                <em className="font-normal italic text-soft [font-family:var(--font-heading-family)] text-[1.12em]">
+                <span className="text-soft">
                   {featureCatalog.titleAccent}
-                </em>
+                </span>
               </span>
               <br />
               <span className="font-semibold">{featureCatalog.titleLine2}</span>

@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/motion/reveal";
+import { ScrollCharReveal } from "@/components/motion/scroll-char-reveal";
 import { mission } from "@/lib/content";
 
 /**
@@ -22,9 +23,10 @@ export function Mission() {
       <div className="container-main pb-section-main pt-section-main">
         <Reveal className="flex flex-col items-center gap-2xl text-center">
           <p className="text-eyebrow">{mission.eyebrow}</p>
-          <p className="heading-h3 max-w-[24ch] text-balance text-ink">
-            {mission.text}
-          </p>
+          <ScrollCharReveal
+            text={mission.text}
+            className="heading-h3 max-w-[26ch] text-balance text-ink"
+          />
         </Reveal>
       </div>
     </section>

@@ -30,13 +30,19 @@ export const HERO_FRAME_ID = "hero-dashboard";
 export function HeroDashboard() {
   return (
     <div id={HERO_FRAME_ID} className="relative z-10 w-full">
-      <div className="lift-lg relative rounded-[1.5rem] bg-[#0b0b12] p-2 ring-1 ring-white/[0.09] sm:p-2.5">
+      <div
+        className="lift-lg relative rounded-[1.5rem] bg-[#0b0b12] p-2 sm:p-2.5"
+        style={{
+          boxShadow:
+            "0 0 0 1px rgba(203,202,255,0.32), 0 0 0 6px rgba(11,11,18,1), 0 0 0 7px rgba(255,255,255,0.08), 0 40px 90px -40px rgba(0,0,0,0.9)",
+        }}
+      >
         {/* The highlight on the bezel's top edge, where the lines land. */}
         <span
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-[12%] top-0 h-px bg-gradient-to-r from-transparent via-[var(--p-200)] to-transparent opacity-80"
         />
-        <div className="overflow-hidden rounded-[1rem] bg-[#0a0a0f]">
+        <div className="overflow-hidden rounded-[1rem] bg-[#0a0a0f] ring-1 ring-white/[0.06]">
           <DemoFrame
             src="/demo/team-dashboard.html"
             title="ToolBocks Team Dashboard, running on sample data"
@@ -54,7 +60,7 @@ export function HeroDashboard() {
 type Geometry = { w: number; h: number; fl: number; fr: number };
 
 /** Start x as a share of the section width, outermost first. */
-const STARTS = [0.06, 0.15, 0.27];
+const STARTS = [0.1, 0.17, 0.3];
 /** Landing x as a share of the bezel width from its edge, outermost first. */
 const LANDS = [0.05, 0.19, 0.35];
 
@@ -64,14 +70,23 @@ function rnd(i: number, salt: number) {
   return x - Math.floor(x);
 }
 
+/**
+ * The reference's shape: straight down from the top, one rounded elbow, then
+ * a straight run into the bezel. The elbow is a quadratic whose control point
+ * is the corner itself, so it is tangent to the drop above and to the run
+ * below, and every line turns at the same height regardless of where it lands.
+ */
 function buildPath(x0: number, x1: number, h: number) {
-  const y1 = h * 0.4;
-  const d = h - y1;
-  const c1x = x0;
-  const c1y = y1 + d * 0.58;
-  const c2x = x1 - (x1 - x0) * 0.32;
-  const c2y = h - d * 0.1;
-  return `M ${x0.toFixed(1)} 0 V ${y1.toFixed(1)} C ${c1x.toFixed(1)} ${c1y.toFixed(1)} ${c2x.toFixed(1)} ${c2y.toFixed(1)} ${x1.toFixed(1)} ${h.toFixed(1)}`;
+  const corner = h * 0.72;
+  const dx = x1 - x0;
+  const dy = h - corner;
+  const run = Math.hypot(dx, dy);
+  const r = Math.min(h * 0.2, run * 0.7, corner * 0.9);
+  const sy = corner - r;
+  const ex = x0 + (dx / run) * r;
+  const ey = corner + (dy / run) * r;
+  const f = (n: number) => n.toFixed(1);
+  return `M ${f(x0)} 0 L ${f(x0)} ${f(sy)} Q ${f(x0)} ${f(corner)} ${f(ex)} ${f(ey)} L ${f(x1)} ${f(h)}`;
 }
 
 export function HeroLines({ hostId }: { hostId: string }) {

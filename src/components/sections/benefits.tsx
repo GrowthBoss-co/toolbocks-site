@@ -20,8 +20,14 @@ export function Benefits() {
   const [open, setOpen] = useState(0);
 
   return (
-    <section id="benefits" className="grain relative isolate bg-abyss">
-      <div className="container-main pt-section-main pb-section-main">
+    <section id="benefits" className="grain relative isolate overflow-hidden bg-abyss">
+      {/* The ground fades into the void below, the way the hero fades into the
+          mission, so the two sections read as one run rather than two stripes. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-72 bg-gradient-to-b from-transparent to-void"
+      />
+      <div className="relative container-main pt-section-main pb-section-main">
         <div className="grid grid-cols-1 items-center gap-4xl lg:grid-cols-2 lg:gap-6xl">
           <div className="flex flex-col gap-4xl lg:gap-6xl">
             <div className="flex flex-col items-start gap-xl">

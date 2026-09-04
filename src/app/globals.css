@@ -79,7 +79,7 @@
      look like the same voice at two weights. The product panels deliberately
      stay on the body face: chrome inside a mock is UI, not editorial, and a
      serif label inside a fake app reads as a mistake. */
-  --font-heading-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-heading-family: var(--font-work-sans), Inter, system-ui, sans-serif;
   --font-body-family: var(--font-work-sans), Inter, system-ui, sans-serif;
 
   --fw-regular: 400;
@@ -96,17 +96,15 @@
   --lh-1-5: 1.5;
   --lh-1-6: 1.6;
 
-  /* Instrument Serif ships one weight (400) plus a true italic. Headings are
-     therefore 400 everywhere: asking for 600 gets a synthesised faux-bold that
-     smears the serifs at display sizes. Weight is not the emphasis lever here,
-     size and the italic are. */
-  --fw-heading: var(--fw-regular);
+  /* Headings are Work Sans semibold, the same face as the body, per Bahaa:
+     one family; weight and colour do the work and nothing is italic. */
+  --fw-heading: var(--fw-semibold);
 
   /* h1/h2 fluid so the display face keeps its proportions between a phone and
      a 27" monitor. These replace the old fixed sizes and their 767px
      step-downs, which is why the media query below no longer touches them. */
-  --h1-size: clamp(3rem, 7.2vw, 6.5rem);
-  --h2-size: clamp(2.25rem, 4.6vw, 4rem);
+  --h1-size: clamp(2.5rem, 5vw, 4.25rem);
+  --h2-size: clamp(1.875rem, 3.4vw, 2.875rem);
   --h3-size: 2.5rem;
   --h4-size: 2rem;
   --h5-size: 1.5rem;
@@ -301,7 +299,11 @@
     scroll-padding-top: 6.5rem;
   }
 
+  /* The page is dark by design, so tell the browser: form controls, scrollbars
+     and the UA canvas follow, and a user with dark mode on gets nothing
+     different from one without. The cream sections flip it back. */
   body {
+    color-scheme: dark;
     background-color: var(--void);
     color: var(--n-300);
     font-family: var(--font-body-family);
@@ -325,13 +327,13 @@
   }
   h1 {
     font-size: var(--h1-size);
-    line-height: var(--lh-0-95);
-    letter-spacing: -0.02em;
+    line-height: var(--lh-1-05);
+    letter-spacing: -0.03em;
   }
   h2 {
     font-size: var(--h2-size);
-    line-height: var(--lh-1-05);
-    letter-spacing: -0.02em;
+    line-height: 1.12;
+    letter-spacing: -0.025em;
   }
   h3 {
     font-size: var(--h3-size);
@@ -388,13 +390,13 @@
 
   .heading-h1 {
     font-size: var(--h1-size);
-    line-height: var(--lh-0-95);
-    letter-spacing: -0.02em;
+    line-height: var(--lh-1-05);
+    letter-spacing: -0.03em;
   }
   .heading-h2 {
     font-size: var(--h2-size);
-    line-height: var(--lh-1-05);
-    letter-spacing: -0.02em;
+    line-height: 1.12;
+    letter-spacing: -0.025em;
   }
   .heading-h3 {
     font-size: var(--h3-size);
@@ -459,7 +461,6 @@
   /* The one emphasis lever a single-weight serif has. Used on the last phrase
      of a display heading. */
   .heading-accent {
-    font-style: italic;
     color: var(--p-200);
     -webkit-text-fill-color: var(--p-200);
   }
@@ -591,6 +592,7 @@
      screenshots do.
      ======================================================================= */
   .scheme-cream {
+    color-scheme: light;
     --void: #f0efe3;
     --n-0: #15161b;
     --n-200: #2b2d35;
@@ -629,6 +631,7 @@
       drop-shadow(0 2px 4px rgb(20 21 27 / 0.12));
   }
   .scheme-dark {
+    color-scheme: dark;
     --void: #05060b;
     --n-0: #ffffff;
     --n-200: #e1e4ea;
@@ -874,6 +877,26 @@
     animation-delay: var(--char-delay, 0s);
   }
 
+  /* Scroll-triggered sibling of .char-in for body copy: each character waits
+     for its own --char-delay once the paragraph gets .is-in, and the wave is
+     deliberately slow so a reader sees it happen (see ScrollCharReveal). */
+  .char-wave .cw {
+    display: inline-block;
+    opacity: 0;
+    transform: translate3d(0, 0.45em, 0);
+    filter: blur(5px);
+    transition:
+      opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--char-delay, 0s);
+  }
+  .char-wave.is-in .cw {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
   .rise-in {
     animation: rise-in 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
     animation-delay: var(--rise-delay, 0s);
@@ -957,8 +980,10 @@
     transform: none !important;
   }
   .char-in,
-  .rise-in {
+  .rise-in,
+  .char-wave .cw {
     animation: none !important;
+    transition: none !important;
     opacity: 1;
     filter: none;
     transform: none;

@@ -27,7 +27,10 @@ const variantClasses: Record<ButtonVariant, string> = {
 
 const sizeClasses: Record<ButtonSize, string> = {
   default: "h-[3.25rem] px-2xl text-base",
-  small: "h-10 px-lg text-small",
+  // text-[0.875rem] rather than .text-small: tailwind-merge cannot tell that
+  // `text-small` is a size, files it with the colours, and drops `text-void`
+  // from the lime button as a "conflict". The nav CTA shipped with grey-on-lime.
+  small: "h-10 px-lg text-[0.875rem]",
 };
 
 export function Button({

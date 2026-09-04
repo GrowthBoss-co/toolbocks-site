@@ -11,7 +11,7 @@ import { DEMO_URL, pricing } from "@/lib/content";
  */
 export function Pricing() {
   return (
-    <section id="pricing" className="grain relative isolate bg-abyss">
+    <section id="pricing" className="grain relative isolate bg-void">
       <div className="container-main pt-section-main pb-section-main">
         <div className="section-layout">
           <SectionHeader eyebrow={pricing.eyebrow} title={pricing.title} />

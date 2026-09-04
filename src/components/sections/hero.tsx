@@ -40,14 +40,14 @@ export function Hero() {
       />
 
       <div className="container-main pt-section-hero">
-        <div className="relative z-10 flex flex-col items-center gap-6xl">
+        <div className="relative z-10 flex flex-col items-center gap-4xl">
           <div className="flex flex-col items-center gap-2xl text-center">
             <p className="text-eyebrow rise-in">{hero.eyebrow}</p>
 
             <CharReveal
               text={hero.title}
               accentWords={1}
-              className="heading-h1 max-w-[19ch] text-ink"
+              className="heading-h1 max-w-[22ch] text-ink"
             />
 
             <p

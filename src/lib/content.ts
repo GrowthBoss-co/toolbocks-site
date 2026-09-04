@@ -62,6 +62,15 @@ export const stats = [
   { value: "Per rep", label: "AI cost metered and capped" },
 ];
 
+export const features = {
+  // The "What changes" header, on its own again: the dot field the cursor
+  // draws through lives behind it. The two bands and the dashboard that used
+  // to follow it were removed; the all-features carousel follows instead.
+  eyebrow: "What changes",
+  title: "Reps spend the day talking, not typing.",
+  body: "The list, the research, the follow-up and the CRM updates all happen without anyone touching them. What is left on a rep's calendar is conversations.",
+};
+
 export const featureCatalog = {
   // The "Explore all the features" carousel that replaced "What changes":
   // one card per screen in the product, in the app's own nav order. Titles
@@ -579,7 +588,6 @@ export const pricing = {
 };
 
 export const finalCta = {
-  marquee: "Book a live demo",
   title: "See it work on one of your leads.",
   body: "Bring a company you want to sell to. We will research it, dial it and generate its audit while you watch.",
   cta: "Book a live demo",

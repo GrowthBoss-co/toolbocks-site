@@ -25,7 +25,7 @@ const STAGGER = 0.022;
 
 type CharRevealProps = {
   text: string;
-  /** How many trailing words render in the italic accent style. */
+  /** How many trailing words render in the accent colour. */
   accentWords?: number;
   className?: string;
 };

@@ -210,7 +210,7 @@ export function System() {
   const accent = rest.join(". ");
 
   return (
-    <section id="why" className="grain relative isolate overflow-hidden">
+    <section id="why" className="grain relative isolate overflow-hidden bg-void">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="aura left-1/2 top-[-6rem] size-[44rem] -translate-x-1/2 opacity-80" />
       </div>

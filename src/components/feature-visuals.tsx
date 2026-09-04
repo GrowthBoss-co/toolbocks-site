@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
 import type { FeatureVisualKey } from "@/lib/content";
 
@@ -1046,28 +1047,54 @@ function UsersRoles() {
 }
 
 function Integrations() {
-  const rows: [string, string, string, boolean][] = [
-    ["CRM", "GoHighLevel", "contacts, conversations, opportunities", true],
-    ["Calling", "Twilio", "4 numbers · local presence", true],
-    ["AI", "Anthropic", "research, audits, proposals, coaching", true],
-    ["CRM", "Salesforce", "not connected", false],
-  ];
+  const crm = [
+    ["highlevel-dark.png", "HighLevel", 1024, 232, 0.95],
+    ["salesforce.svg", "Salesforce", 273, 191, 1.5],
+    ["hubspot-dark.svg", "HubSpot", 106, 30, 0.95],
+    ["zoho.svg", "Zoho", 1024, 450, 1.05],
+  ] as const;
   return (
     <Fig>
-      {rows.map(([k, n, s, on]) => (
-        <Row key={n}>
-          <span className="w-10">
-            <Tiny>{k}</Tiny>
-          </span>
-          <div className="min-w-0">
-            <div className="font-medium">{n}</div>
-            <Tiny className="normal-case tracking-normal">{s}</Tiny>
-          </div>
-          <span className="ml-auto">
-            <Chip tone={on ? "main" : "ghost"}>{on ? "Connected" : "Off"}</Chip>
-          </span>
-        </Row>
-      ))}
+      <div className="flex items-center justify-between">
+        <Tiny>CRM</Tiny>
+        <Chip tone="main">Connected</Chip>
+      </div>
+      <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2">
+        {crm.map(([file, name, w, h, size]) => (
+          <Image
+            key={name}
+            src={`/logos/crm/${file}`}
+            alt={name}
+            width={w}
+            height={h}
+            unoptimized
+            className="w-auto"
+            style={{ height: `${size}rem` }}
+          />
+        ))}
+      </div>
+      <Row className="mt-3">
+        <span className="w-14">
+          <Tiny>Calling</Tiny>
+        </span>
+        <Image src="/logos/crm/twilio.svg" alt="" width={24} height={24} unoptimized className="size-4" />
+        <span className="font-medium">Twilio</span>
+        <Tiny className="normal-case tracking-normal">4 numbers · local presence</Tiny>
+        <span className="ml-auto">
+          <Chip tone="main">Connected</Chip>
+        </span>
+      </Row>
+      <Row>
+        <span className="w-14">
+          <Tiny>AI</Tiny>
+        </span>
+        <Image src="/logos/crm/anthropic.svg" alt="" width={24} height={24} unoptimized className="size-4" />
+        <span className="font-medium">Anthropic</span>
+        <Tiny className="normal-case tracking-normal">research, audits, coaching</Tiny>
+        <span className="ml-auto">
+          <Chip tone="main">Connected</Chip>
+        </span>
+      </Row>
       <Tiny className="mt-3 block normal-case tracking-normal">
         Credentials are encrypted on this instance and never leave it.
       </Tiny>

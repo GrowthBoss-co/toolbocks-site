@@ -4,7 +4,7 @@ import { AGENCY_URL, footer } from "@/lib/content";
 
 export function SiteFooter() {
   return (
-    <footer className="grain relative isolate border-t border-white/[0.08] bg-abyss">
+    <footer className="grain relative isolate border-t border-white/[0.08] bg-void">
       <div className="container-main pb-section-tiny pt-section-small">
         <div className="grid grid-cols-1 gap-y-5xl lg:grid-cols-2">
           <div className="flex flex-col items-start gap-[1.25rem]">
