@@ -33,7 +33,7 @@ export default function Home() {
           because it is position: fixed and would otherwise move with the page. */}
       <div id={SMOOTH_WRAPPER}>
         <div id={SMOOTH_CONTENT}>
-          <main className="overflow-clip">
+          <main className="overflow-x-clip">
             <Hero />
             <Mission />
             <Walkthrough />

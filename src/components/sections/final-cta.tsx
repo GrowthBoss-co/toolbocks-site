@@ -4,26 +4,32 @@ import { Button } from "@/components/ui-kit";
 import { DEMO_URL, finalCta, hero } from "@/lib/content";
 
 /**
- * The closing band, after the reference Bahaa sent: a cream ground, and on it
- * one dark card that sits a little way down onto the footer. Copy on the left
+ * The closing band, after the reference Bahaa sent: the same void as the
+ * pricing section above, and on it one dark card that straddles the seam with
+ * the footer, half on each colour. Copy on the left
  * under a bracketed eyebrow, two buttons, and the Team Dashboard on the right
  * running out past the card's right and bottom edges, clipped by the card. The
  * warm glow in the reference is the wordmark's indigo and magenta here.
  *
- * The card is a `.scheme-dark` island inside the cream section, so its text
- * uses the dark-ground tokens and the lime button keeps its dark label. The
- * section carries the card's overhang as a negative bottom margin; the footer
+ * The section carries the card's overhang as a negative bottom margin and
+ * paints the void only down to the seam, so the footer's colour shows through
+ * the overhang strip and the card really does sit on two grounds. The footer
  * adds the matching room at its top (see SiteFooter).
  */
-export const CTA_OVERHANG = "6rem";
+export const CTA_OVERHANG = "12rem";
 
 const INTRINSIC = { width: 1440, height: 690 };
 
 export function FinalCta() {
   return (
     <section
-      className="scheme-cream relative z-10 bg-void"
-      style={{ marginBottom: `calc(-1 * ${CTA_OVERHANG})` }}
+      className="relative z-10"
+      style={{
+        marginBottom: `calc(-1 * ${CTA_OVERHANG})`,
+        // The void down to the seam, then nothing: the footer's colour shows
+        // through the overhang strip, so the card sits on two grounds.
+        backgroundImage: `linear-gradient(to bottom, var(--void) calc(100% - ${CTA_OVERHANG}), transparent calc(100% - ${CTA_OVERHANG}))`,
+      }}
     >
       <div className="container-main pt-section-main">
         <Reveal y={32} className="scheme-dark">
