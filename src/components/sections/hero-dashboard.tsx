@@ -25,23 +25,26 @@ import { DemoFrame } from "@/components/sections/demo-frame";
  * dots.
  */
 const INTRINSIC = { width: 1440, height: 690 };
+/** The wordmark's cyan-indigo-magenta sweep. */
+const LOGO_GRADIENT = "linear-gradient(135deg, #2dd4ff 0%, #6a5cff 48%, #d946ef 100%)";
 export const HERO_FRAME_ID = "hero-dashboard";
 
 export function HeroDashboard() {
   return (
     <div id={HERO_FRAME_ID} className="relative z-10 w-full">
+      {/* The logo's gradient, twice: a soft glow behind the frame and a one
+          pixel ring around it (a gradient background under a one pixel
+          padding, with the dark bezel painted on top). */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -inset-2 rounded-[2rem] opacity-45 blur-2xl"
+        style={{ background: LOGO_GRADIENT }}
+      />
       <div
-        className="lift-lg relative rounded-[1.5rem] bg-[#0b0b12] p-2 sm:p-2.5"
-        style={{
-          boxShadow:
-            "0 0 0 1px rgba(203,202,255,0.32), 0 0 0 6px rgba(11,11,18,1), 0 0 0 7px rgba(255,255,255,0.08), 0 40px 90px -40px rgba(0,0,0,0.9)",
-        }}
+        className="lift-lg relative rounded-[1.5rem] p-px"
+        style={{ background: LOGO_GRADIENT }}
       >
-        {/* The highlight on the bezel's top edge, where the lines land. */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-[12%] top-0 h-px bg-gradient-to-r from-transparent via-[var(--p-200)] to-transparent opacity-80"
-        />
+        <div className="rounded-[calc(1.5rem-1px)] bg-[#0b0b12] p-2 sm:p-2.5">
         <div className="overflow-hidden rounded-[1rem] bg-[#0a0a0f] ring-1 ring-white/[0.06]">
           <DemoFrame
             src="/demo/team-dashboard.html"
@@ -49,6 +52,7 @@ export function HeroDashboard() {
             intrinsic={INTRINSIC}
             eager
           />
+        </div>
         </div>
       </div>
     </div>
@@ -145,8 +149,8 @@ export function HeroLines({ hostId }: { hostId: string }) {
       <defs>
         <linearGradient id="hero-line-fade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2={h}>
           <stop offset="0" stopColor="#cbcaff" stopOpacity="0" />
-          <stop offset="0.45" stopColor="#cbcaff" stopOpacity="0.26" />
-          <stop offset="1" stopColor="#cbcaff" stopOpacity="0.5" />
+          <stop offset="0.45" stopColor="#cbcaff" stopOpacity="0.18" />
+          <stop offset="1" stopColor="#cbcaff" stopOpacity="0.36" />
         </linearGradient>
         <radialGradient id="hero-dot">
           <stop offset="0" stopColor="#ffffff" stopOpacity="0.95" />

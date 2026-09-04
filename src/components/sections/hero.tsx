@@ -30,7 +30,6 @@ export function Hero() {
       >
         <div className="aura left-1/2 top-[-10%] size-[46rem] -translate-x-1/2 opacity-90" />
         <div className="aura is-violet right-[-8%] top-[6%] size-[34rem]" />
-        <div className="aura bottom-[-14%] left-[-6%] size-[38rem] opacity-70" />
       </div>
 
       {/* The ground fades to the section below, so the hero has no visible seam. */}

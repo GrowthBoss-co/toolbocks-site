@@ -744,36 +744,61 @@ function BusinessLibrary() {
 }
 
 function TeamDashboard() {
-  const hours = [9, 10, 11, 12, 13, 14, 15, 16, 17];
-  const calls = [42, 78, 96, 61, 38, 84, 102, 88, 54];
+  const reps: [string, string, string, string, string][] = [
+    ["P", "Paulo", "492", "202 (41%)", "9"],
+    ["E", "Ethiene", "470", "151 (32%)", "8"],
+    ["J", "Josh", "538", "177 (33%)", "6"],
+  ];
+  const calls = [4, 22, 48, 66, 58, 30, 12, 44, 72, 60, 34, 10];
   const max = Math.max(...calls);
   return (
     <Fig>
       <div className="grid grid-cols-3 gap-2">
         {[
-          ["Calls", "1,284"],
-          ["Connects", "412"],
-          ["Meetings", "17"],
-        ].map(([l, v]) => (
-          <div key={l}>
+          ["Calls", "2,025", ""],
+          ["Connected", "653", "32% of calls"],
+          ["Meetings", "26", ""],
+        ].map(([l, v, s]) => (
+          <div key={l} className="rounded-md px-2 py-1.5" style={{ background: FAINT }}>
             <Tiny>{l}</Tiny>
-            <div className="text-sm font-semibold">{v}</div>
+            <div className="text-sm font-semibold leading-tight">{v}</div>
+            {s ? <Tiny className="normal-case tracking-normal">{s}</Tiny> : null}
           </div>
         ))}
       </div>
-      <div className="mt-3 flex h-24 items-end gap-1.5">
-        {calls.map((c, i) => (
-          <div key={i} className="flex flex-1 flex-col items-center gap-1">
-            <span
-              className="w-full rounded-[3px]"
-              style={{
-                height: `${(c / max) * 100}%`,
-                background: c === max ? MAIN : c > 70 ? MID : TINT,
-              }}
-            />
-            <Tiny className="tracking-normal">{hours[i]}</Tiny>
-          </div>
+      <div className="mt-2.5 grid grid-cols-[1fr_2.5rem_4rem_1.5rem] gap-x-2 text-[0.5625rem]" style={{ color: MUTED }}>
+        <Tiny>By rep</Tiny>
+        <Tiny className="text-right">Calls</Tiny>
+        <Tiny className="text-right">Connected</Tiny>
+        <Tiny className="text-right">Mtg</Tiny>
+      </div>
+      {reps.map(([l, n, c, k, m]) => (
+        <div
+          key={n}
+          className="grid grid-cols-[1fr_2.5rem_4rem_1.5rem] items-center gap-x-2 py-[0.3125rem]"
+          style={{ borderBottom: `1px solid ${LINE}` }}
+        >
+          <span className="flex items-center gap-1.5 font-medium">
+            <Avatar letter={l} />
+            {n}
+          </span>
+          <span className="text-right font-mono text-[0.625rem]">{c}</span>
+          <span className="text-right font-mono text-[0.625rem]">{k}</span>
+          <span className="text-right font-mono text-[0.625rem]">{m}</span>
+        </div>
+      ))}
+      <div className="mt-2.5 flex items-end gap-[3px]" style={{ height: 34 }}>
+        {calls.map((v, i) => (
+          <span
+            key={i}
+            className="flex-1 rounded-t-[3px]"
+            style={{ height: `${(v / max) * 100}%`, background: v === max ? MAIN : v > 40 ? MID : TINT }}
+          />
         ))}
+      </div>
+      <div className="mt-1 flex justify-between">
+        <Tiny>Calls by hour</Tiny>
+        <Tiny>8 to 19</Tiny>
       </div>
     </Fig>
   );
