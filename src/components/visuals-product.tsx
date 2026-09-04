@@ -1,496 +1,405 @@
-/**
- * Visuals for the product walkthrough, one per beat of demo scenes 4 to 9.
- *
- * Same approach as `visuals.tsx`: authored as markup rather than screenshots so
- * they stay sharp at any density, restyle with the tokens, and add no image
- * weight. The demo reel used emoji for its icons; these use the SVG set in
- * `icons.tsx` instead. Every visual is decorative, so it is hidden from a11y
- * tools and the surrounding copy carries the meaning.
- *
- * Any figure shown here is a representative sample, not live data. Beats marked
- * `sample` in `content.ts` print a note saying so.
- */
-
 import {
-  ChartIcon,
-  DocIcon,
-  MailIcon,
-  RepeatIcon,
-  SearchIcon,
-} from "@/components/icons";
-import { PANEL, Pill } from "@/components/visuals";
+  Avatar,
+  Btn,
+  Kpi,
+  LiveDot,
+  PageHead,
+  Panel,
+  Screen,
+  StatusPill,
+  Th,
+} from "@/components/visuals";
+import { cn } from "@/lib/utils";
 
-/** Shared window chrome. The demo framed several scenes as a browser window. */
-function Frame({
-  label,
-  children,
-  badge,
-}: {
-  label: string;
-  children: React.ReactNode;
-  badge?: React.ReactNode;
-}) {
-  return (
-    <div className="w-full overflow-hidden rounded-large border border-white/[0.07] bg-surface/90 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)] select-none">
-      <div className="flex items-center gap-3 border-b border-white/[0.06] px-4 py-3">
-        <span className="flex shrink-0 items-center gap-1.5">
-          <span className="size-2 rounded-full bg-white/15" />
-          <span className="size-2 rounded-full bg-white/15" />
-          <span className="size-2 rounded-full bg-white/15" />
-        </span>
-        <span className="truncate text-[0.75rem] text-sub">{label}</span>
-        {badge ? <span className="ml-auto shrink-0">{badge}</span> : null}
-      </div>
-      {children}
-    </div>
-  );
-}
-
-function LiveBadge() {
-  return (
-    <span className="flex items-center gap-1.5 rounded-round border border-green/40 bg-green/[0.14] px-2.5 py-1 text-[0.625rem] font-bold uppercase leading-none tracking-[0.1em] text-[#5fdd9d]">
-      <span className="relative flex size-1.5 items-center justify-center">
-        <span className="soft-ping absolute size-1.5 rounded-full bg-[#5fdd9d]" />
-        <span className="relative size-1.5 rounded-full bg-[#5fdd9d]" />
-      </span>
-      Live
-    </span>
-  );
-}
+/* ============================================================================
+   The six walkthrough panels. Each is a crop of the ToolBox screen the step
+   describes, on the same demo data as the product mockups. See visuals.tsx
+   for the kit and the reasoning behind the literal palette.
+   ========================================================================= */
 
 /* ==========================================================================
-   Scene 4. Every call, coached in real time.
+   1. The live call, coached. The Power Dialer's ON THE CALL card beside the
+      AI Live Coach panel, as the dialer shows them during a connect.
    ========================================================================= */
+const plan = [
+  ["Opener", "Lead with the leak framing, then dig before you pitch.", "lime"],
+  ["Ask", "What happens to a quote request that lands at 6pm on a Friday?", "sky"],
+  ["If they push back", "“Not looking”: you already run ads, this just catches what you pay for.", "amber"],
+  ["Close", "If you booked 10 more roofs a month, worth a 15-minute look?", "green"],
+] as const;
+
+// Deterministic waveform, so server and client render identical bars.
+const wave = Array.from({ length: 22 }, (_, i) =>
+  Math.round(30 + 60 * Math.abs(Math.sin(i * 1.3) * Math.cos(i * 0.5))),
+);
+
 export function CoachedCallVisual() {
-  const transcript: Array<{ who: "them" | "rep"; line: string }> = [
-    { who: "rep", line: "…so you're running the recall list by hand right now?" },
-    { who: "them", line: "We already have someone doing that." },
-    { who: "rep", line: "Got it. Who owns it when they're off?" },
-  ];
-
   return (
-    <div aria-hidden="true" className="w-full max-w-[34rem]">
-      <Frame label="Team Dialer" badge={<LiveBadge />}>
-        <div className="flex flex-col gap-3 p-4">
-          {/* lead intel, auto-pulled before the call connects */}
-          <div className={`${PANEL} flex flex-col gap-2 px-3.5 py-3`}>
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-[0.625rem] font-semibold uppercase leading-none tracking-wide text-primary-300">
-                Lead intel
-              </span>
-              <span className="text-[0.625rem] leading-none text-sub">
-                auto-pulled
-              </span>
+    <Screen>
+      <div className="grid grid-cols-1 gap-2.5 p-3 sm:grid-cols-[1.1fr_1fr]">
+        <Panel title="On the call · Northline HVAC">
+          <div className="flex flex-col gap-2 px-3 py-2.5">
+            <div className="flex items-center gap-1.5 text-[10px] text-[var(--tb-green)]">
+              <LiveDot />
+              Connected · <span className="font-mono">02:14</span>
             </div>
-            <div className="text-[0.9375rem] font-medium leading-tight text-ink">
-              Northgate HVAC
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              <Pill tone="live">Running Meta ads</Pill>
-              <Pill>42 reviews</Pill>
-              <Pill tone="warn">No booking link</Pill>
-            </div>
-          </div>
-
-          {/* transcript */}
-          <div className="flex flex-col gap-1.5">
-            {transcript.map((t, i) => (
-              <div
-                key={i}
-                className={`max-w-[85%] rounded-medium px-3 py-2 text-[0.75rem] leading-snug ${
-                  t.who === "rep"
-                    ? "self-end bg-primary-500/15 text-soft"
-                    : "self-start bg-white/[0.05] text-soft-400"
-                }`}
-              >
-                {t.line}
-              </div>
-            ))}
-          </div>
-
-          {/* the coach fires on the objection, mid-sentence */}
-          <div className="rounded-medium border border-white/[0.07] border-l-[3px] border-l-lime bg-surface-800/95 px-3.5 py-2.5">
-            <div className="flex items-center gap-2">
-              <span className="rounded-[5px] bg-lime px-1.5 py-[3px] text-[0.5625rem] font-bold uppercase leading-none tracking-wide text-strong">
-                AI Live Coach
-              </span>
-              <span className="text-[0.625rem] leading-none text-sub">
-                objection detected
-              </span>
-            </div>
-            <div className="mt-1.5 text-[0.8125rem] font-medium leading-snug text-soft">
-              Ask who covers the recall list on their day off.
-            </div>
-          </div>
-        </div>
-      </Frame>
-    </div>
-  );
-}
-
-/* ==========================================================================
-   Scene 5. Parallel dialing, several lines at once.
-   ========================================================================= */
-export function ParallelLinesVisual() {
-  const lines: Array<{
-    initials: string;
-    name: string;
-    state: string;
-    tone: "neutral" | "live" | "good";
-  }> = [
-    { initials: "SR", name: "Sofia Reyes", state: "ringing", tone: "neutral" },
-    { initials: "DC", name: "Devon Clarke", state: "ringing", tone: "neutral" },
-    {
-      initials: "MW",
-      name: "Marcus Whitfield",
-      state: "bridging rep",
-      tone: "good",
-    },
-  ];
-  const today = [
-    { v: "412", l: "dials" },
-    { v: "58", l: "connects" },
-    { v: "9", l: "meetings" },
-    { v: "2.1%", l: "abandon" },
-  ];
-
-  return (
-    <div
-      aria-hidden="true"
-      className="grid w-full max-w-[34rem] grid-cols-1 gap-3 select-none sm:grid-cols-2"
-    >
-      {/* live lines */}
-      <div className={`${PANEL} overflow-hidden`}>
-        <div className="border-b border-white/[0.06] px-3.5 py-2.5 text-[0.6875rem] uppercase leading-none tracking-wide text-sub">
-          Live lines
-        </div>
-        <div className="divide-y divide-white/[0.05]">
-          {lines.map((l) => (
-            <div key={l.initials} className="flex items-center gap-2.5 px-3.5 py-2.5">
-              <span
-                className={`grid size-7 shrink-0 place-items-center rounded-full text-[0.625rem] font-bold ${
-                  l.tone === "good"
-                    ? "bg-green/20 text-[#5fdd9d]"
-                    : "bg-white/[0.07] text-soft-400"
-                }`}
-              >
-                {l.initials}
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block truncate text-[0.8125rem] leading-tight text-soft">
-                  {l.name}
-                </span>
-                <span className="block truncate text-[0.6875rem] leading-tight text-sub">
-                  {l.state}
-                </span>
-              </span>
-              {l.tone === "good" ? (
-                <span className="size-1.5 shrink-0 rounded-full bg-[#5fdd9d]" />
-              ) : (
-                <span className="relative flex size-1.5 shrink-0 items-center justify-center">
-                  <span className="soft-ping absolute size-1.5 rounded-full bg-primary-400" />
-                  <span className="relative size-1.5 rounded-full bg-primary-400" />
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
-        <div className="border-t border-white/[0.06] px-3.5 py-2.5">
-          <Pill tone="live">AMD screening machines</Pill>
-        </div>
-      </div>
-
-      {/* today */}
-      <div className={`${PANEL} flex flex-col`}>
-        <div className="border-b border-white/[0.06] px-3.5 py-2.5 text-[0.6875rem] uppercase leading-none tracking-wide text-sub">
-          Today
-        </div>
-        <div className="grid flex-1 grid-cols-2">
-          {today.map((s, i) => (
-            <div
-              key={s.l}
-              className={`px-3.5 py-3 ${i % 2 === 0 ? "border-r" : ""} ${
-                i < 2 ? "border-b" : ""
-              } border-white/[0.05]`}
-            >
-              <div className="text-[1.125rem] font-semibold leading-none text-ink">
-                {s.v}
-              </div>
-              <div className="mt-1 text-[0.6875rem] leading-none text-sub">
-                {s.l}
+            <div>
+              <div className="text-[12px] font-bold text-[var(--tb-text)]">Dev Patel · Owner</div>
+              <div className="text-[9px] text-[var(--tb-muted)]">
+                +1 (905) 555-0142 · Mississauga, ON
               </div>
             </div>
-          ))}
-        </div>
-        {/* Shows the compliance window as state. The prose beside this visual
-            explains what happens outside it, so don't restate it here. */}
-        <div className="flex items-center justify-between gap-2 border-t border-white/[0.06] px-3.5 py-2.5">
-          <span className="text-[0.6875rem] leading-none text-sub">
-            Calling window 9:00-20:00
-          </span>
-          <Pill tone="good">Enforced</Pill>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ==========================================================================
-   Scene 6. AI research feeds every touch.
-   ========================================================================= */
-export function ResearchFlowVisual() {
-  const steps = [
-    { Icon: SearchIcon, title: "Lead research", body: "Web + ad-library scan" },
-    { Icon: RepeatIcon, title: "Cadence", body: "Multi-touch, tag-routed" },
-    { Icon: MailIcon, title: "Email & SMS", body: "Personalised, CASL-safe" },
-  ];
-
-  return (
-    <div
-      aria-hidden="true"
-      className="flex w-full max-w-[34rem] flex-col items-stretch gap-2 select-none sm:flex-row sm:items-center"
-    >
-      {steps.map((s, i) => (
-        <div key={s.title} className="flex flex-1 items-center gap-2">
-          <div
-            className={`${PANEL} flex flex-1 flex-col items-center gap-2 px-3 py-4 text-center`}
-          >
-            <span className="grid size-9 place-items-center rounded-medium bg-primary-500/15">
-              <s.Icon className="size-[1.125rem] text-primary-300" />
-            </span>
-            <span className="text-[0.8125rem] font-medium leading-tight text-ink">
-              {s.title}
-            </span>
-            <span className="text-[0.6875rem] leading-tight text-sub">
-              {s.body}
-            </span>
-          </div>
-          {i < steps.length - 1 ? (
-            <span
-              className="shrink-0 text-sub"
-              // Points down when the row stacks on narrow screens.
-              style={{ lineHeight: 0 }}
-            >
-              <svg
-                viewBox="0 0 16 16"
-                className="size-4 rotate-90 sm:rotate-0"
-                fill="none"
-              >
-                <path
-                  d="M3 8h9m0 0L8.6 4.6M12 8l-3.4 3.4"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-          ) : null}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/* ==========================================================================
-   Scene 7. A board that writes itself.
-   ========================================================================= */
-export function PipelineBoardVisual() {
-  const columns = [
-    {
-      head: "New",
-      count: "12",
-      cards: [{ co: "Brightline Retail", note: "Enrolled", tone: "neutral" as const }],
-    },
-    {
-      head: "Contacted",
-      count: "8",
-      cards: [{ co: "Halcyon Freight", note: "Connected", tone: "live" as const }],
-    },
-    {
-      head: "Qualified",
-      count: "5",
-      cards: [{ co: "Northwind Apps", note: "Positive", tone: "live" as const }],
-    },
-    {
-      head: "Meeting",
-      count: "3",
-      cards: [{ co: "Cedar & Bloom", note: "Booked", tone: "good" as const }],
-    },
-  ];
-
-  return (
-    <div aria-hidden="true" className="w-full max-w-[34rem] select-none">
-      <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-        {columns.map((c) => (
-          <div key={c.head} className={`${PANEL} flex flex-col gap-2 p-2.5`}>
-            <div className="flex items-baseline justify-between gap-1">
-              <span className="truncate text-[0.6875rem] uppercase leading-none tracking-wide text-sub">
-                {c.head}
-              </span>
-              <span className="text-[0.6875rem] leading-none tabular-nums text-soft-400">
-                {c.count}
-              </span>
-            </div>
-            {c.cards.map((card) => (
-              <div
-                key={card.co}
-                className="rounded-medium border border-white/[0.06] bg-surface/80 px-2.5 py-2"
-              >
-                <div className="truncate text-[0.75rem] font-medium leading-tight text-soft">
-                  {card.co}
-                </div>
-                <div className="mt-1.5">
-                  <Pill tone={card.tone}>{card.note}</Pill>
-                </div>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-
-      {/* two-way sync footer */}
-      <div
-        className={`${PANEL} mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 px-3.5 py-2.5`}
-      >
-        <span className="flex items-center gap-1.5">
-          <span className="size-1.5 rounded-full bg-[#5fdd9d]" />
-          <span className="text-[0.75rem] text-soft-400">GoHighLevel</span>
-        </span>
-        <span className="flex items-center gap-1.5">
-          <span className="size-1.5 rounded-full bg-white/25" />
-          <span className="text-[0.75rem] text-sub">Salesforce</span>
-          <Pill tone="warn">Pilot</Pill>
-        </span>
-        <span className="ml-auto text-[0.6875rem] text-sub">syncs both ways</span>
-      </div>
-    </div>
-  );
-}
-
-/* ==========================================================================
-   Scene 8. Branded audits and proposals, one click.
-   ========================================================================= */
-export function AuditProposalVisual() {
-  const cards = [
-    {
-      Icon: ChartIcon,
-      title: "Instant audit",
-      body: "Point it at a website and Instagram. It returns a full, on-brand marketing audit, ready to send.",
-      meta: "~2 min",
-    },
-    {
-      Icon: DocIcon,
-      title: "Package proposal",
-      body: "From a discovery-call transcript it writes a package-forward proposal, signed by the rep.",
-      meta: "Tier recommended",
-    },
-  ];
-
-  return (
-    <div
-      aria-hidden="true"
-      className="grid w-full max-w-[34rem] grid-cols-1 gap-3 select-none sm:grid-cols-2"
-    >
-      {cards.map((c) => (
-        <div key={c.title} className={`${PANEL} flex flex-col gap-2.5 p-4`}>
-          <span className="grid size-10 place-items-center rounded-medium bg-primary-500/15">
-            <c.Icon className="size-5 text-primary-300" />
-          </span>
-          <span className="text-[0.9375rem] font-medium leading-tight text-ink">
-            {c.title}
-          </span>
-          <span className="text-[0.75rem] leading-snug text-sub">{c.body}</span>
-          <span className="mt-auto pt-1">
-            <Pill tone="live">{c.meta}</Pill>
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/* ==========================================================================
-   Scene 9. Every rep, every dollar, measured.
-   ========================================================================= */
-export function AnalyticsVisual() {
-  const tiles = [
-    { v: "14.1%", l: "connect rate" },
-    { v: "10-11a", l: "best time to call" },
-    { v: "$0.42", l: "AI cost / call" },
-  ];
-  // Deterministic so server and client render the same bars.
-  const hours = [38, 52, 71, 96, 84, 61, 44, 57, 73, 49];
-  const mix = [
-    { l: "Connected", pct: 46, tone: "bg-gradient-to-r from-primary-600 to-primary-400" },
-    { l: "Voicemail", pct: 31, tone: "bg-white/20" },
-    { l: "No answer", pct: 23, tone: "bg-white/12" },
-  ];
-
-  return (
-    <div aria-hidden="true" className="w-full max-w-[34rem] select-none">
-      <Frame label="Reports">
-        <div className="flex flex-col gap-3 p-4">
-          <div className="grid grid-cols-3 gap-2.5">
-            {tiles.map((t) => (
-              <div key={t.l} className={`${PANEL} px-3 py-2.5`}>
-                <div className="text-[1rem] font-semibold leading-none text-ink">
-                  {t.v}
-                </div>
-                <div className="mt-1 text-[0.625rem] leading-tight text-sub">
-                  {t.l}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* connects by hour */}
-          <div className={`${PANEL} px-3.5 py-3`}>
-            <div className="text-[0.625rem] uppercase leading-none tracking-wide text-sub">
-              Connects by hour
-            </div>
-            <div className="mt-2.5 flex h-14 items-end gap-1">
-              {hours.map((h, i) => (
+            <div className="flex h-7 items-center gap-[2px]">
+              {wave.map((h, i) => (
                 <span
                   key={i}
-                  style={{ height: `${h}%` }}
-                  className={`w-full rounded-[3px] ${
-                    h > 80 ? "bg-primary-400" : "bg-primary-500/40"
-                  }`}
+                  style={
+                    {
+                      height: `${h}%`,
+                      "--wave-delay": `${((i % 6) * 0.11).toFixed(2)}s`,
+                    } as React.CSSProperties
+                  }
+                  className={cn(
+                    "wave-bar w-full rounded-full",
+                    i < 15 ? "bg-[var(--tb-blue)]" : "bg-[rgba(255,255,255,0.14)]",
+                  )}
                 />
               ))}
             </div>
-          </div>
-
-          {/* disposition mix */}
-          <div className={`${PANEL} flex flex-col gap-2 px-3.5 py-3`}>
-            <div className="text-[0.625rem] uppercase leading-none tracking-wide text-sub">
-              Disposition mix
+            <div className="text-[9px] leading-snug text-[var(--tb-text2)]">
+              <span className="font-bold text-[var(--tb-text)]">Why now: </span>
+              no paid ads, page two for furnace repair, two seasonal ads that came down.
             </div>
-            {mix.map((m) => (
-              <div key={m.l} className="flex items-center gap-2.5">
-                <span className="w-[4.5rem] shrink-0 text-[0.6875rem] text-soft-400">
-                  {m.l}
+            <div className="flex flex-wrap gap-1.5">
+              <Btn primary>Book meeting</Btn>
+              <Btn>Callback</Btn>
+            </div>
+          </div>
+        </Panel>
+
+        <Panel
+          title="AI Live Coach"
+          meta={<StatusPill tone="green">Live</StatusPill>}
+        >
+          <div className="flex flex-col gap-1.5 px-2.5 py-2.5">
+            <span className="text-[8px] font-semibold uppercase tracking-[0.14em] text-[var(--tb-muted)]">
+              Game plan
+            </span>
+            {plan.map(([k, v, tone]) => (
+              <div
+                key={k}
+                className="rounded-[7px] border border-[var(--tb-line)] bg-[var(--tb-panel2)] px-2 py-1.5"
+              >
+                <div
+                  className={cn("text-[7.5px] font-bold uppercase tracking-[0.12em]", {
+                    "text-[var(--tb-lime)]": tone === "lime",
+                    "text-[var(--tb-sky)]": tone === "sky",
+                    "text-[var(--tb-amber)]": tone === "amber",
+                    "text-[var(--tb-green)]": tone === "green",
+                  })}
+                >
+                  {k}
+                </div>
+                <div className="text-[9px] leading-snug text-[var(--tb-text2)]">{v}</div>
+              </div>
+            ))}
+            <div className="mt-0.5 rounded-[7px] border border-[rgba(198,242,78,0.35)] bg-[rgba(198,242,78,0.06)] px-2 py-1.5">
+              <div className="text-[7.5px] font-bold uppercase tracking-[0.12em] text-[var(--tb-lime)]">
+                Live tip <span className="font-normal normal-case text-[var(--tb-dim)]">· refined in 1.8s</span>
+              </div>
+              <div className="text-[9px] leading-snug text-[var(--tb-text)]">
+                Dev said <span className="font-semibold">&ldquo;we can&rsquo;t keep up in summer.&rdquo;</span>{" "}
+                Mirror it, then anchor on never missing a busy-season lead.
+              </div>
+            </div>
+          </div>
+        </Panel>
+      </div>
+    </Screen>
+  );
+}
+
+/* ==========================================================================
+   2. Parallel dialing. The Team Dialer: lines live, agents and their states.
+   ========================================================================= */
+const agents = [
+  { name: "Paulo", tone: "blue", state: "On a call", pill: "green", calls: "68", connects: "11" },
+  { name: "Ethiene", tone: "pink", state: "Ready", pill: "blue", calls: "54", connects: "9" },
+  { name: "Josh", tone: "sky", state: "Ready", pill: "blue", calls: "61", connects: "12" },
+  { name: "Marina", tone: "amber", state: "Wrap-up", pill: "amber", calls: "47", connects: "5" },
+  { name: "Dev", tone: "green", state: "Break", pill: "grey", calls: "22", connects: "3" },
+] as const;
+
+export function ParallelLinesVisual() {
+  return (
+    <Screen>
+      <div className="flex flex-col gap-2.5 p-3">
+        <PageHead
+          title="Team Dialer"
+          sub="One shared queue, several reps, no two people dialling the same lead."
+        />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <Kpi label="Agents ready" value="4" sub="of 5 online" tone="green" />
+          <Kpi label="Lines live" value="9" sub="pacing 2.2x" />
+          <Kpi label="Connects" value="37" sub="this session" tone="lime" />
+          <Kpi label="Abandon" value="1.4%" sub="under the 3% cap" />
+        </div>
+        <Panel title="Agents">
+          <Th
+            cols={["Rep", "State", "Calls", "Connects"]}
+            className="grid-cols-[1.3fr_1fr_0.6fr_0.8fr] [&>*:nth-child(n+3)]:text-right"
+          />
+          <ul className="divide-y divide-[var(--tb-line)]">
+            {agents.map((a) => (
+              <li
+                key={a.name}
+                className="grid grid-cols-[1.3fr_1fr_0.6fr_0.8fr] items-center gap-2 px-3 py-[7px] font-mono text-[10px] text-[var(--tb-text2)] [&>*:nth-child(n+3)]:text-right"
+              >
+                <span className="flex items-center gap-1.5 font-sans text-[10.5px] text-[var(--tb-text)]">
+                  <Avatar initial={a.name[0]} tone={a.tone} />
+                  {a.name}
                 </span>
-                <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.07]">
-                  <span
-                    style={{ width: `${m.pct}%` }}
-                    className={`block h-full rounded-full ${m.tone}`}
-                  />
+                <span>
+                  <StatusPill tone={a.pill}>{a.state}</StatusPill>
                 </span>
-                <span className="w-8 shrink-0 text-right text-[0.6875rem] tabular-nums text-sub">
-                  {m.pct}%
+                <span>{a.calls}</span>
+                <span>{a.connects}</span>
+              </li>
+            ))}
+          </ul>
+        </Panel>
+      </div>
+    </Screen>
+  );
+}
+
+/* ==========================================================================
+   3. Research. One prospect researched before the dial, and the opening line
+      written from what was actually found.
+   ========================================================================= */
+const findings = [
+  ["northlinehvac.ca", "WordPress · no lead form above the fold · 3.1s load on mobile", "Opportunity", "amber"],
+  ["Google Business Profile", "4.7★ from 61 reviews · last photo 14 months ago", "Claimed", "green"],
+  ["Meta Ad Library", "No active ads. Two ads ran last winter, both seasonal.", "Not running", "grey"],
+  ["Ranking", "Page 2 for “furnace repair mississauga” · a competitor holds the map pack", "Page 2", "pink"],
+] as const;
+
+export function ResearchFlowVisual() {
+  return (
+    <Screen>
+      <div className="flex flex-col gap-2.5 p-3">
+        <Panel title="Northline HVAC">
+          <ul className="flex flex-col gap-1.5 p-2">
+            {findings.map(([k, v, pill, tone]) => (
+              <li
+                key={k}
+                className="flex items-center justify-between gap-3 rounded-[7px] border border-[var(--tb-line)] bg-[var(--tb-panel2)] px-2.5 py-2"
+              >
+                <span className="flex min-w-0 flex-col leading-tight">
+                  <span className="text-[10.5px] font-semibold text-[var(--tb-text)]">{k}</span>
+                  <span className="truncate text-[8.5px] text-[var(--tb-muted)]">{v}</span>
                 </span>
+                <StatusPill tone={tone}>{pill}</StatusPill>
+              </li>
+            ))}
+          </ul>
+        </Panel>
+        <Panel title="Opening line">
+          <div className="flex flex-col gap-2 px-3 py-2.5">
+            <div className="rounded-[7px] border border-[var(--tb-line)] bg-[var(--tb-panel2)] px-2.5 py-2 text-[9.5px] leading-snug text-[var(--tb-text)]">
+              You are running no paid ads and sitting on page two for furnace repair, while a
+              competitor holds the map pack. That is the one gap worth 20 minutes.
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              <Btn primary>Call now</Btn>
+              <Btn>Add to cadence</Btn>
+              <Btn>Build audit</Btn>
+            </div>
+          </div>
+        </Panel>
+      </div>
+    </Screen>
+  );
+}
+
+/* ==========================================================================
+   4. Pipeline. The deal board, five stages, written back to the CRM.
+   ========================================================================= */
+const board = [
+  { stage: "New", n: 12, cards: [["Bloom Dental", "$1,499", "Paulo", "2d"], ["Karim Physio", "$999", "Ethiene", "1d"], ["Nordic Sauna Co", "$1,499", "Josh", "3d"]] },
+  { stage: "Contacted", n: 9, cards: [["Northline HVAC", "$2,599", "Josh", "5d"], ["Harbour Landscaping", "$1,499", "Paulo", "4d"]] },
+  { stage: "Meeting booked", n: 6, cards: [["Salto Kitchen", "$3,595", "Ethiene", "8d"], ["Ridgeway Roofing", "$2,599", "Paulo", "6d"]] },
+  { stage: "Proposal sent", n: 4, cards: [["Copper Fox Cafe", "$1,999", "Josh", "11d"], ["Lakeshore Dental", "$3,595", "Ethiene", "9d"]] },
+  { stage: "Closed won", n: 3, cards: [["Sid's Ponds", "$3,595", "Paulo", "14d"], ["C.D Landscaping", "$2,599", "Josh", "21d"]] },
+] as const;
+
+export function PipelineBoardVisual() {
+  return (
+    <Screen>
+      <div className="flex flex-col gap-2.5 p-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <Kpi label="Open deals" value="34" sub="across 5 stages" />
+          <Kpi label="Weighted value" value="$48,270" sub="by stage probability" tone="lime" />
+          <Kpi label="Booked this month" value="17" sub="meetings from outreach" />
+          <Kpi label="Won" value="3" sub="$9,793 MRR added" tone="green" />
+        </div>
+        <Panel title="Deal board" meta="drag to move a stage" bodyClassName="overflow-hidden p-2">
+          <div className="grid grid-cols-[repeat(5,minmax(7.25rem,1fr))] gap-1.5">
+            {board.map((col) => (
+              <div
+                key={col.stage}
+                className="flex min-w-0 flex-col gap-1.5 rounded-[7px] border border-[var(--tb-line)] bg-[var(--tb-panel2)] p-1.5"
+              >
+                <div className="flex items-center justify-between px-0.5 text-[7.5px] font-semibold uppercase tracking-[0.1em] text-[var(--tb-muted)]">
+                  <span className="truncate">{col.stage}</span>
+                  <span className="font-mono">{col.n}</span>
+                </div>
+                {col.cards.map(([name, price, rep, age]) => (
+                  <div
+                    key={name}
+                    className="flex flex-col gap-0.5 rounded-[6px] border border-[var(--tb-line)] bg-[var(--tb-panel)] px-1.5 py-1.5"
+                  >
+                    <span className="truncate text-[9px] font-semibold text-[var(--tb-text)]">{name}</span>
+                    <span className="flex items-center gap-1 text-[8px] text-[var(--tb-dim)]">
+                      <span className="font-mono text-[var(--tb-lime)]">{price}</span>
+                      <span className="truncate">{rep}</span>
+                      <span>{age}</span>
+                    </span>
+                  </div>
+                ))}
               </div>
             ))}
           </div>
-        </div>
-      </Frame>
+        </Panel>
+      </div>
+    </Screen>
+  );
+}
+
+/* ==========================================================================
+   5. Audits and proposals. The Audit screen: the build form and the branded
+      preview it publishes to a link.
+   ========================================================================= */
+function Field({ label, value, faded }: { label: string; value: string; faded?: boolean }) {
+  return (
+    <div className="flex flex-col gap-1">
+      <span className="text-[9px] font-semibold text-[var(--tb-text)]">{label}</span>
+      <span
+        className={cn(
+          "rounded-[6px] border border-[var(--tb-line)] bg-[var(--tb-panel2)] px-2 py-1.5 text-[9.5px]",
+          faded ? "text-[var(--tb-dim)]" : "text-[var(--tb-text)]",
+        )}
+      >
+        {value}
+      </span>
     </div>
   );
 }
 
-/** Keyed by the `visual` field on each walkthrough step in `content.ts`. */
+function Skeleton({ w }: { w: string }) {
+  return <span className="block h-[5px] rounded-full bg-[#e6e6ea]" style={{ width: w }} />;
+}
+
+export function AuditProposalVisual() {
+  return (
+    <Screen>
+      <div className="grid grid-cols-1 gap-2.5 p-3 sm:grid-cols-[1fr_1.15fr]">
+        <Panel title="Build">
+          <div className="flex flex-col gap-2 px-2.5 py-2.5">
+            <Field label="Company" value="Northline HVAC" />
+            <Field label="Website" value="northlinehvac.ca" />
+            <Field label="Instagram" value="found automatically" faded />
+            <div className="flex gap-1.5 pt-0.5">
+              <Btn primary>Generate audit</Btn>
+              <Btn>Open past audits</Btn>
+            </div>
+          </div>
+        </Panel>
+        <Panel title="Preview">
+          <div className="flex flex-col gap-2 px-2.5 py-2.5">
+            <div className="flex flex-col gap-2 rounded-[8px] bg-white px-3 py-3 text-[#111]">
+              <span className="inline-flex w-fit rounded-[4px] bg-[#111] px-1.5 py-[3px] text-[7px] font-bold uppercase tracking-[0.14em] text-[var(--tb-lime)]">
+                Digital audit
+              </span>
+              <span className="text-[12px] font-bold tracking-tight">Northline HVAC</span>
+              <Skeleton w="82%" />
+              <Skeleton w="96%" />
+              <Skeleton w="60%" />
+              <span className="pt-1 text-[9.5px] font-bold">1. No paid coverage in your busiest quarter</span>
+              <Skeleton w="96%" />
+              <Skeleton w="80%" />
+              <span className="pt-1 text-[9.5px] font-bold">2. Page two for your money keyword</span>
+              <Skeleton w="82%" />
+            </div>
+            <div className="flex items-center gap-1.5">
+              <StatusPill tone="green">Published</StatusPill>
+              <Btn>Open</Btn>
+              <Btn>Download</Btn>
+            </div>
+          </div>
+        </Panel>
+      </div>
+    </Screen>
+  );
+}
+
+/* ==========================================================================
+   6. Analytics per rep. The Productivity screen: attainment against target
+      and every rep's own numbers.
+   ========================================================================= */
+const activity = [
+  { name: "Paulo", tone: "blue", calls: "312", target: "104%", rate: "41%", talk: "3m 12s", meetings: "6" },
+  { name: "Ethiene", tone: "pink", calls: "298", target: "99%", rate: "32%", talk: "4m 05s", meetings: "5" },
+  { name: "Josh", tone: "sky", calls: "341", target: "114%", rate: "33%", talk: "2m 48s", meetings: "4" },
+  { name: "Marina", tone: "amber", calls: "218", target: "73%", rate: "28%", talk: "1m 52s", meetings: "2" },
+  { name: "Dev", tone: "green", calls: "115", target: "38%", rate: "15%", talk: "—", meetings: "0" },
+] as const;
+
+export function AnalyticsVisual() {
+  return (
+    <Screen>
+      <div className="flex flex-col gap-2.5 p-3">
+        <PageHead
+          title="Productivity"
+          sub="Not just how many calls, but how long the dialer was actually running and how much of that was talking."
+        />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <Kpi label="Calls" value="1,284" sub="of 1,500 target" />
+          <Kpi label="Attainment" value="86%" tone="green" />
+          <Kpi label="Dialing time" value="18h 42m" sub="across 5 reps" />
+          <Kpi label="Avg talktime" value="3m 12s" sub="per connect over 30s" tone="lime" />
+        </div>
+        <Panel title="Activity by SDR" meta="5 reps">
+          <Th
+            cols={["SDR", "Calls", "Of target", "Connect rate", "Avg talktime", "Meetings"]}
+            className="grid-cols-[1.3fr_0.7fr_1fr_0.8fr] [&>*:not(:first-child)]:text-right sm:grid-cols-[1.3fr_0.7fr_0.8fr_1fr_1fr_0.8fr]"
+            hide={[2, 4]}
+          />
+          <ul className="divide-y divide-[var(--tb-line)]">
+            {activity.map((r) => (
+              <li
+                key={r.name}
+                className="grid grid-cols-[1.3fr_0.7fr_1fr_0.8fr] items-center gap-2 px-3 py-[7px] font-mono text-[10px] text-[var(--tb-text2)] [&>*:not(:first-child)]:text-right sm:grid-cols-[1.3fr_0.7fr_0.8fr_1fr_1fr_0.8fr]"
+              >
+                <span className="flex items-center gap-1.5 font-sans text-[10.5px] text-[var(--tb-text)]">
+                  <Avatar initial={r.name[0]} tone={r.tone} />
+                  {r.name}
+                </span>
+                <span>{r.calls}</span>
+                <span className={cn("max-sm:hidden", r.target.startsWith("1") && "text-[var(--tb-green)]")}>{r.target}</span>
+                <span>{r.rate}</span>
+                <span className="max-sm:hidden">{r.talk}</span>
+                <span>{r.meetings}</span>
+              </li>
+            ))}
+          </ul>
+        </Panel>
+      </div>
+    </Screen>
+  );
+}
+
+/** Keyed by `walkthrough.steps[].visual` in content.ts. */
 export const walkthroughVisuals = {
   coachedCall: CoachedCallVisual,
   parallelLines: ParallelLinesVisual,

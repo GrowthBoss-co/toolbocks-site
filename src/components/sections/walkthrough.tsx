@@ -497,7 +497,7 @@ function Step({ step, side }: { step: StepData; side: Side }) {
             : "md:order-1 md:justify-start",
         )}
       >
-        <div className="scheme-dark lift-lg w-full max-w-[34rem] rounded-xlarge">
+        <div className="scheme-dark lift-lg w-full max-w-[40rem] rounded-xlarge">
           <Visual />
         </div>
       </motion.div>

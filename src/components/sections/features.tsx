@@ -57,7 +57,7 @@ export function Features() {
                 <div
                   className={`flex justify-center ${flip ? "lg:order-1 lg:justify-start" : "lg:justify-end"}`}
                 >
-                  <div className="lift-lg w-full max-w-[22rem] rounded-large">
+                  <div className="lift-lg w-full max-w-[30rem] rounded-large">
                     <Visual />
                   </div>
                 </div>
