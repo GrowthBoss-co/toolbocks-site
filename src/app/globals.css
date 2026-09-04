@@ -761,6 +761,94 @@
   }
 }
 
+/* The "Not a dialer" bento's little demos. Each card carries one loop that
+   suggests the mechanism: a gate sliding along the day, a pacer breathing, a
+   playbook typing itself, instance boxes drifting, a key turning, cost bars
+   rising. All transform/opacity/width on tiny elements. */
+@keyframes sys-gate {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(150px);
+  }
+}
+@keyframes sys-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+@keyframes sys-pacer {
+  0% {
+    width: 22%;
+  }
+  40% {
+    width: 78%;
+  }
+  70% {
+    width: 60%;
+  }
+  100% {
+    width: 22%;
+  }
+}
+@keyframes sys-type {
+  0%,
+  15% {
+    width: 0;
+  }
+  55%,
+  85% {
+    width: 100%;
+  }
+  100% {
+    width: 0;
+  }
+}
+@keyframes sys-drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes sys-key {
+  0%,
+  40% {
+    transform: rotate(0);
+  }
+  60%,
+  100% {
+    transform: rotate(90deg);
+  }
+}
+@keyframes sys-rise {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+@keyframes sys-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
 @layer components {
   .marquee-track {
     display: flex;

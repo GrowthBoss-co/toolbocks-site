@@ -240,34 +240,41 @@ export const system = {
   eyebrow: "Why it holds up",
   title: "Not a dialer. A sales system.",
   body: "Plenty of tools will dial a list. The difference is what surrounds the call.",
+  // `tag` is the small mono label in each bento card's corner, from the design.
   pillars: [
     {
       icon: "playbook" as const,
+      tag: "Method",
       title: "Encoded playbook",
       body: "The close methodology that runs the Growth Boss floor is built into every coach prompt and every script, so a new rep inherits it on day one.",
     },
     {
       icon: "gauge" as const,
+      tag: "Guardrails",
       title: "Compliance native",
       body: "Calling windows are enforced from the lead's own area code, opt-outs are handled server-side, and the dialer slows itself down before an abandon rate becomes a problem.",
     },
     {
       icon: "server" as const,
+      tag: "Isolation",
       title: "Instance per customer",
       body: "Your deployment is isolated, with its own keys and its own data. Nothing of yours shares a database with another agency.",
     },
     {
       icon: "lock" as const,
+      tag: "Ownership",
       title: "Licensed to you",
       body: "Each build is signed and bound to your domain, so an instance cannot be copied out of your environment and run somewhere else.",
     },
     {
       icon: "shield" as const,
+      tag: "Security",
       title: "Encrypted by default",
       body: "Integration credentials are encrypted and never shown again after you save them. Every instance holds its own key.",
     },
     {
       icon: "chart" as const,
+      tag: "Transparency",
       title: "Costs you can see",
       body: "AI spend, call cost and campaign return are reported per rep in the same place as pipeline, so nothing about the platform is a black box.",
     },
