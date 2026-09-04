@@ -26,12 +26,12 @@ export const APP_URL = "https://app.toolbocks.com";
 export const AGENCY_URL = "https://growthboss.co";
 
 export const navLinks = [
-  { label: "Platform", href: "#platform" },
+  // Four links, per Bahaa: Features (the carousel), How it works, Benefits,
+  // Pricing. Integrations and "Why ToolBocks" came off the bar.
+  { label: "Features", href: "#platform" },
   { label: "How it works", href: "#walkthrough" },
   { label: "Benefits", href: "#benefits" },
-  { label: "Integrations", href: "#integrations" },
   { label: "Pricing", href: "#pricing" },
-  { label: "Why ToolBocks", href: "#why" },
 ] as const;
 
 export const hero = {

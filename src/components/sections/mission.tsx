@@ -15,7 +15,7 @@ export function Mission() {
     <section className="grain relative isolate bg-abyss">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 overflow-hidden"
+        className="aura-field pointer-events-none absolute inset-0 overflow-hidden"
       >
         <div className="aura left-1/2 top-1/2 size-[40rem] -translate-x-1/2 -translate-y-1/2 opacity-50" />
       </div>

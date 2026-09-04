@@ -299,6 +299,14 @@
     scroll-padding-top: 6.5rem;
   }
 
+  /* Under the smooth scroller the page sits on a fractional translateY, and
+     the compositor antialiases every section's top edge against the one above
+     it: a hairline that comes and goes as hovers repaint. Overlapping each
+     section onto the previous one by a pixel leaves nothing to antialias. */
+  main > section + section {
+    margin-top: -1px;
+  }
+
   /* The page is dark by design, so tell the browser: form controls, scrollbars
      and the UA canvas follow, and a user with dark mode on gets nothing
      different from one without. The cream sections flip it back. */
@@ -570,12 +578,20 @@
 
   /* Film grain. An inline feTurbulence data URI rather than a PNG so it costs
      no request and cannot 404. Sits above the ground and below the content. */
+  /* One grain for the whole page, as a fixed veil outside the smooth scroller
+     (see page.tsx), rather than one per section: a section with grain sits a
+     hair lighter than one without, and every edge between them read as a line
+     that flickered with repaints. `.grain` on a section is now a no-op kept
+     for the markup. */
   .grain::after {
-    content: "";
-    position: absolute;
+    content: none;
+  }
+  .grain-veil {
+    position: fixed;
     inset: 0;
+    z-index: 40;
     pointer-events: none;
-    opacity: 0.22;
+    opacity: 0.16;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
   }
 
@@ -666,6 +682,13 @@
       transparent
     );
     filter: blur(40px);
+  }
+  /* The box that holds a section's auras. A glow that crosses the section's
+     top or bottom used to be cut dead by overflow:hidden and read as a hard
+     line against the neighbour; the mask lets it breathe out before the edge. */
+  .aura-field {
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
   }
   .aura.is-violet {
     background-image: radial-gradient(
