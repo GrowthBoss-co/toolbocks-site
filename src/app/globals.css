@@ -845,6 +845,20 @@
   }
 }
 
+/* Run a block out of the container into the right page margin, up to 10rem,
+   never past the viewport. The room is the gap between container and screen
+   edge plus the container's own padding, less a 1.5rem breath so the block
+   never kisses the edge (and so the ~17px a Windows scrollbar steals from 100vw
+   cannot tip it into overflow). A few pixels on a 1280px screen, the full 10rem
+   on 1920. Top-level on purpose: nested inside @layer components Tailwind
+   silently dropped it. */
+@media (min-width: 64rem) {
+  .bleed-right {
+    --bleed-room: calc((100vw - min(100vw, var(--site-width-main))) / 2 + var(--site-margin) - 1.5rem);
+    margin-right: calc(-1 * min(10rem, var(--bleed-room)));
+  }
+}
+
 /* One rule, everything still legible. A reveal that never fires would leave
    its content at opacity 0 forever, so .reveal is explicitly reset rather than
    just having its transition shortened. */

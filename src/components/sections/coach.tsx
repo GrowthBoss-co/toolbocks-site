@@ -34,16 +34,17 @@ export function Coach() {
       </div>
 
       <div className="container-main pb-section-main pt-section-main">
-        {/* The demo takes two thirds of the row and runs out into the right
-            page margin, the way the supervisor board does above. Every pixel
-            of column here is legibility inside the scaled frame. */}
-        <div className="grid grid-cols-1 items-center gap-4xl lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-5xl">
+        {/* The copy keeps a fixed, readable column; the demo takes everything
+            else and runs out into the right page margin (.bleed-right), so the
+            frame grows without squeezing the text into more lines. Every pixel
+            of frame width is legibility inside the scaled demo. */}
+        <div className="grid grid-cols-1 items-center gap-4xl lg:grid-cols-[minmax(0,30rem)_minmax(0,1fr)] lg:gap-5xl">
           <Reveal className="flex flex-col gap-xl">
             <p className="text-eyebrow">{coach.eyebrow}</p>
             <h2 className="text-gradient max-w-[16ch] text-balance">
               {coach.title}
             </h2>
-            <p className="text-large max-w-[46ch] text-soft-400">{coach.body}</p>
+            <p className="text-large max-w-[54ch] text-soft-400">{coach.body}</p>
 
             <ul className="mt-sm flex flex-col gap-md">
               {coach.points.map((point) => (
@@ -55,7 +56,7 @@ export function Coach() {
             </ul>
           </Reveal>
 
-          <Reveal y={40} className="flex flex-col items-center gap-lg lg:-mr-[var(--site-margin)]">
+          <Reveal y={40} className="bleed-right flex flex-col items-center gap-lg">
             <div className="lift-lg w-full overflow-hidden rounded-xlarge border border-white/[0.08] bg-[#050507]">
               <DemoFrame
                 src="/demo/live-call.html"
