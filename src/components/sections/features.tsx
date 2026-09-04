@@ -1,3 +1,4 @@
+import { DotTrail } from "@/components/motion/dot-trail";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeader } from "@/components/ui-kit";
 import { CadenceVisual, LiveCallVisual, SupervisorBoardVisual } from "@/components/visuals";
@@ -21,14 +22,20 @@ const bandVisuals = [LiveCallVisual, CadenceVisual];
 export function Features() {
   return (
     <section id="platform" className="relative isolate bg-void">
-      <div className="container-main pb-section-small pt-section-main">
-        <Reveal>
-          <SectionHeader
-            eyebrow={features.eyebrow}
-            title={features.title}
-            body={features.body}
-          />
-        </Reveal>
+      {/* The header sits on a field of dots the cursor draws through (see
+          DotTrail). The field is the whole band, not the container, so the path
+          can run out to the edges the way it does on the reference. */}
+      <div className="relative">
+        <DotTrail />
+        <div className="container-main relative pb-section-main pt-section-main">
+          <Reveal>
+            <SectionHeader
+              eyebrow={features.eyebrow}
+              title={features.title}
+              body={features.body}
+            />
+          </Reveal>
+        </div>
       </div>
 
       {features.cards.map((card, i) => {
