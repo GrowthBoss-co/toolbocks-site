@@ -26,7 +26,7 @@ export function Hero() {
           on the right, so the ground is unevenly lit rather than flatly tinted. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 overflow-hidden"
+        className="aura-field pointer-events-none absolute inset-0 overflow-hidden"
       >
         <div className="aura left-1/2 top-[-10%] size-[46rem] -translate-x-1/2 opacity-90" />
         <div className="aura is-violet right-[-8%] top-[6%] size-[34rem]" />
@@ -45,7 +45,6 @@ export function Hero() {
 
             <CharReveal
               text={hero.title}
-              accentWords={1}
               className="heading-h1 max-w-[22ch] text-ink"
             />
 

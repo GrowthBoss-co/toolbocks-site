@@ -28,6 +28,7 @@ export default function Home() {
       </a>
       <SiteNav />
       <SmoothScroll />
+      <div aria-hidden="true" className="grain-veil" />
       {/* Everything the smoother translates lives in here. The nav stays out,
           because it is position: fixed and would otherwise move with the page. */}
       <div id={SMOOTH_WRAPPER}>

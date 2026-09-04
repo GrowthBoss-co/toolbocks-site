@@ -68,7 +68,7 @@ export function Testimonials() {
     <section id="testimonials" className="grain relative isolate overflow-hidden bg-void">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 overflow-hidden"
+        className="aura-field pointer-events-none absolute inset-0 overflow-hidden"
       >
         <div className="aura left-1/2 top-[60%] size-[56rem] -translate-x-1/2 opacity-60" />
       </div>

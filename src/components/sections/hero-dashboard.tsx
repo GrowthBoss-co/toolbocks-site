@@ -37,7 +37,7 @@ export function HeroDashboard() {
           padding, with the dark bezel painted on top). */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute -inset-2 rounded-[2rem] opacity-45 blur-2xl"
+        className="pointer-events-none absolute -inset-2 rounded-[2rem] opacity-[0.22] blur-2xl"
         style={{ background: LOGO_GRADIENT }}
       />
       <div
