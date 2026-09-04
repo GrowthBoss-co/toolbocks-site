@@ -1,7 +1,7 @@
+import Image from "next/image";
 import { CharReveal } from "@/components/motion/char-reveal";
 import { HeroStage } from "@/components/sections/hero-stage";
 import { Button } from "@/components/ui-kit";
-import { BrandMark } from "@/components/brand-icons";
 import { DEMO_URL, hero, integrations } from "@/lib/content";
 
 /**
@@ -81,20 +81,23 @@ export function Hero() {
               "Integrations" link resolving. */}
           <div
             id="integrations"
-            className="flex w-full flex-col items-center gap-lg border-t border-white/[0.08] pt-2xl"
+            className="flex w-full flex-col items-center gap-2xl pt-2xl"
           >
             <p className="text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-sub">
               {integrations.heading}
             </p>
-            <ul className="flex flex-wrap items-center justify-center gap-3">
+            <ul className="grid w-full max-w-[68rem] grid-cols-3 items-center justify-items-center gap-x-6 gap-y-9 sm:grid-cols-4 lg:grid-cols-6 lg:gap-x-10">
               {integrations.brands.map((b) => (
-                <li
-                  key={b.name}
-                  title={b.name}
-                  aria-label={b.name}
-                  className="grid size-14 place-items-center rounded-[0.875rem] border border-white/[0.07] bg-white/[0.03] transition-[transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-white/[0.14]"
-                >
-                  <BrandMark slug={b.slug} color={b.color} className="size-7" />
+                <li key={b.name} className="flex h-12 items-center justify-center">
+                  <Image
+                    src={`/logos/crm/${b.file}`}
+                    alt={b.name}
+                    width={b.w}
+                    height={b.h}
+                    unoptimized
+                    className="w-auto max-w-full transition-opacity duration-300 hover:opacity-100"
+                    style={{ height: `${b.size}rem`, opacity: 0.92 }}
+                  />
                 </li>
               ))}
             </ul>

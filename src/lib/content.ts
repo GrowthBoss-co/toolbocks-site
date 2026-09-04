@@ -129,16 +129,27 @@ export const benefits = {
 };
 
 export const integrations = {
-  // A very small line over a row of CRM marks, sitting where the stat strip
-  // used to be under the hero. Logos only, no names, in their own colours.
-  // GoHighLevel and Salesforce are wired today (both behind CrmClient);
-  // HubSpot and Zoho are on the roadmap and listed at Bahaa's call.
+  // A very small line over a row of CRM wordmarks, sitting where the stat
+  // strip used to be under the hero. Official logos in their own colours,
+  // dark lettering turned white for the ground, no captions. HighLevel and
+  // Salesforce are wired today (both behind CrmClient); the rest are popular
+  // CRMs on the roadmap, listed at Bahaa's call. `w`/`h` are the artwork's
+  // aspect (from the file's viewBox); `size` is the rendered height in rem,
+  // tuned by eye so a squat cloud and a long wordmark read as the same weight.
   heading: "Connects to the CRM you already run",
   brands: [
-    { name: "GoHighLevel", slug: "gohighlevel", color: "#2D6FF0" },
-    { name: "Salesforce", slug: "salesforce", color: "#00A1E0" },
-    { name: "HubSpot", slug: "hubspot", color: "#FF7A59" },
-    { name: "Zoho", slug: "zoho", color: "#E42527" },
+    { name: "HighLevel", file: "highlevel.png", w: 1024, h: 232, size: 2.1 },
+    { name: "Salesforce", file: "salesforce.svg", w: 273, h: 191, size: 3.3 },
+    { name: "HubSpot", file: "hubspot.svg", w: 106, h: 30, size: 2.1 },
+    { name: "Zoho", file: "zoho.svg", w: 1024, h: 450, size: 2.3 },
+    { name: "Pipedrive", file: "pipedrive.svg", w: 668, h: 152, size: 1.7 },
+    { name: "monday.com", file: "monday.svg", w: 467, h: 47, size: 1.55 },
+    { name: "Microsoft Dynamics 365", file: "dynamics365.svg", w: 1017, h: 355, size: 2.5 },
+    { name: "Zendesk", file: "zendesk.svg", w: 363, h: 259, size: 2.6 },
+    { name: "Freshworks", file: "freshworks.svg", w: 600, h: 120, size: 1.75 },
+    { name: "ActiveCampaign", file: "activecampaign.svg", w: 136, h: 14, size: 1.35 },
+    { name: "Keap", file: "keap.svg", w: 600, h: 280, size: 2.2 },
+    { name: "Insightly", file: "insightly.svg", w: 134, h: 48, size: 2 },
   ] as const,
 };
 
