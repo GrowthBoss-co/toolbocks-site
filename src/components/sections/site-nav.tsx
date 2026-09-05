@@ -19,10 +19,18 @@ import { cn } from "@/lib/utils";
  * is the only colour in the bar besides the CTA, which is the same lime pill
  * as everywhere else.
  *
+ * On a phone the menu unfolds out of the bar rather than popping: the panel
+ * is always in the DOM and animates its grid row from 0fr to 1fr, the links
+ * slide up one after another, and the CTA arrives last. The menu icon turns
+ * into the close icon with a quarter turn. Closed, the panel is hidden from
+ * assistive tech and its links leave the tab order.
+ *
  * Scroll state listens to both `scroll` and the smoother's `smoothscroll`
  * event: under ScrollSmoother the native scroll position moves first and the
  * content catches up, and the bar should follow the content.
  */
+const EASE = "ease-[cubic-bezier(0.22,1,0.36,1)]";
+
 export function SiteNav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -54,14 +62,22 @@ export function SiteNav() {
     return () => io.disconnect();
   }, []);
 
-  // Close the mobile panel once the viewport is wide enough to show the row.
+  // Close the mobile panel once the viewport is wide enough to show the row,
+  // and on Escape.
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 992px)");
     const onChange = () => {
       if (mq.matches) setOpen(false);
     };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
     mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      mq.removeEventListener("change", onChange);
+      window.removeEventListener("keydown", onKey);
+    };
   }, []);
 
   const glass = scrolled || open;
@@ -72,12 +88,17 @@ export function SiteNav() {
         className={cn(
           "border-b transition-[background-color,border-color,box-shadow] duration-500",
           glass
-            ? "border-white/[0.07] bg-[rgb(5_6_11/0.62)] shadow-[0_12px_40px_-24px_rgb(0_0_0/0.8)] backdrop-blur-2xl backdrop-saturate-150"
+            ? "border-white/[0.07] bg-[rgb(5_6_11/0.74)] shadow-[0_12px_40px_-24px_rgb(0_0_0/0.8)] backdrop-blur-2xl backdrop-saturate-150"
             : "border-transparent bg-transparent",
         )}
       >
         <div className="container-main flex h-[4.25rem] items-center justify-between gap-lg lg:grid lg:grid-cols-[1fr_auto_1fr]">
-          <a href="#top" aria-label="ToolBocks home" className="shrink-0">
+          <a
+            href="#top"
+            aria-label="ToolBocks home"
+            className="shrink-0"
+            onClick={() => setOpen(false)}
+          >
             <ToolBocksLogo priority />
           </a>
 
@@ -124,39 +145,77 @@ export function SiteNav() {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="grid size-10 place-items-center rounded-small text-ink transition-colors hover:bg-white/[0.06] lg:hidden"
+            className="relative grid size-10 place-items-center rounded-round text-ink transition-colors hover:bg-white/[0.06] lg:hidden"
           >
-            {open ? <CloseIcon className="size-6" /> : <MenuIcon className="size-6" />}
+            <MenuIcon
+              className={cn(
+                "absolute size-6 transition-[opacity,transform] duration-300",
+                EASE,
+                open ? "rotate-90 scale-75 opacity-0" : "rotate-0 scale-100 opacity-100",
+              )}
+            />
+            <CloseIcon
+              className={cn(
+                "absolute size-6 transition-[opacity,transform] duration-300",
+                EASE,
+                open ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-75 opacity-0",
+              )}
+            />
           </button>
         </div>
 
-        {/* mobile panel: the same glass, continued below the bar */}
-        {open ? (
+        {/* mobile panel: unfolds from the bar */}
+        <div
+          className={cn("grid transition-[grid-template-rows] duration-500 lg:hidden", EASE)}
+          style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
+        >
           <nav
             id="mobile-nav"
             aria-label="Main"
-            className="container-main flex flex-col border-t border-white/[0.07] pb-xl pt-lg lg:hidden"
+            aria-hidden={!open}
+            className="min-h-0 overflow-hidden"
           >
-            <ul className="flex flex-col">
-              {navLinks.map((l) => (
-                <li key={l.label}>
-                  <a
-                    href={l.href}
-                    onClick={() => setOpen(false)}
-                    className="flex items-center py-sm text-large text-ink transition-opacity duration-200 hover:opacity-70"
+            <div className="container-main border-t border-white/[0.07] pb-2xl pt-lg">
+              <ul className="flex flex-col">
+                {navLinks.map((l, i) => (
+                  <li
+                    key={l.label}
+                    className={cn(
+                      "border-b border-white/[0.06] transition-[opacity,transform] duration-400 last:border-b-0",
+                      EASE,
+                      open ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+                    )}
+                    style={{ transitionDelay: open ? `${90 + i * 55}ms` : "0ms" }}
                   >
-                    {l.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-lg flex flex-col gap-sm">
-              <Button href={DEMO_URL} variant="primary" size="small">
-                Book a demo
-              </Button>
+                    <a
+                      href={l.href}
+                      tabIndex={open ? 0 : -1}
+                      onClick={() => setOpen(false)}
+                      className="flex items-center justify-between py-md text-[1.375rem] font-medium text-ink"
+                    >
+                      {l.label}
+                      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="size-5 text-soft-400">
+                        <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <div
+                className={cn(
+                  "mt-xl transition-[opacity,transform] duration-400",
+                  EASE,
+                  open ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+                )}
+                style={{ transitionDelay: open ? `${90 + navLinks.length * 55 + 40}ms` : "0ms" }}
+              >
+                <Button href={DEMO_URL} variant="primary" className="w-full">
+                  Book a live demo
+                </Button>
+              </div>
             </div>
           </nav>
-        ) : null}
+        </div>
       </div>
     </header>
   );

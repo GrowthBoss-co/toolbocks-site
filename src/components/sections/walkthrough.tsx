@@ -3,8 +3,6 @@
 import { useRef, useSyncExternalStore } from "react";
 import {
   motion,
-  useMotionValue,
-  useReducedMotion,
   useTransform,
   type MotionValue,
 } from "motion/react";
@@ -131,17 +129,18 @@ export function Walkthrough() {
 /* -------------------------------------------------------------------------- */
 
 /**
- * Progress that respects reduced motion: the same MotionValue everywhere else
- * uses, or a constant 1 so every segment renders complete and nothing moves.
+ * The scrubbed progress for one element. It used to fall back to a constant 1
+ * under prefers-reduced-motion, which on iPhones with Reduce Motion on (a very
+ * common setting) rendered the whole section finished and still. Bahaa wants
+ * the drawing to happen for everyone, and it is scroll-driven rather than
+ * autonomous motion, so it now runs regardless.
  */
 function useProgress(
   ref: React.RefObject<HTMLElement | null>,
   startVh: number,
   endVh: number,
 ) {
-  const live = useScrollProgress(ref, startVh, endVh);
-  const done = useMotionValue(1);
-  return useReducedMotion() ? done : live;
+  return useScrollProgress(ref, startVh, endVh);
 }
 
 /**
