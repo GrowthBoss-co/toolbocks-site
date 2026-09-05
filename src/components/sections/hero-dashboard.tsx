@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "motion/react";
 import { DemoFrame } from "@/components/sections/demo-frame";
 
 /**
@@ -21,8 +20,9 @@ import { DemoFrame } from "@/components/sections/demo-frame";
  * rebuilds them on resize. Each line fades out toward the top through a
  * gradient stroke; each carries a couple of soft dots that travel down it on
  * their own cadence (SMIL, no JavaScript per frame) and flash a small ring
- * where they meet the dashboard. Reduced motion keeps the lines and drops the
- * dots.
+ * where they meet the dashboard. The dots run regardless of the reduced-motion
+ * setting: they are faint, slow and decorative, and on iPhones with Reduce
+ * Motion on (a common default) the hero otherwise looked broken to Bahaa.
  */
 const INTRINSIC = { width: 1440, height: 690 };
 /** The wordmark's cyan-indigo-magenta sweep. */
@@ -95,7 +95,6 @@ function buildPath(x0: number, x1: number, h: number) {
 
 export function HeroLines({ hostId }: { hostId: string }) {
   const [geo, setGeo] = useState<Geometry | null>(null);
-  const reduceMotion = useReducedMotion();
   const raf = useRef(0);
 
   useEffect(() => {
@@ -170,8 +169,7 @@ export function HeroLines({ hostId }: { hostId: string }) {
         />
       ))}
 
-      {!reduceMotion &&
-        lines.map((l, i) =>
+      {lines.map((l, i) =>
           [0, 1].map((k) => {
             const travel = 2.8 + rnd(i, 1 + k) * 1.8; // s on the line
             const gap = 1.2 + rnd(i, 7 + k) * 4.2; // s parked, invisible
