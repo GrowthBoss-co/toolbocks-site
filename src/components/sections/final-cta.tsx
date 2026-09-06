@@ -1,5 +1,6 @@
 import { Reveal } from "@/components/motion/reveal";
 import { DemoFrame } from "@/components/sections/demo-frame";
+import { POSTER } from "@/components/sections/hero-dashboard";
 import { Button } from "@/components/ui-kit";
 import { DEMO_URL, finalCta, hero } from "@/lib/content";
 
@@ -74,6 +75,8 @@ export function FinalCta() {
                     src="/demo/team-dashboard.html"
                     title="ToolBocks Team Dashboard, running on sample data"
                     intrinsic={INTRINSIC}
+                    poster={POSTER}
+                    posterSizes="(min-width: 64rem) 60rem, 115vw"
                   />
                 </div>
               </div>

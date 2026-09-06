@@ -25,6 +25,12 @@ import { DemoFrame } from "@/components/sections/demo-frame";
  * Motion on (a common default) the hero otherwise looked broken to Bahaa.
  */
 const INTRINSIC = { width: 1440, height: 690 };
+/**
+ * A still of the dashboard at the same size, painted under the frame until
+ * the live one has booted. Regenerate with headless Chrome at 1440x690 if the
+ * demo bundle changes: it is the first thing a visitor sees of the product.
+ */
+export const POSTER = "/assets/team-dashboard-poster.webp";
 /** The wordmark's cyan-indigo-magenta sweep. */
 const LOGO_GRADIENT = "linear-gradient(135deg, #2dd4ff 0%, #6a5cff 48%, #d946ef 100%)";
 export const HERO_FRAME_ID = "hero-dashboard";
@@ -50,6 +56,7 @@ export function HeroDashboard() {
             src="/demo/team-dashboard.html"
             title="ToolBocks Team Dashboard, running on sample data"
             intrinsic={INTRINSIC}
+            poster={POSTER}
             eager
           />
         </div>

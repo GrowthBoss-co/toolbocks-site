@@ -187,6 +187,20 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // The product demos are ~300KB bundles that never change between deploys
+      // of the site itself. Vercel's default for public files is max-age=0,
+      // which made every repeat visit re-fetch (or at best revalidate) both of
+      // them. An hour in the browser, a day at the edge; a new bundle still
+      // lands within the hour, and a hard refresh always fetches fresh.
+      {
+        source: "/demo/(.*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400",
+          },
+        ],
+      },
     ];
   },
 };

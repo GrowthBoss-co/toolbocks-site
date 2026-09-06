@@ -116,16 +116,18 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         {children}
 
-        {/* GA4. `afterInteractive` rather than blocking: analytics must never sit
-            on the critical path of a page whose Core Web Vitals we care about.
+        {/* GA4. `lazyOnload`: the tag is 170KB and cost ~200ms of main thread
+            during hydration on a phone when it ran `afterInteractive`. Analytics
+            must never sit on the critical path of a page whose Core Web Vitals
+            we care about; the pageview still fires, a moment later.
             Renders nothing at all when NEXT_PUBLIC_GA_ID is unset. */}
         {GA_ID ? (
           <>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-              strategy="afterInteractive"
+              strategy="lazyOnload"
             />
-            <Script id="ga4-init" strategy="afterInteractive">
+            <Script id="ga4-init" strategy="lazyOnload">
               {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
