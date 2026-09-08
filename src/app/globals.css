@@ -299,10 +299,10 @@
     scroll-padding-top: 6.5rem;
   }
 
-  /* Under the smooth scroller the page sits on a fractional translateY, and
-     the compositor antialiases every section's top edge against the one above
-     it: a hairline that comes and goes as hovers repaint. Overlapping each
-     section onto the previous one by a pixel leaves nothing to antialias. */
+  /* Sections whose grounds meet on a fractional pixel boundary get their top
+     edge antialiased against the one above: a hairline that comes and goes as
+     hovers repaint. Overlapping each section onto the previous one by a pixel
+     leaves nothing to antialias. */
   main > section + section {
     margin-top: -1px;
   }
@@ -595,6 +595,125 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
   }
 
+  /* ==========================================================================
+     Site nav: a caption that becomes an island.
+     The geometry (height, width, lift, radius) and the ground (fill, ring,
+     shadow) all live on .nav-bar and transition together, so the row never
+     jumps; the content inside just rides along. --progress is written by the
+     component from the scroll position and drives the floor hairline.
+     ======================================================================= */
+  .nav-bar {
+    --progress: 0;
+    --nav-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    isolation: isolate;
+    max-width: 100%;
+    margin-top: 0;
+    padding-inline: 0;
+    border-radius: 1.5rem;
+    background-color: transparent;
+    box-shadow: 0 0 0 0 rgb(0 0 0 / 0);
+    transition:
+      max-width 0.7s var(--nav-ease),
+      margin-top 0.7s var(--nav-ease),
+      padding 0.7s var(--nav-ease),
+      border-radius 0.7s var(--nav-ease),
+      background-color 0.45s ease,
+      box-shadow 0.6s ease;
+  }
+  .nav-bar .nav-row {
+    height: 4.25rem;
+    transition: height 0.7s var(--nav-ease);
+  }
+  .nav-bar .nav-logo {
+    transition: transform 0.7s var(--nav-ease);
+  }
+  /* The ring: the wordmark's gradient under a one pixel padding, masked to
+     the border, slowly drifting. Faded out until the bar becomes an island. */
+  .nav-bar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(
+        100deg,
+        rgb(45 212 255 / 0.55),
+        rgb(106 92 255 / 0.7),
+        rgb(217 70 239 / 0.6),
+        rgb(106 92 255 / 0.7),
+        rgb(45 212 255 / 0.55)
+      )
+      0 0 / 300% 100%;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    animation: nav-ring-drift 14s linear infinite;
+    pointer-events: none;
+  }
+  /* The floor hairline: page progress, left to right, in the same sweep. */
+  .nav-bar .nav-progress {
+    position: absolute;
+    left: 1.5rem;
+    right: 1.5rem;
+    bottom: 0;
+    height: 1px;
+    border-radius: 1px;
+    background: linear-gradient(90deg, #2dd4ff, #6a5cff 50%, #d946ef);
+    transform: scaleX(var(--progress));
+    transform-origin: left center;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    pointer-events: none;
+  }
+  .nav-bar.is-island {
+    max-width: 56rem;
+    margin-top: 0.75rem;
+    padding-inline: 0.625rem 0.625rem;
+    border-radius: var(--r-round);
+    background-color: rgb(5 6 11 / 0.92);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    backdrop-filter: blur(18px) saturate(1.4);
+    box-shadow:
+      inset 0 1px 0 0 rgb(255 255 255 / 0.05),
+      0 24px 60px -28px rgb(0 0 0 / 0.75),
+      0 0 60px -30px rgb(106 92 255 / 0.35);
+  }
+  .nav-bar.is-island .nav-row {
+    height: 3.5rem;
+  }
+  .nav-bar.is-island .nav-logo {
+    transform: scale(0.9);
+  }
+  .nav-bar.is-island::before,
+  .nav-bar.is-island .nav-progress {
+    opacity: 1;
+  }
+  /* With the phone menu unfolded the pill relaxes to a card so the panel has
+     corners to sit in, and the hairline steps out of the way of the links. */
+  .nav-bar.is-open {
+    border-radius: 1.5rem;
+  }
+  .nav-bar.is-open .nav-progress {
+    opacity: 0;
+  }
+  @media (max-width: 991.98px) {
+    .nav-bar.is-island {
+      padding-inline: 1rem;
+    }
+    .nav-bar .nav-logo {
+      transform-origin: left center;
+    }
+  }
+
   /* Layered panel elevation. .lift is the workhorse; .lift-lg adds the wide
      indigo bloom used on hero-stage panels and the popular plan. */
   .lift {
@@ -782,6 +901,12 @@
   }
   50% {
     transform: scaleY(1.15);
+  }
+}
+
+@keyframes nav-ring-drift {
+  to {
+    background-position: 300% 0;
   }
 }
 
