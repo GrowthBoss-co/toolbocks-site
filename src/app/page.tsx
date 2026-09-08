@@ -1,8 +1,4 @@
-import {
-  SMOOTH_CONTENT,
-  SMOOTH_WRAPPER,
-  SmoothScroll,
-} from "@/components/motion/smooth-scroll";
+import { AnchorScroll } from "@/components/motion/anchor-scroll";
 import { Benefits } from "@/components/sections/benefits";
 import { Coach } from "@/components/sections/coach";
 import { FeatureCatalog } from "@/components/sections/feature-catalog";
@@ -27,28 +23,22 @@ export default function Home() {
         Skip to content
       </a>
       <SiteNav />
-      <SmoothScroll />
+      <AnchorScroll />
       <div aria-hidden="true" className="grain-veil" />
-      {/* Everything the smoother translates lives in here. The nav stays out,
-          because it is position: fixed and would otherwise move with the page. */}
-      <div id={SMOOTH_WRAPPER}>
-        <div id={SMOOTH_CONTENT}>
-          <main className="overflow-x-clip">
-            <Hero />
-            <Mission />
-            <Walkthrough />
-            <Coach />
-            <WhatChanges />
-            <FeatureCatalog />
-            <Benefits />
-            <System />
-            <Testimonials />
-            <Pricing />
-            <FinalCta />
-          </main>
-          <SiteFooter />
-        </div>
-      </div>
+      <main className="overflow-x-clip">
+        <Hero />
+        <Mission />
+        <Walkthrough />
+        <Coach />
+        <WhatChanges />
+        <FeatureCatalog />
+        <Benefits />
+        <System />
+        <Testimonials />
+        <Pricing />
+        <FinalCta />
+      </main>
+      <SiteFooter />
     </>
   );
 }
