@@ -37,7 +37,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "ToolBocks | AI Sales Engagement Platform and Power Dialer",
+  title: "AI Power Dialer and Sales Call Live Coaching | ToolBocks",
   // Kept under 160 characters so Google shows it whole; the previous version ran
   // to 162 and had its last few words clipped.
   description:
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     siteName: "ToolBocks",
     locale: "en_CA",
     url: SITE_URL,
-    title: "ToolBocks | The outbound platform built inside a real agency",
+    title: "AI Power Dialer and Sales Call Live Coaching | ToolBocks",
     description:
       "It researches every lead, dials until a human answers, and coaches the rep through the call. Not a demo product: it runs a real agency's outbound every day.",
     images: [
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ToolBocks | The outbound platform built inside a real agency",
+    title: "AI Power Dialer and Sales Call Live Coaching | ToolBocks",
     description:
       "It researches every lead, dials until a human answers, and coaches the rep through the call.",
     images: ["/assets/og-image.png"],
