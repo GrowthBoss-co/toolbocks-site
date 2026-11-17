@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   // Kept under 160 characters so Google shows it whole; the previous version ran
   // to 162 and had its last few words clipped.
   description:
-    "ToolBocks researches every lead, dials until a human answers, and coaches the rep through the call. Built inside a working agency and run there daily.",
+    "ToolBocks is an AI power dialer that researches every lead, dials until a human answers and coaches reps live. Works with GoHighLevel, Salesforce and more.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     title: "AI Power Dialer and Sales Call Live Coaching | ToolBocks",
     description:
-      "It researches every lead, dials until a human answers, and coaches the rep through the call. Not a demo product: it runs a real agency's outbound every day.",
+      "ToolBocks is an AI power dialer that researches every lead, dials until a human answers and coaches reps live. Works with GoHighLevel, Salesforce and more.",
     images: [
       {
         url: "/assets/og-image.png",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "AI Power Dialer and Sales Call Live Coaching | ToolBocks",
     description:
-      "It researches every lead, dials until a human answers, and coaches the rep through the call.",
+      "ToolBocks is an AI power dialer that researches every lead, dials until a human answers and coaches reps live. Works with GoHighLevel, Salesforce and more.",
     images: ["/assets/og-image.png"],
   },
   // Smallest first: browsers pick the closest match rather than the first one
