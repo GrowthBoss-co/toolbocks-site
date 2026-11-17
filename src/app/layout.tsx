@@ -80,7 +80,9 @@ export const metadata: Metadata = {
     apple: "/assets/apple-touch-icon.png",
   },
   manifest: "/site.webmanifest",
-  robots: { index: true, follow: true },
+  // No `robots` here on purpose: index/follow is the default, and setting it
+  // in the root layout also stamped "index, follow" onto the 404 page next to
+  // Next's own "noindex", giving crawlers two contradictory directives.
 };
 
 export default function RootLayout({
