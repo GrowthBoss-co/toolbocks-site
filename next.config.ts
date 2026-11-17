@@ -192,6 +192,12 @@ const nextConfig: NextConfig = {
       // which made every repeat visit re-fetch (or at best revalidate) both of
       // them. An hour in the browser, a day at the edge; a new bundle still
       // lands within the hour, and a hard refresh always fetches fresh.
+      //
+      // noindex: these are iframe bundles, not pages. Google had indexed
+      // /demo/live-call.html (titled "GB-Toolbox, Live Call Demo") and it was
+      // collecting brand impressions that belong to the homepage. A header,
+      // not a robots.txt Disallow, so crawlers can still fetch the file and
+      // see the instruction; the files themselves stay byte-identical.
       {
         source: "/demo/(.*)",
         headers: [
@@ -199,6 +205,7 @@ const nextConfig: NextConfig = {
             key: "Cache-Control",
             value: "public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400",
           },
+          { key: "X-Robots-Tag", value: "noindex" },
         ],
       },
     ];
