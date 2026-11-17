@@ -33,7 +33,7 @@ export function SiteFooter() {
           <div className="flex justify-start gap-4xl lg:justify-end lg:gap-7xl">
             {footer.columns.map((col) => (
               <div key={col.heading}>
-                <h2 className="mb-lg font-sans text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-sub">{col.heading}</h2>
+                <p className="mb-lg font-sans text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-sub">{col.heading}</p>
                 <ul className="flex flex-col gap-md">
                   {col.links.map((l) => {
                     const external = l.href.startsWith("http");

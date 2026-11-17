@@ -602,11 +602,13 @@ export const footer = {
     {
       heading: "Platform",
       links: [
-        { label: "Power dialer", href: "#walkthrough" },
-        { label: "Cadences", href: "#walkthrough" },
-        { label: "AI audits", href: "#walkthrough" },
-        { label: "Integrations", href: "#integrations" },
-        { label: "Pricing", href: "#pricing" },
+        // Root-relative so they still land on the homepage sections when the
+        // footer renders on a page other than "/".
+        { label: "Power dialer", href: "/#walkthrough" },
+        { label: "Cadences", href: "/#walkthrough" },
+        { label: "AI audits", href: "/#walkthrough" },
+        { label: "Integrations", href: "/#integrations" },
+        { label: "Pricing", href: "/#pricing" },
       ],
     },
     {

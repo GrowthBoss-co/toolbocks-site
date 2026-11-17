@@ -31,9 +31,15 @@ function scrollToHash(hash: string, smooth: boolean) {
 export function AnchorScroll() {
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
-      const a = (e.target as Element | null)?.closest?.("a[href^='#']");
+      const a = (e.target as Element | null)?.closest?.("a[href^='#'], a[href^='/#']");
       if (!a) return;
-      const href = a.getAttribute("href") ?? "";
+      let href = a.getAttribute("href") ?? "";
+      // "/#x" is a same-page anchor only on the homepage; elsewhere let the
+      // browser navigate and the on-arrival hash handler below takes over.
+      if (href.startsWith("/#")) {
+        if (location.pathname !== "/") return;
+        href = href.slice(1);
+      }
       if (href.length < 2) return;
       if (scrollToHash(href, true)) {
         e.preventDefault();
