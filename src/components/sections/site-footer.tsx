@@ -1,15 +1,32 @@
 import Image from "next/image";
 import { ToolBocksLogo } from "@/components/icons";
+import { getAllPosts } from "@/content/blog";
 import { AGENCY_URL, footer } from "@/lib/content";
 
 /* The footer is the one indigo-cast ground on the page, so the closing card reads
-   as sitting between two colours. Its top padding carries the card's 12rem
-   overhang (see FinalCta). */
+   as sitting between two colours. On the homepage its top padding carries the
+   card's 12rem overhang (see FinalCta); pages without that card pass
+   `overhang={false}`.
 
-export function SiteFooter() {
+   The footer is the blog's ONLY entry point (no header link, no body links from
+   the homepage). The Blog link joins the Company column automatically once at
+   least one post is published, so there is never a link to an empty section. */
+
+export function SiteFooter({ overhang = true }: { overhang?: boolean } = {}) {
+  const columns = getAllPosts().length
+    ? footer.columns.map((col) =>
+        col.heading === "Company"
+          ? { ...col, links: [{ label: "Blog", href: "/blog" }, ...col.links] }
+          : col,
+      )
+    : footer.columns;
+
   return (
     <footer className="grain relative isolate border-t border-white/[0.06] bg-pressure">
-      <div className="container-main pb-section-tiny" style={{ paddingTop: "calc(var(--section-small) + 12rem)" }}>
+      <div
+        className="container-main pb-section-tiny"
+        style={{ paddingTop: overhang ? "calc(var(--section-small) + 12rem)" : "var(--section-small)" }}
+      >
         <div className="grid grid-cols-1 gap-y-5xl lg:grid-cols-2">
           <div className="flex flex-col items-start gap-[1.25rem]">
             <ToolBocksLogo />
@@ -31,7 +48,7 @@ export function SiteFooter() {
           </div>
 
           <div className="flex justify-start gap-4xl lg:justify-end lg:gap-7xl">
-            {footer.columns.map((col) => (
+            {columns.map((col) => (
               <div key={col.heading}>
                 <p className="mb-lg font-sans text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-sub">{col.heading}</p>
                 <ul className="flex flex-col gap-md">

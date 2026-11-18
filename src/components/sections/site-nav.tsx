@@ -30,10 +30,14 @@ import { cn } from "@/lib/utils";
  * the DOM and animates its grid row from 0fr to 1fr, the links slide up one
  * after another, and the CTA arrives last. Closed, it is hidden from assistive
  * tech and its links leave the tab order.
+ *
+ * `basePath="/"` is for pages other than the homepage (the blog): section links
+ * become `/#platform` so they navigate home, and the logo links to `/`. There is
+ * deliberately no Blog link here; the footer is the blog's only entry point.
  */
 const EASE = "ease-[cubic-bezier(0.22,1,0.36,1)]";
 
-export function SiteNav() {
+export function SiteNav({ basePath = "" }: { basePath?: "" | "/" } = {}) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>("");
@@ -137,7 +141,7 @@ export function SiteNav() {
         >
           <div className="nav-row flex items-center justify-between gap-lg lg:grid lg:grid-cols-[1fr_auto_1fr]">
             <a
-              href="#top"
+              href={basePath ? "/" : "#top"}
               aria-label="ToolBocks home"
               className="nav-logo shrink-0 origin-left"
               onClick={() => setOpen(false)}
@@ -162,7 +166,7 @@ export function SiteNav() {
                   return (
                     <li key={l.label} className="relative">
                       <a
-                        href={l.href}
+                        href={`${basePath}${l.href}`}
                         aria-current={on ? "true" : undefined}
                         className={cn(
                           "relative flex items-center rounded-round px-md py-sm text-[0.875rem] transition-colors duration-200 hover:text-ink",
@@ -242,7 +246,7 @@ export function SiteNav() {
                       style={{ transitionDelay: open ? `${90 + i * 55}ms` : "0ms" }}
                     >
                       <a
-                        href={l.href}
+                        href={`${basePath}${l.href}`}
                         tabIndex={open ? 0 : -1}
                         onClick={() => setOpen(false)}
                         className="flex items-center justify-between py-md text-[1.375rem] font-medium text-ink"
