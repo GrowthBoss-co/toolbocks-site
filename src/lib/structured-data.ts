@@ -1,4 +1,121 @@
+import type { Post } from "@/content/blog";
+import { plainText } from "@/content/blog/text";
 import { AGENCY_URL, SITE_URL } from "@/lib/content";
+
+const ORG_ID = `${SITE_URL}/#organization`;
+const SITE_ID = `${SITE_URL}/#website`;
+const OG_IMAGE = `${SITE_URL}/assets/og-image.png`;
+
+/**
+ * Serialises JSON-LD for a <script> tag. `<` is escaped so no string in the
+ * payload can close the script element early (Next's JSON-LD guide).
+ */
+export function jsonLd(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+
+function breadcrumbs(items: { name: string; path: string }[]) {
+  return {
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: `${SITE_URL}${item.path}`,
+    })),
+  };
+}
+
+/**
+ * /blog: the Blog node plus Home > Blog. The Organization it points at is the
+ * one the root layout already emits on every page.
+ */
+export function buildBlogIndexSchema(posts: Post[]) {
+  const url = `${SITE_URL}/blog`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Blog",
+        "@id": `${url}#blog`,
+        url,
+        name: "ToolBocks Blog",
+        publisher: { "@id": ORG_ID },
+        isPartOf: { "@id": SITE_ID },
+        inLanguage: "en-CA",
+        blogPost: posts.map((p) => ({ "@id": `${SITE_URL}/blog/${p.slug}#article` })),
+      },
+      breadcrumbs([
+        { name: "Home", path: "/" },
+        { name: "Blog", path: "/blog" },
+      ]),
+    ],
+  };
+}
+
+/**
+ * One post: BlogPosting, Home > Blog > Post, and FAQPage / HowTo only when the
+ * post carries that content, because both are rendered from the same fields
+ * and are therefore always visible on the page.
+ *
+ * The author is the organisation, not an invented person. FAQ and HowTo rich
+ * results are limited or retired in Google; they are here for Bing and AI
+ * answer engines, which still read them.
+ */
+export function buildArticleSchema(post: Post) {
+  const url = `${SITE_URL}/blog/${post.slug}`;
+  const graph: Record<string, unknown>[] = [
+    {
+      "@type": "BlogPosting",
+      "@id": `${url}#article`,
+      headline: post.title,
+      description: post.description,
+      datePublished: post.published,
+      dateModified: post.updated,
+      image: OG_IMAGE,
+      url,
+      mainEntityOfPage: url,
+      inLanguage: "en-CA",
+      keywords: post.primaryKeyword,
+      author: { "@id": ORG_ID },
+      publisher: { "@id": ORG_ID },
+      isPartOf: { "@id": `${SITE_URL}/blog#blog` },
+    },
+    breadcrumbs([
+      { name: "Home", path: "/" },
+      { name: "Blog", path: "/blog" },
+      { name: post.title, path: `/blog/${post.slug}` },
+    ]),
+  ];
+
+  if (post.faq?.length) {
+    graph.push({
+      "@type": "FAQPage",
+      "@id": `${url}#faq`,
+      mainEntity: post.faq.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: plainText(f.a) },
+      })),
+    });
+  }
+
+  if (post.howTo) {
+    graph.push({
+      "@type": "HowTo",
+      "@id": `${url}#howto`,
+      name: post.howTo.name,
+      step: post.howTo.steps.map((s, i) => ({
+        "@type": "HowToStep",
+        position: i + 1,
+        name: s.name,
+        text: plainText(s.text),
+      })),
+    });
+  }
+
+  return { "@context": "https://schema.org", "@graph": graph };
+}
 
 /**
  * JSON-LD for the landing page, as a single @graph so the nodes can reference
@@ -20,11 +137,12 @@ import { AGENCY_URL, SITE_URL } from "@/lib/content";
  *   there is no price to state. An Offer with a made-up number is worse than no
  *   Offer at all.
  *
- * - **BreadcrumbList.** A single-page site has no hierarchy to describe.
+ * - **BreadcrumbList.** The homepage is the root, so it has no trail. Blog
+ *   pages carry their own (see buildBlogIndexSchema / buildArticleSchema).
  */
 export function buildStructuredData() {
-  const org = `${SITE_URL}/#organization`;
-  const site = `${SITE_URL}/#website`;
+  const org = ORG_ID;
+  const site = SITE_ID;
 
   return {
     "@context": "https://schema.org",
