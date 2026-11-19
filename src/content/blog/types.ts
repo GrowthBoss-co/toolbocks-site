@@ -27,6 +27,11 @@ export type Post = {
   slug: string;
   /** The H1 and the basis of the <title>. */
   title: string;
+  /**
+   * A shorter <title> for when `title` plus " | ToolBocks" would pass about 60
+   * characters and get cut off in search results. The H1 still uses `title`.
+   */
+  metaTitle?: string;
   /** Meta description, 155 characters or fewer. */
   description: string;
   /** Tracked in the rank log from the day the post goes live. */

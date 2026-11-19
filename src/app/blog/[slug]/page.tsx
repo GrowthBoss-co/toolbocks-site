@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = getPost(slug);
   if (!post) return {};
-  const title = `${post.title} | ToolBocks`;
+  const title = `${post.metaTitle ?? post.title} | ToolBocks`;
   const url = `/blog/${post.slug}`;
   return {
     title,
