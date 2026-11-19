@@ -1,3 +1,4 @@
+import { whatIsAPowerDialer } from "./posts/what-is-a-power-dialer";
 import type { Post } from "./types";
 
 /**
@@ -9,7 +10,7 @@ import type { Post } from "./types";
  * shows no Blog link, so the section can ship before its first post without
  * leaving a thin page live.
  */
-const POSTS: Post[] = [];
+const POSTS: Post[] = [whatIsAPowerDialer];
 
 /** Newest first. */
 export function getAllPosts(): Post[] {
