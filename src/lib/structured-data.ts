@@ -77,8 +77,10 @@ export function buildArticleSchema(post: Post) {
       mainEntityOfPage: url,
       inLanguage: "en-CA",
       keywords: post.primaryKeyword,
-      author: { "@id": ORG_ID },
-      publisher: { "@id": ORG_ID },
+      // Name and url are repeated inline, not only referenced by @id: Google's
+      // Article guidelines ask for both on the author itself.
+      author: { "@type": "Organization", "@id": ORG_ID, name: "ToolBocks", url: SITE_URL },
+      publisher: { "@type": "Organization", "@id": ORG_ID, name: "ToolBocks", url: SITE_URL },
       isPartOf: { "@id": `${SITE_URL}/blog#blog` },
     },
     breadcrumbs([
