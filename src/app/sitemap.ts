@@ -20,7 +20,7 @@ import { SITE_URL } from "@/lib/content";
  * teaches Google to ignore the field.
  */
 const PAGES: MetadataRoute.Sitemap = [
-  { url: `${SITE_URL}/`, lastModified: "2026-09-08" },
+  { url: `${SITE_URL}/`, lastModified: "2026-11-19" },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
